@@ -19,5 +19,12 @@ public class ChildManager {
 
     }
 
-
+    /**
+     * Return next child who has right to choose a side of a flip.
+     * Should give each child a fair chance to play alternatively.
+     * @return next child to choose a side.
+     */
+    public Child getNextChild() {
+        return null;
+    }
 }
