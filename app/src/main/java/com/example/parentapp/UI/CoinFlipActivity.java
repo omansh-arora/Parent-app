@@ -2,6 +2,7 @@ package com.example.parentapp.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ObjectAnimator;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -45,8 +46,6 @@ public class CoinFlipActivity extends AppCompatActivity {
         tossResultTv = findViewById(R.id.tossResultTv);
 
         // initialize sounds
-        // sound downloaded from: https://www.soundjay.com/coin-sounds-1.html
-        //mp = MediaPlayer.create(this, R.raw.coindrop);
         initSounds();
 
         coin.setOnClickListener(new View.OnClickListener() {
@@ -59,36 +58,22 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     private void initSounds() {
-        //soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-        soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
-        //soundPool.setOnLoadCompleteListener(CoinFlipActivity.this);
-//        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-//            @Override
-//            public void onLoadComplete(SoundPool soundPool, int mySoundId, int status) {
-//                loaded = true;
-//            }
-//        });
-        soundID = soundPool.load(this, R.raw.coindrop, 1);
+        // sound downloaded from: https://www.soundjay.com/coin-sounds-1.html
+        mediaPlayer = MediaPlayer.create(this, R.raw.coindrop);
 
-    }
-
-    private void playSound(int id){
-        soundPool.play(id, 5, 5, 0, 0, 0.75f);
     }
 
     private void flipTheCoin() {
 
         RotateAnimation rotateAnimation = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
-                .5f, RotateAnimation.RELATIVE_TO_SELF
-                , .5f);
-        rotateAnimation.setDuration(3500);
-        playSound(soundID);
+                0, RotateAnimation.RELATIVE_TO_SELF
+                , 0);
+        rotateAnimation.setDuration(2500);
 
         rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                //mp.start();
-                soundPool.resume(soundID);
+                mediaPlayer.start();
             }
 
             @Override
@@ -96,14 +81,13 @@ public class CoinFlipActivity extends AppCompatActivity {
 
                 tossResultNum = ranNum.nextInt(2);
                 //Toast.makeText(CoinFlipActivity.this, String.valueOf(tossResultNum), Toast.LENGTH_SHORT).show();
-
                 if (tossResultNum == 0) {
                     tossResultText = "Head";
                 } else {
                     tossResultText = "Tail";
                 }
 
-                coin.setImageResource(tossResultNum > 0 ? R.drawable.tails : R.drawable.heads);
+                coin.setImageResource(tossResultNum > 0 ? R.drawable.tails2 : R.drawable.heads2);
 
                 Animation fadeIn = new AlphaAnimation(0, 1);
                 fadeIn.setInterpolator(new DecelerateInterpolator());
@@ -111,7 +95,6 @@ public class CoinFlipActivity extends AppCompatActivity {
                 fadeIn.setFillAfter(true);
                 coin.startAnimation(fadeIn);
                 tossResultTv.setText(tossResultText);
-                //soundPool.stop(soundID);
 
             }
 

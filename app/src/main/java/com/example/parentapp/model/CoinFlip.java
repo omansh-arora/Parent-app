@@ -27,4 +27,6 @@ public final class CoinFlip {
         this.guess = guess;
         this.isWin = this.guess == this.side;
     }
+
+
 }
