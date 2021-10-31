@@ -20,7 +20,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/baby_blue"
                 app:popupTheme="@style/Theme.ParentApp.PopupOverlay" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -28,13 +28,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="409dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tossResultTv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/coiny"
                 android:gravity="center"
@@ -56,10 +56,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/coiny"
+                android:fontFamily="@font/boogaloo"
                 android:gravity="center"
                 android:text="@string/coin_toss_instructions_text"
-                android:textColor="@color/baby_blue"
+                android:textColor="@color/light_gray"
                 android:textSize="17sp"
                 android:textStyle="italic" />
         </LinearLayout>
@@ -67,18 +67,88 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
 
-            <Button
-                android:id="@+id/viewFlipsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/coiny"
-                app:backgroundTint="@color/baby_blue"
-                android:text="@string/flip_coin_records_text" />
+                android:orientation="vertical">
+
+                <Switch
+                    android:id="@+id/tossModeSW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/coiny"
+                    android:gravity="center|center_horizontal"
+                    android:paddingHorizontal="@dimen/cardview_compat_inset_shadow"
+                    android:text="Child Pick Mode"
+                    android:textAlignment="center"
+                    android:textColor="@color/sky_blue"
+                    android:thumbTint="@color/light_gray"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/childTurnTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/boogaloo"
+                    android:gravity="center"
+                    android:text="Bob's turn to pick"
+                    android:textColor="@color/sky_blue"
+                    android:textSize="26sp" />
+
+                <RadioGroup
+                    android:id="@+id/coinRBsGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp">
+
+                    <RadioButton
+                        android:id="@+id/headsRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/boogaloo"
+                        android:gravity="left|center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="Heads"
+                        android:textSize="20dp" />
+
+                    <RadioButton
+                        android:id="@+id/tailsRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:fontFamily="@font/boogaloo"
+                        android:gravity="left|center_vertical"
+                        android:text="Tails"
+                        android:textSize="20dp" />
+
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/viewFlipsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:fontFamily="@font/coiny"
+                    android:text="@string/flip_coin_records_text"
+                    app:backgroundTint="@color/baby_blue" />
+            </LinearLayout>
 
         </LinearLayout>
 

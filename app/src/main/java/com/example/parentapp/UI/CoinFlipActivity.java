@@ -12,11 +12,15 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.parentapp.R;
 
@@ -27,7 +31,9 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     public static final Random ranNum = new Random();
     private ImageView coin;
-    private TextView tossResultTv;
+    private TextView tossResultTv, childTurnTv;
+    private  RadioGroup coinRBsGroup;
+    private Switch tossModeSW;
     int tossResultNum;
     String tossResultText;
     private MediaPlayer mediaPlayer;
@@ -43,11 +49,21 @@ public class CoinFlipActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coin_flip);
 
         coin = (ImageView) findViewById(R.id.coinImgView);
-        tossResultTv = findViewById(R.id.tossResultTv);
+        tossResultTv = (TextView) findViewById(R.id.tossResultTv);
+        tossModeSW = (Switch) findViewById(R.id.tossModeSW);
+
+
+        //hide child custom pick section
+        childTurnTv = (TextView) findViewById(R.id.childTurnTv);
+        coinRBsGroup = (RadioGroup) findViewById(R.id.coinRBsGroup);
+        childTurnTv.setVisibility(View.INVISIBLE);
+        coinRBsGroup.setVisibility(View.INVISIBLE);
 
         // initialize sounds
         initSounds();
 
+
+        // registers click Listeners
         coin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,18 +71,38 @@ public class CoinFlipActivity extends AppCompatActivity {
             }
         });
 
+        //Set a CheckedChange Listener for Switch Button
+        tossModeSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton cb, boolean on){
+                if(on)
+                {
+                    //Do something when Switch button is on/checked
+                    childTurnTv.setVisibility(View.VISIBLE);
+                    coinRBsGroup.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    //Do something when Switch is off/unchecked
+                    childTurnTv.setVisibility(View.INVISIBLE);
+                    coinRBsGroup.setVisibility(View.INVISIBLE);
+                    coinRBsGroup.clearCheck();
+                }
+            }
+        });
+
+
     }
 
     private void initSounds() {
         // sound downloaded from: https://www.soundjay.com/coin-sounds-1.html
         mediaPlayer = MediaPlayer.create(this, R.raw.coindrop);
-
     }
 
     private void flipTheCoin() {
 
         RotateAnimation rotateAnimation = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
-                0, RotateAnimation.RELATIVE_TO_SELF
+                0.5f, RotateAnimation.RELATIVE_TO_SELF
                 , 0);
         rotateAnimation.setDuration(2500);
 
