@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/ic_head_background.xml" value="0.228125" />
         <entry key="app/src/main/res/layout/activity_coin_flip.xml" value="0.21302083333333333" />
         <entry key="app/src/main/res/layout/activity_toss_history.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/game_item.xml" value="0.26458333333333334" />
       </map>
     </option>
   </component>

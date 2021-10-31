@@ -1,12 +1,13 @@
 package com.example.parentapp.UI;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -18,9 +19,11 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import com.example.parentapp.R;
-
+import com.example.parentapp.model.CoinFlip;
+import com.example.parentapp.model.CoinFlipManager;
 
 import java.util.Random;
+
 
 public class CoinFlipActivity extends AppCompatActivity {
 
@@ -34,16 +37,21 @@ public class CoinFlipActivity extends AppCompatActivity {
     String tossResultText;
     private MediaPlayer mediaPlayer;
 
+    private CoinFlipManager coinFlipManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_flip);
 
+        //instance
+        coinFlipManager = CoinFlipManager.getInstance();
+
         coin = (ImageView) findViewById(R.id.coinImgView);
         tossResultTv = (TextView) findViewById(R.id.tossResultTv);
         tossModeSW = (Switch) findViewById(R.id.tossModeSW);
         tossHistoryBtn = (Button) findViewById(R.id.viewTossHistoryBtn);
-
 
         //hide child custom pick section
         childTurnTv = (TextView) findViewById(R.id.childTurnTv);
@@ -53,7 +61,6 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         // initialize sounds
         initSounds();
-
 
         // Registers click Listeners
         coin.setOnClickListener(new View.OnClickListener() {
@@ -91,8 +98,6 @@ public class CoinFlipActivity extends AppCompatActivity {
 
 
 
-
-
     }
 
     private void initSounds() {
@@ -113,6 +118,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onAnimationEnd(Animation animation) {
 
@@ -125,14 +131,25 @@ public class CoinFlipActivity extends AppCompatActivity {
                 }
 
                 coin.setImageResource(tossResultNum > 0 ? R.drawable.tails2 : R.drawable.heads2);
-
-
                 Animation fadeIn = new AlphaAnimation(0, 1);
                 fadeIn.setInterpolator(new DecelerateInterpolator());
                 fadeIn.setDuration(2000);
                 fadeIn.setFillAfter(true);
                 coin.startAnimation(fadeIn);
                 tossResultTv.setText(tossResultText);
+
+                // add result to records
+
+                //when Switch widget is on
+                // check current state of a Switch (true or false).
+                Boolean switchState = tossModeSW.isChecked();
+
+                if(switchState){
+                    //coinFlipManager.flip();
+                    CoinFlip game = new CoinFlip("Bob",1,0);
+                    coinFlipManager.addFlipGame(game);
+                }
+
 
             }
 

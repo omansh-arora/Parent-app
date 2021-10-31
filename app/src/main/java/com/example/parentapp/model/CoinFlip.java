@@ -6,26 +6,40 @@ import androidx.annotation.RequiresApi;
 
 import java.time.LocalDateTime;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
-public final class CoinFlip {
+public class CoinFlip {
 
     public static enum Side {
         HEAD,
         TAIL,
     }
 
-    public final Side side;
-    public final LocalDateTime dateTime = LocalDateTime.now();
-    public final Child picker;
-    public final Side guess;
-    public final boolean isWin;
+//    public final Side side;
+    //public final LocalDateTime dateTime = LocalDateTime.now();
+//    public final Child picker;
+//    public final Side guess;
+    //public final boolean isWin;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public CoinFlip(Side side, Child child, CoinFlip.Side guess) {
-        this.side = side;
-        this.picker = child;
-        this.guess = guess;
-        this.isWin = this.guess == this.side;
+
+    /******* Tem *************/
+    private String childName;
+    private Integer childPicked;
+    private Integer tossResult;
+    /******* Tem *************/
+
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public CoinFlip(Side side, Child child, CoinFlip.Side guess) {
+//        this.side = side;
+//        this.picker = child;
+//        this.guess = guess;
+//        this.isWin = this.guess == this.side;
+//    }
+
+    //String childName, Integer childPicked, Integer childPicked
+    public CoinFlip(String childName, Integer childPicked, Integer tossResult) {
+        this.childName = childName;
+        this.childPicked = childPicked;
+        this.tossResult = tossResult;
+//        this.isWin = this.childPicked == this.tossResult;
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.parentapp.model;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -27,7 +28,7 @@ public class CoinFlipManager {
 
     private static Random random = new Random();
     private static CoinFlipManager instance;
-    private List<CoinFlip> flips = new ArrayList<>();
+    private List<CoinFlip> flipsList = new ArrayList<>();
     private ChildManager childManager;
 
     private CoinFlipManager() {
@@ -44,15 +45,31 @@ public class CoinFlipManager {
     /**
      * Generate a coin flip with given child's guess side.
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public CoinFlip flip(Child picker, CoinFlip.Side guessSide) {
-        CoinFlip.Side actualSide = random.nextBoolean() ? CoinFlip.Side.HEAD : CoinFlip.Side.TAIL;
-        CoinFlip coinFlip = new CoinFlip(actualSide, picker, guessSide);
-        flips.add(coinFlip);
-        return coinFlip;
+    //@RequiresApi(api = Build.VERSION_CODES.O)
+//    public CoinFlip flip(Child picker, CoinFlip.Side guessSide) {
+//        CoinFlip.Side actualSide = random.nextBoolean() ? CoinFlip.Side.HEAD : CoinFlip.Side.TAIL;
+//        CoinFlip coinFlip = new CoinFlip(actualSide, picker, guessSide);
+//        flips.add(coinFlip);
+//        return coinFlip;
+//    }
+
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public CoinFlip flip(String childName, Integer childPicked, Integer tossResult) {
+//        CoinFlip coinFlip = new CoinFlip(childName, childPicked, tossResult);
+//        flips.add(coinFlip);
+//        return coinFlip;
+//    }
+    public void addFlipGame(CoinFlip coinFlip) {
+        Log.i("Test", "add test!!!");
+        flipsList.add(coinFlip);
     }
 
-    public List<CoinFlip>getFlips() {
-        return flips;
+
+    public List<CoinFlip> getFlips() {
+        return flipsList;
     }
+
+
+
+
 }
