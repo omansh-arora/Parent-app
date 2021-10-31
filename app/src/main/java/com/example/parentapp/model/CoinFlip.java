@@ -42,5 +42,12 @@ public class CoinFlip {
 //        this.isWin = this.childPicked == this.tossResult;
     }
 
+    @Override
+    public String toString() {
+        String output = "";
+        output = childName + childPicked;
+
+        return output;
+    }
 
 }

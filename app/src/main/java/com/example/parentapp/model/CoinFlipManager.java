@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -24,7 +25,7 @@ import java.util.Random;
  * easy to understand (at a glance) display of if the "picker" won.
  * For example, show a check mark icon if they won, X if they lost
  */
-public class CoinFlipManager {
+public class CoinFlipManager implements Iterable<CoinFlip> {
 
     private static Random random = new Random();
     private static CoinFlipManager instance;
@@ -69,6 +70,10 @@ public class CoinFlipManager {
         return flipsList;
     }
 
+    @Override
+    public Iterator<CoinFlip> iterator() {
+        return flipsList.iterator();
+    }
 
 
 

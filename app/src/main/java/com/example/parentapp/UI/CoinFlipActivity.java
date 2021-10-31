@@ -145,8 +145,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 Boolean switchState = tossModeSW.isChecked();
 
                 if(switchState){
-                    //coinFlipManager.flip();
-                    CoinFlip game = new CoinFlip("Bob",1,0);
+                    CoinFlip game = new CoinFlip("Bob", 1,1);
                     coinFlipManager.addFlipGame(game);
                 }
 
