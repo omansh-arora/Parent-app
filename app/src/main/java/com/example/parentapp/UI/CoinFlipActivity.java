@@ -2,7 +2,7 @@ package com.example.parentapp.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -17,11 +17,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.media.AudioManager;
-import android.media.SoundPool;
-import android.widget.Toast;
-import android.widget.ToggleButton;
-
 import com.example.parentapp.R;
 
 
@@ -32,16 +27,12 @@ public class CoinFlipActivity extends AppCompatActivity {
     public static final Random ranNum = new Random();
     private ImageView coin;
     private TextView tossResultTv, childTurnTv;
-    private  RadioGroup coinRBsGroup;
+    private RadioGroup coinRBsGroup;
     private Switch tossModeSW;
+    private Button tossHistoryBtn;
     int tossResultNum;
     String tossResultText;
     private MediaPlayer mediaPlayer;
-
-    private SoundPool soundPool;
-    private int soundID;
-    boolean loaded = false;
-    int numSoundsLoaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +42,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         coin = (ImageView) findViewById(R.id.coinImgView);
         tossResultTv = (TextView) findViewById(R.id.tossResultTv);
         tossModeSW = (Switch) findViewById(R.id.tossModeSW);
+        tossHistoryBtn = (Button) findViewById(R.id.viewTossHistoryBtn);
 
 
         //hide child custom pick section
@@ -63,7 +55,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         initSounds();
 
 
-        // registers click Listeners
+        // Registers click Listeners
         coin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,18 +63,15 @@ public class CoinFlipActivity extends AppCompatActivity {
             }
         });
 
-        //Set a CheckedChange Listener for Switch Button
-        tossModeSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        //Set a Checked Change Listener for Switch Button
+        tossModeSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton cb, boolean on){
-                if(on)
-                {
+            public void onCheckedChanged(CompoundButton cb, boolean on) {
+                if (on) {
                     //Do something when Switch button is on/checked
                     childTurnTv.setVisibility(View.VISIBLE);
                     coinRBsGroup.setVisibility(View.VISIBLE);
-                }
-                else
-                {
+                } else {
                     //Do something when Switch is off/unchecked
                     childTurnTv.setVisibility(View.INVISIBLE);
                     coinRBsGroup.setVisibility(View.INVISIBLE);
@@ -90,6 +79,18 @@ public class CoinFlipActivity extends AppCompatActivity {
                 }
             }
         });
+
+        tossHistoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //launch history page
+                Intent intentSettings = new Intent(CoinFlipActivity.this, TossHistoryActivity.class);
+                startActivity(intentSettings);
+            }
+        });
+
+
+
 
 
     }
@@ -103,7 +104,7 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         RotateAnimation rotateAnimation = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
                 0.5f, RotateAnimation.RELATIVE_TO_SELF
-                , 0);
+                , 0.5f);
         rotateAnimation.setDuration(2500);
 
         rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -125,6 +126,7 @@ public class CoinFlipActivity extends AppCompatActivity {
 
                 coin.setImageResource(tossResultNum > 0 ? R.drawable.tails2 : R.drawable.heads2);
 
+
                 Animation fadeIn = new AlphaAnimation(0, 1);
                 fadeIn.setInterpolator(new DecelerateInterpolator());
                 fadeIn.setDuration(2000);
@@ -144,11 +146,5 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        soundPool.release();
-        soundPool = null;
-    }
 
 }

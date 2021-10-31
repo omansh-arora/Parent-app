@@ -84,14 +84,14 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:fontFamily="@font/coiny"
+                    android:fontFamily="@font/boogaloo"
                     android:gravity="center|center_horizontal"
                     android:paddingHorizontal="@dimen/cardview_compat_inset_shadow"
                     android:text="Child Pick Mode"
                     android:textAlignment="center"
                     android:textColor="@color/sky_blue"
-                    android:thumbTint="@color/light_gray"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:thumbTint="@color/light_gray" />
 
                 <TextView
                     android:id="@+id/childTurnTv"
@@ -140,7 +140,7 @@
                 </RadioGroup>
 
                 <Button
-                    android:id="@+id/viewFlipsBtn"
+                    android:id="@+id/viewTossHistoryBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
