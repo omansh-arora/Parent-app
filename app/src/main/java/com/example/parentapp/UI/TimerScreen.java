@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.parentapp.R;
@@ -13,7 +14,7 @@ import com.example.parentapp.R;
 import java.util.Locale;
 
 public class TimerScreen extends AppCompatActivity {
-    private static final long START_TIME_MILLIS = 600000;
+    private static long START_TIME_MILLIS = 600000;
 
     private TextView txt_countDown;
     private Button buttonStartPauseResume;
@@ -24,6 +25,10 @@ public class TimerScreen extends AppCompatActivity {
     private Button threeMin;
     private Button fiveMin;
     private Button tenMin;
+
+    private Button buttonTimeSet;
+    private EditText editSetTime;
+    private TextView TXTeditSetTime;
 
     private CountDownTimer countDownTimer;
 
@@ -46,6 +51,10 @@ public class TimerScreen extends AppCompatActivity {
         threeMin = findViewById(R.id.timer_bt_3min);
         fiveMin = findViewById(R.id.timer_bt_5min);
         tenMin = findViewById(R.id.timer_bt_10min);
+
+        buttonTimeSet = findViewById(R.id.timer_btn_setTime);
+        editSetTime = findViewById(R.id.timer_inp_timeInp);
+        TXTeditSetTime = findViewById(R.id.timer_txt_timeEnter);
 
         buttonStartPauseResume.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,10 +103,21 @@ public class TimerScreen extends AppCompatActivity {
             }
         });
 
+        buttonTimeSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String minsStr = editSetTime.getText().toString();
+                int mins = Integer.parseInt(minsStr);
+                setTime(mins);
+            }
+        });
+
+
+
     }
 
     private void setTime(int i) {
-
+        START_TIME_MILLIS = (long)i*60*1000;
         timeLeftMillis = (long)i*60*1000;
         updateCountDownText();
 
@@ -134,6 +154,7 @@ public class TimerScreen extends AppCompatActivity {
         boolTimerRunning = true;
         buttonStartPauseResume.setText("pause");
         buttonReset.setVisibility(View.INVISIBLE);
+        editSetTime.setVisibility(View.INVISIBLE);
 
     }
 
@@ -154,6 +175,8 @@ public class TimerScreen extends AppCompatActivity {
         timeLeftMillis = START_TIME_MILLIS;
         updateCountDownText();
         buttonStartPauseResume.setVisibility(View.VISIBLE);
+        buttonReset.setVisibility(View.VISIBLE);
+        editSetTime.setVisibility(View.VISIBLE);
 
     }
 }

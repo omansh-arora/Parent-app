@@ -15,8 +15,10 @@
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.533" />
 
     <Button
         android:id="@+id/timer_bt_reset"
@@ -26,17 +28,19 @@
         android:text="Reset"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer_bt_start_pause_reset"
-        app:layout_constraintVertical_bias="0.07999998" />
+        app:layout_constraintVertical_bias="0.079" />
 
     <Button
         android:id="@+id/timer_bt_start_pause_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="28dp"
         android:text="Start"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer_txt_timer" />
 
@@ -105,4 +109,40 @@
         app:layout_constraintGuide_end="206dp"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/timer_inp_timeInp"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/timer_txt_timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_bt_5min"
+        app:layout_constraintVertical_bias="0.48000002" />
+
+    <TextView
+        android:id="@+id/timer_txt_timeEnter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Custom time (in minutes)"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/timer_txt_timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_bt_5min"
+        app:layout_constraintVertical_bias="0.28" />
+
+    <Button
+        android:id="@+id/timer_btn_setTime"
+        android:layout_width="77dp"
+        android:layout_height="39dp"
+        android:text="Set"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/timer_txt_timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_inp_timeInp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
