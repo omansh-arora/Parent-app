@@ -45,9 +45,8 @@ public class CoinFlip {
     @Override
     public String toString() {
         String output = "";
-        output = childName + childPicked;
-
-        return output;
+        assert childName != null;
+        return (childPicked == tossResult ? "[WIN] " : "[LOSE] ") + childName + " chose " + (childPicked == 0 ? "HEAD" : "TAIL") + "; actual side: " +  (tossResult == 0 ? "HEAD" : "TAIL");
     }
 
 }

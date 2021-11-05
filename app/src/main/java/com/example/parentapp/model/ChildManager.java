@@ -3,6 +3,7 @@ package com.example.parentapp.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class ChildManager implements Iterable<Child> {
 
@@ -39,7 +40,13 @@ public class ChildManager implements Iterable<Child> {
      * @return next child to choose a side.
      */
     public Child getNextChild() {
-        return null;
+        int r = new Random().nextInt(3);
+        if (r == 0) {
+            return null;
+        } else if (r == 1) {
+            return new Child("Alice", 12);
+        }
+        return new Child("Bob", 11);
     }
 
     @Override
