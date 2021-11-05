@@ -1,5 +1,6 @@
 package com.example.parentapp.UI;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -29,6 +30,9 @@ public class AddChildActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_child);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Add a Child");
 
         //init child manager
         childManager = ChildManager.getInstance();
