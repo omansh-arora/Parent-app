@@ -173,7 +173,6 @@ public class CoinFlipActivity extends AppCompatActivity {
                 fadeIn.setFillAfter(true);
                 coin.startAnimation(fadeIn);
                 tossResultTv.setText(tossResultText);
-
                 // add result to records
                 if(isChildPickMode && child != null) {
                     assert child != null;
