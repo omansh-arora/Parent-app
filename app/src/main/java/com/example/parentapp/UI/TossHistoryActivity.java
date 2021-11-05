@@ -2,6 +2,7 @@ package com.example.parentapp.UI;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.parentapp.R;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipManager;
