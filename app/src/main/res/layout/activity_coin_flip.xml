@@ -94,9 +94,9 @@
                 <RadioGroup
                     android:id="@+id/coinRBsGroup"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_height="33dp"
                     android:layout_gravity="center"
+                    android:orientation="horizontal"
                     android:paddingLeft="50dp"
                     android:paddingRight="50dp">
 
@@ -118,23 +118,33 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:paddingLeft="10dp"
                         android:fontFamily="@font/boogaloo"
                         android:gravity="left|center_vertical"
+                        android:paddingLeft="10dp"
                         android:text="Tails"
                         android:textSize="20dp" />
 
                 </RadioGroup>
 
-                <Button
-                    android:id="@+id/viewTossHistoryBtn"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingTop="10dp"
-                    android:fontFamily="@font/coiny"
-                    android:text="@string/flip_coin_records_text"
-                    app:backgroundTint="@color/baby_blue" />
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/viewTossHistoryBtn"
+                        android:layout_width="248dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:fontFamily="@font/coiny"
+                        android:paddingTop="10dp"
+                        android:text="@string/flip_coin_records_text"
+                        app:backgroundTint="@color/baby_blue" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
