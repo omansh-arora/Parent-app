@@ -40,9 +40,9 @@
                     android:id="@+id/btnAddChild"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/baby_blue"
                     android:fontFamily="@font/coiny"
                     android:text="Children"
-                    android:backgroundTint="@color/baby_blue"
                     android:textSize="16sp" />
 
                 <Button
@@ -62,6 +62,15 @@
                     android:fontFamily="@font/coiny"
                     android:backgroundTint="@color/baby_blue"
                     android:text="Timer"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btnEditChild"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/coiny"
+                    android:backgroundTint="@color/baby_blue"
+                    android:text="Edit Children"
                     android:textSize="16sp" />
             </LinearLayout>
 

@@ -11,7 +11,7 @@ import com.example.parentapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button flipCoinActivityBtn, timerActivityBtn, addChildActivityBtn;
+    private Button flipCoinActivityBtn, timerActivityBtn, addChildActivityBtn, editChildActivityBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addChildActivityBtn = (Button) findViewById(R.id.btnAddChild);
+        editChildActivityBtn = (Button) findViewById(R.id.btnEditChild);
         flipCoinActivityBtn = (Button) findViewById(R.id.btnFlipCoin);
 
         addChildActivityBtn.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
                 //launch history page
                 Intent intentFlipCoinActivity = new Intent(MainActivity.this, CoinFlipActivity.class);
                 startActivity(intentFlipCoinActivity);
+            }
+        });
+
+        editChildActivityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // launch history page
+                Intent intentEditChildActivity = new Intent(MainActivity.this, ChildrenActivity.class);
+                startActivity((intentEditChildActivity));
             }
         });
 
