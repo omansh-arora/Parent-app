@@ -97,7 +97,6 @@ public class CoinFlipActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     private void initSounds() {
