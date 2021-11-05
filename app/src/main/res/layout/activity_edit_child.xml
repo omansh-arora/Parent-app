@@ -46,7 +46,7 @@
                     android:textSize="25sp" />
 
                 <EditText
-                    android:id="@+id/editChildName"
+                    android:id="@+id/editChildNameEt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -66,12 +66,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/boogaloo"
-                    android:textColor="@color/baby_blue"
                     android:text="Child New Age"
-                    android:textSize="25sp"/>
+                    android:textColor="@color/baby_blue"
+                    android:textSize="25sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/editChildAgeEt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
