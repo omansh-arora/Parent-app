@@ -1,5 +1,6 @@
 package com.example.parentapp.UI;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.parentapp.R;
 import com.example.parentapp.model.CoinFlip;
@@ -20,6 +21,9 @@ public class TossHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_toss_history);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("View All Flips");
 
         //Get GameManager Instance
         coinFlipManager = CoinFlipManager.getInstance();
