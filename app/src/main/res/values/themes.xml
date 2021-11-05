@@ -20,8 +20,8 @@
     </style>
 
     <style name="Theme.ParentApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.ParentApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Theme.ParentApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

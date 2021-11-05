@@ -2,21 +2,35 @@ package com.example.parentapp.model;
 
 public class Child {
 
-    private static String name;
+    private String name;
+    private Integer age;
 
-    public Child(String x) {
-        name = x;
+    public Child(String name, Integer age) {
+        this.name = name;
+        this.age = age;
     }
 
-    public String getName(){
-
+    public String getName() {
         return name;
-
     }
 
-    public void setName(String x){
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        name = x;
+    public Integer getAge() {
+        return age;
+    }
 
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+
+        String output = "";
+        output += "Child Name: " + getName();
+        return output;
     }
 }
