@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Parent app</string>
+    <string name="app_name">Practical Parent</string>
     <string name="flip_coin_text">Flip</string>
     <string name="flip_coin_records_text">View History</string>
     <string name="coin_toss_instructions_text">Tap the Coin for Coin Toss</string>

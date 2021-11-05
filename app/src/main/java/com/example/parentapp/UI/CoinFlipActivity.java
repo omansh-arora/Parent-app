@@ -1,6 +1,7 @@
 package com.example.parentapp.UI;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -51,7 +52,11 @@ public class CoinFlipActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_flip);
 
-        //instance
+        //
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Flip Coin");
+
+        //initialize singleton instance
         coinFlipManager = CoinFlipManager.getInstance();
         childManager = ChildManager.getInstance();
 
@@ -121,8 +126,8 @@ public class CoinFlipActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //launch history page
-                Intent intentSettings = new Intent(CoinFlipActivity.this, TossHistoryActivity.class);
-                startActivity(intentSettings);
+                Intent intentHistory = new Intent(CoinFlipActivity.this, TossHistoryActivity.class);
+                startActivity(intentHistory);
             }
         });
     }
