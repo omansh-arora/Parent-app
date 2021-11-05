@@ -9,6 +9,7 @@ public class ChildManager implements Iterable<Child> {
 
     private static ChildManager instance;
     private List<Child> childrenList = new ArrayList<>();
+    private int nextChildID = 0;
 
     public static ChildManager getInstance() {
 
@@ -40,13 +41,10 @@ public class ChildManager implements Iterable<Child> {
      * @return next child to choose a side.
      */
     public Child getNextChild() {
-        int r = new Random().nextInt(3);
-        if (r == 0) {
-            return null;
-        } else if (r == 1) {
-            return new Child("Alice", 12);
+        if (childrenList.size() > 0) {
+            return childrenList.get(nextChildID++ % childrenList.size());
         }
-        return new Child("Bob", 11);
+        return null;
     }
 
     @Override
