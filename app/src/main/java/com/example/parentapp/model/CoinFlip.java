@@ -12,12 +12,34 @@ public class CoinFlip {
     private Integer childPicked;
     private Integer tossResult;
     private String gameCreatedDate;
+    private String gameResult;
+
+    public String getChildName() {
+        return childName;
+    }
+
+    public Integer getChildPicked() {
+        return childPicked;
+    }
+
+    public Integer getTossResult() {
+        return tossResult;
+    }
+
+    public String getGameCreatedDate() {
+        return gameCreatedDate;
+    }
 
     public CoinFlip(String childName, Integer childPicked, Integer tossResult) {
         this.childName = childName;
         this.childPicked = childPicked;
         this.tossResult = tossResult;
         this.gameCreatedDate = getFlipCreatedDate();
+        this.gameResult = childPicked == tossResult ? "Win" : "Lose" ;
+    }
+
+    public String getGameResult() {
+        return gameResult;
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -35,7 +57,9 @@ public class CoinFlip {
     @Override
     public String toString() {
         assert childName != null;
-        return (childPicked == tossResult ? "[WIN] " : "[LOSE] ") + childName + " chose " + (childPicked == 0 ? "HEAD" : "TAIL") + "; Actual side: " + (tossResult == 0 ? "HEAD" : "TAIL") + " @" + gameCreatedDate;
+        //return (childPicked == tossResult ? "[WIN] " : "[LOSE] ") + childName + " chose " + (childPicked == 0 ? "HEAD" : "TAIL") + "; Actual side: " + (tossResult == 0 ? "HEAD" : "TAIL") + " @" + gameCreatedDate;
+        return "["+gameResult+"]" + childName + " chose " + (childPicked == 0 ? "HEAD" : "TAIL") + "; Actual side: " + (tossResult == 0 ? "HEAD" : "TAIL") + " @" + gameCreatedDate;
+
     }
 
 }
