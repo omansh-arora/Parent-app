@@ -1,53 +1,41 @@
 package com.example.parentapp.model;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 
-import androidx.annotation.RequiresApi;
-
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.format.*;
 
 public class CoinFlip {
 
-    public static enum Side {
-        HEAD,
-        TAIL,
-    }
-
-//    public final Side side;
-    //public final LocalDateTime dateTime = LocalDateTime.now();
-//    public final Child picker;
-//    public final Side guess;
-    //public final boolean isWin;
-
-
-    /******* Tem *************/
     private String childName;
     private Integer childPicked;
     private Integer tossResult;
-    /******* Tem *************/
+    private String gameCreatedDate;
 
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    public CoinFlip(Side side, Child child, CoinFlip.Side guess) {
-//        this.side = side;
-//        this.picker = child;
-//        this.guess = guess;
-//        this.isWin = this.guess == this.side;
-//    }
-
-    //String childName, Integer childPicked, Integer childPicked
     public CoinFlip(String childName, Integer childPicked, Integer tossResult) {
         this.childName = childName;
         this.childPicked = childPicked;
         this.tossResult = tossResult;
-//        this.isWin = this.childPicked == this.tossResult;
+        this.gameCreatedDate = getFlipCreatedDate();
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    public String getFlipCreatedDate() {
+        /*
+        DataTimeFormat function token from:
+        https://developer.android.com/reference/java/time/format/DateTimeFormatter
+        */
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime datetime = LocalDateTime.now();
+        String output = formatter.format(datetime);
+        return output;
     }
 
     @Override
     public String toString() {
-        String output = "";
-        output = childName + childPicked;
-
-        return output;
+        assert childName != null;
+        return (childPicked == tossResult ? "[WIN] " : "[LOSE] ") + childName + " chose " + (childPicked == 0 ? "HEAD" : "TAIL") + "; Actual side: " + (tossResult == 0 ? "HEAD" : "TAIL") + " @" + gameCreatedDate;
     }
 
 }

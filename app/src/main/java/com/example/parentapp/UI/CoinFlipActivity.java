@@ -1,6 +1,7 @@
 package com.example.parentapp.UI;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,7 +19,11 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.parentapp.R;
+import com.example.parentapp.model.Child;
+import com.example.parentapp.model.ChildManager;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipManager;
 
@@ -31,26 +36,33 @@ public class CoinFlipActivity extends AppCompatActivity {
     private ImageView coin;
     private TextView tossResultTv, childTurnTv;
     private RadioGroup coinRBsGroup;
-    private Switch tossModeSW;
+    private Switch childPickModeSW;
     private Button tossHistoryBtn;
     int tossResultNum;
     String tossResultText;
     private MediaPlayer mediaPlayer;
 
     private CoinFlipManager coinFlipManager;
-
+    private ChildManager childManager;
+    int childChoice;
+    Child child;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_flip);
 
-        //instance
+        //
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Flip Coin");
+
+        //initialize singleton instance
         coinFlipManager = CoinFlipManager.getInstance();
+        childManager = ChildManager.getInstance();
 
         coin = (ImageView) findViewById(R.id.coinImgView);
         tossResultTv = (TextView) findViewById(R.id.tossResultTv);
-        tossModeSW = (Switch) findViewById(R.id.tossModeSW);
+        childPickModeSW = (Switch) findViewById(R.id.tossModeSW);
         tossHistoryBtn = (Button) findViewById(R.id.viewTossHistoryBtn);
 
         //hide child custom pick section
@@ -59,8 +71,26 @@ public class CoinFlipActivity extends AppCompatActivity {
         childTurnTv.setVisibility(View.INVISIBLE);
         coinRBsGroup.setVisibility(View.INVISIBLE);
 
+        // pick up a child
+        child = childManager.getNextChild();
+        if (child != null) {
+            childTurnTv.setText(child.getName() + "'s turn to pick");
+        }
+
         // initialize sounds
         initSounds();
+
+        // setup child choice
+        coinRBsGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int choiceID) {
+                switch (choiceID) {
+                    case R.id.headsRB: childChoice = 0; break;
+                    case R.id.tailsRB: childChoice = 1; break;
+                    default: break;
+                }
+            }
+        });
 
         // Registers click Listeners
         coin.setOnClickListener(new View.OnClickListener() {
@@ -71,13 +101,18 @@ public class CoinFlipActivity extends AppCompatActivity {
         });
 
         //Set a Checked Change Listener for Switch Button
-        tossModeSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        childPickModeSW.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton cb, boolean on) {
                 if (on) {
                     //Do something when Switch button is on/checked
-                    childTurnTv.setVisibility(View.VISIBLE);
-                    coinRBsGroup.setVisibility(View.VISIBLE);
+                    if (child == null) {
+                        Toast.makeText(CoinFlipActivity.this, "No child added yet.", Toast.LENGTH_SHORT).show();
+                        childPickModeSW.setChecked(false);
+                    } else {
+                        childTurnTv.setVisibility(View.VISIBLE);
+                        coinRBsGroup.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     //Do something when Switch is off/unchecked
                     childTurnTv.setVisibility(View.INVISIBLE);
@@ -91,12 +126,10 @@ public class CoinFlipActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //launch history page
-                Intent intentSettings = new Intent(CoinFlipActivity.this, TossHistoryActivity.class);
-                startActivity(intentSettings);
+                Intent intentHistory = new Intent(CoinFlipActivity.this, TossHistoryActivity.class);
+                startActivity(intentHistory);
             }
         });
-
-
     }
 
     private void initSounds() {
@@ -105,6 +138,15 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     private void flipTheCoin() {
+
+        //when Switch widget is on
+        // check current state of a Switch (true or false).
+        Boolean isChildPickMode = childPickModeSW.isChecked();
+
+        if (isChildPickMode && child != null && coinRBsGroup.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(CoinFlipActivity.this, "Please select the side.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         RotateAnimation rotateAnimation = new RotateAnimation(0, 360, RotateAnimation.RELATIVE_TO_SELF,
                 0.5f, RotateAnimation.RELATIVE_TO_SELF
@@ -136,19 +178,20 @@ public class CoinFlipActivity extends AppCompatActivity {
                 fadeIn.setFillAfter(true);
                 coin.startAnimation(fadeIn);
                 tossResultTv.setText(tossResultText);
-
                 // add result to records
-
-                //when Switch widget is on
-                // check current state of a Switch (true or false).
-                Boolean switchState = tossModeSW.isChecked();
-
-                if(switchState){
-                    CoinFlip game = new CoinFlip("Bob", 1,1);
-                    coinFlipManager.addFlipGame(game);
+                if(isChildPickMode && child != null) {
+                    assert child != null;
+                    CoinFlip flip = new CoinFlip(child.getName(), childChoice, tossResultNum);
+                    coinFlipManager.addFlipGame(flip);
                 }
 
-
+                child = childManager.getNextChild();
+                if (child == null) {
+                    Toast.makeText(CoinFlipActivity.this, "No child added yet.", Toast.LENGTH_SHORT).show();
+                    childPickModeSW.setChecked(false);
+                } else {
+                    childTurnTv.setText(child.getName() + "'s turn to pick");
+                }
             }
 
             @Override

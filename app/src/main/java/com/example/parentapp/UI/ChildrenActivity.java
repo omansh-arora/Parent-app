@@ -8,6 +8,7 @@ import com.example.parentapp.model.ChildManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -30,6 +31,9 @@ public class ChildrenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Configure Children");
 
         //init child manager
         childManager = ChildManager.getInstance();
