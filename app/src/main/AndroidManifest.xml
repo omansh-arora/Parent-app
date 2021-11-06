@@ -13,9 +13,6 @@
             android:name=".UI.selectChildActivity"
             android:exported="true" />
         <activity
-            android:name=".UI.EditChildActivity"
-            android:exported="true" />
-        <activity
             android:name=".UI.ChildrenActivity"
             android:exported="false"
             android:label="@string/title_activity_children"

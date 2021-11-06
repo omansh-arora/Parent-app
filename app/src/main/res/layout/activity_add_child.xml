@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="20dp"
+            android:paddingTop="30dp"
             android:paddingRight="20dp"
             android:orientation="vertical">
 
@@ -36,7 +37,7 @@
 
                 <TextView
                     android:id="@+id/childNameTv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/boogaloo"
@@ -46,10 +47,11 @@
 
                 <EditText
                     android:id="@+id/childNameEt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
+                    android:ems="25"
+                    android:inputType="text"
                     tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 
@@ -62,7 +64,7 @@
 
                 <TextView
                     android:id="@+id/childAgeTv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/boogaloo"
@@ -72,9 +74,10 @@
 
                 <EditText
                     android:id="@+id/childAgeEditText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:inputType="number"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             </LinearLayout>
@@ -83,16 +86,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:paddingTop="15dp"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/addChildBtn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/coiny"
-                    android:backgroundTint="@color/baby_blue"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:text="Add Child" />
+                    android:backgroundTint="@color/baby_blue"
+                    android:fontFamily="@font/coiny"
+                    android:gravity="center"
+                    android:text="Add" />
+
+                <Button
+                    android:id="@+id/deleteChildBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/red"
+                    android:fontFamily="@font/coiny"
+                    android:text="Delete" />
             </LinearLayout>
 
         </LinearLayout>
