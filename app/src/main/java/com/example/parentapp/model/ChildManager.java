@@ -30,6 +30,10 @@ public class ChildManager implements Iterable<Child> {
         childrenList.add(child);
     }
 
+    public void editChild(int index, Child child){
+        childrenList.set(index, child);
+    }
+
     public void deleteChild(int childIndex) {
         childrenList.remove(childIndex);
     }
