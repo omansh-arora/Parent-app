@@ -143,6 +143,7 @@
                         android:fontFamily="@font/coiny"
                         android:paddingTop="10dp"
                         android:text="@string/flip_coin_records_text"
+                        android:textSize="18dp"
                         app:backgroundTint="@color/baby_blue" />
                 </LinearLayout>
             </LinearLayout>

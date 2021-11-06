@@ -15,8 +15,8 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        app:backgroundTint="#B19CD9"
-        app:rippleColor="#000111"
-        app:srcCompat="@drawable/ic_baseline_add_child_30" />
+        app:backgroundTint="@color/baby_blue"
+        app:tint="@color/white"
+        android:src="@drawable/ic_baseline_add_child_30" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

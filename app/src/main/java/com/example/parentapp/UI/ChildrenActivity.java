@@ -12,9 +12,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -43,34 +45,51 @@ public class ChildrenActivity extends AppCompatActivity {
         addChildActivityFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(ChildrenActivity.this, "Add A child", Toast.LENGTH_SHORT).show();
-                Intent intentChildActivity = new Intent(ChildrenActivity.this, AddChildActivity.class);
-                startActivity(intentChildActivity);
+                Intent intent = AddChildActivity.makeIntent(ChildrenActivity.this, "Add", 0);
+                startActivity(intent);
             }
         });
 
         // show all added children
         populateListView();
 
+        //register an event when a child is clicked in the listView
+        registerClickCallback();
+
     }
 
-
+    /*** Setup Array Adapter and Display child in listView **/
     private void populateListView() {
-        //create  list of items
+        // create  list of items
         List<Child> childrenList = childManager.getChildrenList();
 
-        //build adapter
+        // build adapter
         ArrayAdapter<Child> adapter = new ArrayAdapter<Child>(
                 this,
-                R.layout.game_item, //Layout to use (create)
+                R.layout.child_item, //Layout to use (create)
                 childrenList); //Items to be displayed
 
-        //configure the list view
+        // configure the list view
         ListView list = (ListView) findViewById(R.id.listAllChildren);
         list.setAdapter(adapter);
-
     }
 
+    /*** register click event when a child item is clicked in the listview  **/
+    private void registerClickCallback() {
+
+        ListView list = (ListView) findViewById(R.id.listAllChildren);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                TextView textView = (TextView) viewClicked;
+
+                // link to add/update child activity page when a child is clicked
+                Intent intent = AddChildActivity.makeIntent(ChildrenActivity.this, "Edit", position);
+                startActivity(intent);
+
+            }
+        });
+    }
 
 
 }

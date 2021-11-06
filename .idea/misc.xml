@@ -5,10 +5,15 @@
       <map>
         <entry key="..\:/Users/52624/Desktop/ParentApp/app/src/main/res/layout/activity_coin_flip.xml" value="0.3307291666666667" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_main.xml" value="0.17916666666666667" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_child_30.xml" value="0.26197916666666665" />
         <entry key="app/src/main/res/drawable/ic_baseline_check_circle_outline_24.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/drawable/ic_baseline_mood_bad_24.xml" value="0.26979166666666665" />
+        <entry key="app/src/main/res/layout/activity_add_child.xml" value="0.25104166666666666" />
+        <entry key="app/src/main/res/layout/activity_children.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/activity_coin_flip.xml" value="0.13496376811594202" />
+        <entry key="app/src/main/res/layout/activity_edit_child.xml" value="0.25104166666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25364583333333335" />
+        <entry key="app/src/main/res/layout/child_item.xml" value="0.2125" />
         <entry key="app/src/main/res/layout/item_view.xml" value="0.37604166666666666" />
       </map>
     </option>
