@@ -92,7 +92,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/coiny"
                     android:backgroundTint="@color/baby_blue"
-                    android:text="Save Edit" />
+                    android:text="Save Changes" />
             </LinearLayout>
 
         </LinearLayout>
