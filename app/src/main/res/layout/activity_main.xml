@@ -45,6 +45,7 @@
                     android:text="Children"
                     android:textSize="16sp" />
 
+
                 <Button
                     android:id="@+id/btnFlipCoin"
                     android:layout_width="200dp"
@@ -64,14 +65,6 @@
                     android:text="Timer"
                     android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/btnEditChild"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/coiny"
-                    android:backgroundTint="@color/baby_blue"
-                    android:text="Edit Children"
-                    android:textSize="16sp" />
             </LinearLayout>
 
         </LinearLayout>
