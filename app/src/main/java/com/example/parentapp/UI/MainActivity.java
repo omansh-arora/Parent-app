@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         addChildActivityBtn = (Button) findViewById(R.id.btnAddChild);
+
         flipCoinActivityBtn = (Button) findViewById(R.id.btnFlipCoin);
 
         addChildActivityBtn.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intentFlipCoinActivity);
             }
         });
+
 
         //timerActivityBtn = (Button) findViewById(R.id.btnTimer);
 
