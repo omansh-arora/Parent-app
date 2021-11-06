@@ -2,15 +2,24 @@ package com.example.parentapp.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.parentapp.R;
+import com.example.parentapp.ReminderBroadcast;
 
 import java.util.Locale;
 
@@ -39,10 +48,21 @@ public class TimerScreen extends AppCompatActivity {
 
     private long endTime;
 
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer_screen);
+
+        Intent intent = getIntent();
+        int op = intent.getIntExtra("Type",0);
+
+        if (op == 1) cancelAlarm();
+
+        createNotificationChannel();
 
         txt_countDown = findViewById(R.id.timer_txt_timer);
 
@@ -62,8 +82,15 @@ public class TimerScreen extends AppCompatActivity {
         buttonStartPauseResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(boolTimerRunning) pauseTimer();
-                else startTimer();
+                if(boolTimerRunning) {
+                    pauseTimer();
+                    cancelAlarm();
+                }
+                else {
+                    endTime = System.currentTimeMillis() + timeLeftMillis;
+                    setAlarm(endTime);
+                    startTimer();
+                }
 
             }
         });
@@ -72,6 +99,7 @@ public class TimerScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resetTimer();
+                cancelAlarm();
             }
         });
 
@@ -131,10 +159,13 @@ public class TimerScreen extends AppCompatActivity {
         countDownTimer.cancel();
         boolTimerRunning =false;
         updateButtons();
+        cancelAlarm();
 
     }
 
     private void startTimer() {
+
+
 
         endTime = System.currentTimeMillis() + timeLeftMillis;
 
@@ -160,6 +191,33 @@ public class TimerScreen extends AppCompatActivity {
 
     }
 
+    private void setAlarm(long millis) {
+
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP,millis,pendingIntent);
+        Toast.makeText(this,"Timer set",Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void cancelAlarm(){
+
+        Intent intent = new Intent(this,ReminderBroadcast.class);
+        pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+
+        if(alarmManager == null){
+
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        }
+        alarmManager.cancel(pendingIntent);
+
+
+    }
+
     private void updateCountDownText() {
 
         int minutes = (int) (timeLeftMillis / 1000) / 60;
@@ -177,6 +235,7 @@ public class TimerScreen extends AppCompatActivity {
         timeLeftMillis = START_TIME_MILLIS;
         updateCountDownText();
         updateButtons();
+        cancelAlarm();
 
     }
 
@@ -254,6 +313,23 @@ public class TimerScreen extends AppCompatActivity {
             }
         }
         super.onStart();
+
+    }
+
+    private void createNotificationChannel(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            CharSequence name = "Timer noti";
+            String description = "Channel for noti";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("timer",name,importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+        }
 
     }
 }
