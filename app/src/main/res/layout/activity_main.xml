@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
-    android:background="@drawable/main_bg_4"
+    android:background="@drawable/main_bg_2"
     tools:context=".UI.MainActivity">
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:paddingTop="15dp"
             android:text="@string/main_menu"
             android:textAlignment="center"
-            android:textColor="@color/baby_blue"
+            android:textColor="@color/white"
             android:textSize="40sp" />
 
         <LinearLayout

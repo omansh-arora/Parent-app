@@ -12,6 +12,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ public class AddChildActivity extends AppCompatActivity {
     private ChildManager childManager;
     private EditText childNameEt;
     private EditText childAgeEt;
+    private RadioGroup genderRBs;
     private TextView formTitleTv;
     private String childName;
     private Integer childAge;
@@ -38,6 +41,7 @@ public class AddChildActivity extends AppCompatActivity {
     private Integer childClickedIndex = 0;
     private List<Child> childrenList;
     private Child editChild;
+    private String gender = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,24 @@ public class AddChildActivity extends AppCompatActivity {
         formTitleTv = (TextView) findViewById(R.id.AddChildLabelTv);
         saveChildBtn = (Button) findViewById(R.id.addChildBtn);
         deleteBtn = (Button) findViewById(R.id.deleteChildBtn) ;
+        genderRBs = (RadioGroup) findViewById(R.id.genderRBsGroup);
+
+        // setup child choice
+        genderRBs.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int choiceID) {
+                switch (choiceID) {
+                    case R.id.genderGirlRb:
+                        gender = "Girl";
+                        break;
+                    case R.id.genderBoyRb:
+                        gender = "Boy";
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
         //init child manager
         childManager = ChildManager.getInstance();
@@ -78,17 +100,18 @@ public class AddChildActivity extends AppCompatActivity {
         return intent;
     }
 
-    private void configChild(String name, Integer age) {
+    private void configChild(String name, Integer age, String gender) {
 
         //update or add a new?
         switch (formAction) {
             case "Add":
-                Child child = new Child(name, age);
+                Child child = new Child(name, age, gender);
                 childManager.addNewChild(child);
                 break;
             case "Edit":
                 editChild.setName(name);
                 editChild.setAge(age);
+                editChild.setGender(gender);
                 break;
             default:
                 break;
@@ -144,6 +167,17 @@ public class AddChildActivity extends AppCompatActivity {
                 editChild = childrenList.get(childClickedIndex);
                 childNameEt.setText(editChild.getName());
                 childAgeEt.setText(Integer.toString(editChild.getAge()));
+                gender = editChild.getGender();
+
+                switch (gender){
+                    case "Girl":
+                        ((RadioButton)genderRBs.getChildAt(0)).setChecked(true);
+                        break;
+                    case "Boy":
+                        ((RadioButton)genderRBs.getChildAt(1)).setChecked(true);
+                        break;
+                }
+
                 deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -165,15 +199,16 @@ public class AddChildActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //create child obj and add to list
                 boolean validate = true;
-                if (childNameEt.getText().toString().length() == 0 || childAgeEt.getText().toString().length() == 0) {
-                    Toast.makeText(AddChildActivity.this, "Child Information can not be empty ", Toast.LENGTH_SHORT).show();
+                if (childNameEt.getText().toString().length() == 0 || childAgeEt.getText().toString().length() == 0 || genderRBs.getCheckedRadioButtonId() == -1) {
+                    Toast.makeText(AddChildActivity.this, "You must enter all the child information! ", Toast.LENGTH_SHORT).show();
                     validate = false;
                 }
 
                 if (validate) {
                     childName = childNameEt.getText().toString();
                     childAge = Integer.parseInt(childAgeEt.getText().toString());
-                    configChild(childName, childAge);
+                    //Toast.makeText(AddChildActivity.this, "Gender: " + gender, Toast.LENGTH_SHORT).show();
+                    configChild(childName, childAge, gender);
                     Intent childrenListIntent = new Intent(AddChildActivity.this, ChildrenActivity.class);
                     startActivity(childrenListIntent);
                 }

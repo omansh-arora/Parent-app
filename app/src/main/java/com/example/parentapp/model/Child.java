@@ -4,10 +4,20 @@ public class Child {
 
     private String name;
     private Integer age;
+    private String gender;
 
-    public Child(String name, Integer age) {
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Child(String name, Integer age, String gender) {
         this.name = name;
         this.age = age;
+        this.gender = gender;
     }
 
     public String getName() {
@@ -30,7 +40,7 @@ public class Child {
     public String toString() {
 
         String output = "";
-        output += "Child Name: " + getName();
+        output += "Child Name: " + getName() + "  Gender: " + getGender() + "  Age: " + getAge();
         return output;
     }
 }

@@ -43,10 +43,6 @@ public class TossHistoryActivity extends AppCompatActivity {
     private void populateListView() {
 
         //build adapter
-//        ArrayAdapter<CoinFlip> adapter = new ArrayAdapter<CoinFlip>(
-//                this,
-//                R.layout.game_item, //Layout to use (create)
-//                gamesList); //Items to be displayed
         ArrayAdapter<CoinFlip> adapter = new MyListAdapter();
 
         //configure the list view
