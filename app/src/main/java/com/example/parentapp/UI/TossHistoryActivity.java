@@ -8,7 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.parentapp.R;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipManager;
+import com.google.gson.Gson;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,8 @@ public class TossHistoryActivity extends AppCompatActivity {
 
     private CoinFlipManager coinFlipManager;
     private List<CoinFlip> gamesList;
+    private static final String PREFS_NAME = "CoinPrefs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +38,26 @@ public class TossHistoryActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("View All Flips");
 
-        //Get GameManager Instance
         coinFlipManager = CoinFlipManager.getInstance();
+
+        //Get CoinFlip Instance
+        if(CoinFlipActivity.getCoinManager(this)!=null)
+            coinFlipManager = getCoinManager(this);
+
         gamesList = coinFlipManager.getFlips();
 
         populateListView();
+    }
+
+    protected void onStart(){
+        coinFlipManager = CoinFlipManager.getInstance();
+
+        //Get CoinFlip Instance
+        if(getCoinManager(this)!=null)
+            coinFlipManager = getCoinManager(this);
+        saveCoinFlipManager(coinFlipManager);
+        populateListView();
+        super.onStart();
     }
 
     private void populateListView() {
@@ -83,5 +103,21 @@ public class TossHistoryActivity extends AppCompatActivity {
         }
     }
 
+    private void saveCoinFlipManager(CoinFlipManager cfm) {
+        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(cfm);
+        editor.putString("CoinManager", json);
+        editor.commit();
+    }
+
+    static public CoinFlipManager getCoinManager(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("CoinManager", "");
+        CoinFlipManager cfm = gson.fromJson(json, CoinFlipManager.class);
+        return cfm;
+    }
 
 }

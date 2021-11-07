@@ -4,7 +4,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipManager;
+import com.google.gson.Gson;
 
 import java.util.Random;
 
@@ -46,6 +49,10 @@ public class CoinFlipActivity extends AppCompatActivity {
     private ChildManager childManager;
     int childChoice;
     Child child;
+    private static final String PREFS_NAME = "CoinPrefs";
+    private static final String PREFS2_NAME = "ChildPrefs";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +63,13 @@ public class CoinFlipActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Flip Coin");
 
-        //initialize singleton instance
+        //initialize singleton instance//get shared preferences
         coinFlipManager = CoinFlipManager.getInstance();
+        if(getChildManager(this)!=null)
+            coinFlipManager = getCoinManager(this);
         childManager = ChildManager.getInstance();
+        if(getChildManager(this)!=null)
+            childManager = getChildManager(this);
 
         coin = (ImageView) findViewById(R.id.coinImgView);
         tossResultTv = (TextView) findViewById(R.id.tossResultTv);
@@ -76,6 +87,8 @@ public class CoinFlipActivity extends AppCompatActivity {
         if (child != null) {
             childTurnTv.setText(child.getName() + "'s turn to pick");
         }
+
+
 
         // initialize sounds
         initSounds();
@@ -131,6 +144,23 @@ public class CoinFlipActivity extends AppCompatActivity {
             }
         });
     }
+    protected void onStart(){
+
+
+        //initialize singleton instance//get shared preferences
+        coinFlipManager = CoinFlipManager.getInstance();
+        if(getCoinManager(this)!=null)
+            coinFlipManager = getCoinManager(this);
+        childManager = ChildManager.getInstance();
+        if(getChildManager(this)!=null)
+            childManager = getChildManager(this);
+        child = childManager.getNextChild();
+        if (child != null) {
+            childTurnTv.setText(child.getName() + "'s turn to pick");
+        }
+        super.onStart();
+
+    }
 
     private void initSounds() {
         // sound downloaded from: https://www.soundjay.com/coin-sounds-1.html
@@ -162,6 +192,7 @@ public class CoinFlipActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onAnimationEnd(Animation animation) {
+                saveCoinFlipManager(coinFlipManager);
 
                 tossResultNum = ranNum.nextInt(2);
                 //Toast.makeText(CoinFlipActivity.this, String.valueOf(tossResultNum), Toast.LENGTH_SHORT).show();
@@ -183,14 +214,18 @@ public class CoinFlipActivity extends AppCompatActivity {
                     assert child != null;
                     CoinFlip flip = new CoinFlip(child.getName(), childChoice, tossResultNum);
                     coinFlipManager.addFlipGame(flip);
+                    saveCoinFlipManager(coinFlipManager);
                 }
 
+                childManager.setChildID();
                 child = childManager.getNextChild();
+                saveChildManager(childManager);
                 if (child == null) {
                     Toast.makeText(CoinFlipActivity.this, "No child added yet.", Toast.LENGTH_SHORT).show();
                     childPickModeSW.setChecked(false);
                 } else {
                     childTurnTv.setText(child.getName() + "'s turn to pick");
+                    saveChildManager(childManager);
                 }
             }
 
@@ -202,6 +237,39 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         coin.startAnimation(rotateAnimation);
 
+    }
+
+    private void saveCoinFlipManager(CoinFlipManager cfm) {
+        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(cfm);
+        editor.putString("CoinManager", json);
+        editor.commit();
+    }
+
+    static public CoinFlipManager getCoinManager(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("CoinManager", "");
+        CoinFlipManager cfm = gson.fromJson(json, CoinFlipManager.class);
+        return cfm;
+    }
+
+    static public ChildManager getChildManager(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS2_NAME, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("ChildManager", "");
+        ChildManager children = gson.fromJson(json, ChildManager.class);
+        return children;
+    }
+    private void saveChildManager(ChildManager cm) {
+        SharedPreferences prefs = this.getSharedPreferences(PREFS2_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(cm);
+        editor.putString("ChildManager", json);
+        editor.commit();
     }
 
 

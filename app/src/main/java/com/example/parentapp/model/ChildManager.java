@@ -38,7 +38,7 @@ public class ChildManager implements Iterable<Child> {
         childrenList.remove(childIndex);
     }
 
-
+    public void setChildrenList(List<Child>childrenBB) {childrenList = childrenBB;}
     /**
      * Return next child who has right to choose a side of a flip.
      * Should give each child a fair chance to play alternatively.
@@ -47,9 +47,18 @@ public class ChildManager implements Iterable<Child> {
      */
     public Child getNextChild() {
         if (childrenList.size() > 0) {
-            return childrenList.get(nextChildID++ % childrenList.size());
+            return childrenList.get(nextChildID);
         }
         return null;
+    }
+    public void setChildID(){
+
+        if(nextChildID < childrenList.size()-1){
+            nextChildID++;
+            return;
+        }
+        nextChildID = 0;
+
     }
 
     @Override
