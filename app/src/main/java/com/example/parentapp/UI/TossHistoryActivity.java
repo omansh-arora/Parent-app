@@ -91,7 +91,7 @@ public class TossHistoryActivity extends AppCompatActivity {
 
             //fill the view
             ImageView imageView = (ImageView)itemView.findViewById(R.id.item_icon);
-            int imgResource = currentFlip.getGameResult() == "Win" ? R.drawable.ic_baseline_happy_35 : R.drawable.ic_baseline_mood_bad_35_pink;
+            Integer imgResource = currentFlip.getGameResult().equals("Win") ? R.drawable.ic_baseline_happy_35 : R.drawable.ic_baseline_mood_bad_35_pink;
             imageView.setImageResource(imgResource);
 
             // build output String

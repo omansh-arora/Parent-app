@@ -52,6 +52,7 @@ public class AddChildActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_child);
 
+        //init child manager
         childManager = ChildManager.getInstance();
 
         ActionBar actionBar = getSupportActionBar();
@@ -84,8 +85,6 @@ public class AddChildActivity extends AppCompatActivity {
             }
         });
 
-        //init child manager
-        childManager = ChildManager.getInstance();
 
         //get parameters ("Edit" or "Add") and clicked child index from ChildrenActivity
         extractDataFromIntent();

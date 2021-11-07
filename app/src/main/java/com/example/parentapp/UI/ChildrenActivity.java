@@ -7,9 +7,7 @@ import android.os.Bundle;
 
 import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
-import com.example.parentapp.model.CoinFlip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -83,22 +80,7 @@ public class ChildrenActivity extends AppCompatActivity {
 
 
     /*** Setup Array Adapter and Display child in listView **/
-//    private void populateListView() {
-//        // create  list of items
-//        List<Child> childrenList = childManager.getChildrenList();
-//
-//        // build adapter
-//        ArrayAdapter<Child> adapter = new ArrayAdapter<Child>(
-//                this,
-//                R.layout.child_item, //Layout to use (create)
-//                childrenList); //Items to be displayed
-//
-//        // configure the list view
-//        ListView list = (ListView) findViewById(R.id.listAllChildren);
-//        list.setAdapter(adapter);
-//    }
     private void populateListView() {
-
         //build adapter
         ArrayAdapter<Child> adapter = new ChildrenListAdapter();
 
@@ -127,8 +109,10 @@ public class ChildrenActivity extends AppCompatActivity {
             Child currentChild = childrenList.get(position);
 
             //fill the view
+            Integer imgResource;
             ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon);
-            int imgResource = currentChild.getGender() == "Boy" ? R.drawable.ic_baseline_child_boy_35 : R.drawable.ic_baseline_child_girl_35;
+
+            imgResource = currentChild.getGender().equals("Boy") ? R.drawable.ic_baseline_child_boy_35 : R.drawable.ic_baseline_child_girl_35;
             imageView.setImageResource(imgResource);
             imageView.setPadding(5,2,5,2);
 
