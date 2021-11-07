@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.example.parentapp.R;
 import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -42,14 +44,20 @@ public class AddChildActivity extends AppCompatActivity {
     private List<Child> childrenList;
     private Child editChild;
     private String gender = "";
+    private static final String PREFS_NAME = "ChildPrefs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_child);
 
+        childManager = ChildManager.getInstance();
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Configure A Child");
+
+        childManager.setChildrenList(getChildManager(this).getChildrenList());
 
         //get input of name,age
         childNameEt = (EditText) findViewById(R.id.childNameEt);
@@ -107,11 +115,14 @@ public class AddChildActivity extends AppCompatActivity {
             case "Add":
                 Child child = new Child(name, age, gender);
                 childManager.addNewChild(child);
+                saveChildManager(childManager);
                 break;
             case "Edit":
                 editChild.setName(name);
                 editChild.setAge(age);
                 editChild.setGender(gender);
+                saveChildManager(childManager);
+
                 break;
             default:
                 break;
@@ -136,6 +147,7 @@ public class AddChildActivity extends AppCompatActivity {
             public void onClick(DialogInterface arg0, int arg1) {
                 childManager.deleteChild(childClickedIndex);
                 Toast.makeText(AddChildActivity.this,"Child Deleted!",Toast.LENGTH_LONG).show();
+                saveChildManager(childManager);
                 Intent myIntent = new Intent(AddChildActivity.this, ChildrenActivity.class);
                 startActivity(myIntent);
             }
@@ -218,5 +230,23 @@ public class AddChildActivity extends AppCompatActivity {
         });
 
     }
+    private void saveChildManager(ChildManager cm) {
+        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(cm);
+        editor.putString("ChildManager", json);
+        editor.commit();
+    }
+
+    static public ChildManager getChildManager(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("ChildManager", "");
+        ChildManager children = gson.fromJson(json, ChildManager.class);
+        return children;
+    }
+
+
 
 }

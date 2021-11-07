@@ -25,9 +25,6 @@ public class ReminderBroadcast extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,i,0);
         i.putExtra("Type",1);
 
-        Uri alarmSound = RingtoneManager. getDefaultUri (RingtoneManager. TYPE_NOTIFICATION );
-        MediaPlayer mp = MediaPlayer. create (context.getApplicationContext(), alarmSound);
-        mp.start();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"timer")
                 .setSmallIcon(R.drawable.ic_launcher_background)
@@ -36,11 +33,13 @@ public class ReminderBroadcast extends BroadcastReceiver {
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .addAction(R.drawable.ic_launcher_foreground,"Stop",pendingIntent);
+                .addAction(R.drawable.ic_baseline_timer_24,"Stop",pendingIntent)
+                .setStyle(new NotificationCompat.InboxStyle())
+                .setSound(Uri.parse("android.resource://"
+                + context.getPackageName() + "/" + R.raw.ringtone));
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        builder.setSound(alarmSound);
-        notificationManager.notify(200, builder.build());
+        notificationManager.notify(250, builder.build());
 
     }
 }

@@ -13,6 +13,7 @@
         android:text="00:00"
         android:textColor="#000000"
         android:textSize="60sp"
+        android:fontFamily="@font/coiny"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#89CFF0"
         android:text="Reset"
+        android:fontFamily="@font/coiny"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -39,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Start"
+        android:fontFamily="@font/coiny"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +54,7 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="#89CFF0"
         android:text="1 min"
+        android:fontFamily="@font/coiny"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -62,6 +66,7 @@
         android:layout_marginTop="80dp"
         android:backgroundTint="#89CFF0"
         android:text="3 min"
+        android:fontFamily="@font/coiny"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -73,6 +78,7 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="#89CFF0"
         android:text="2 min"
+        android:fontFamily="@font/coiny"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
@@ -84,6 +90,7 @@
         android:layout_marginTop="80dp"
         android:backgroundTint="#89CFF0"
         android:text="10 min"
+        android:fontFamily="@font/coiny"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -96,6 +103,7 @@
         android:layout_marginTop="80dp"
         android:backgroundTint="#89CFF0"
         android:text="5 min"
+        android:fontFamily="@font/coiny"
         app:layout_constraintEnd_toStartOf="@+id/timer_bt_10min"
         app:layout_constraintStart_toEndOf="@+id/timer_bt_3min"
         app:layout_constraintTop_toTopOf="parent" />
@@ -116,11 +124,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/timer_txt_timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer_bt_5min"
-        app:layout_constraintVertical_bias="0.48000002" />
+        app:layout_constraintVertical_bias="0.48000002"
+        android:fontFamily="@font/coiny"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/timer_txt_timeEnter"
@@ -132,6 +143,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer_bt_5min"
+        android:fontFamily="@font/coiny"
         app:layout_constraintVertical_bias="0.28" />
 
     <Button
@@ -144,5 +156,7 @@
         app:layout_constraintBottom_toTopOf="@+id/timer_txt_timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timer_inp_timeInp" />
+        app:layout_constraintTop_toBottomOf="@+id/timer_inp_timeInp"
+        android:fontFamily="@font/coiny"
+        tools:ignore="TouchTargetSizeCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

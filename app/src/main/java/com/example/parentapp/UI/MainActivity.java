@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.parentapp.R;
+import com.example.parentapp.ReminderBroadcast;
+import com.example.parentapp.model.ChildManager;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         addChildActivityBtn = (Button) findViewById(R.id.btnAddChild);
         flipCoinActivityBtn = (Button) findViewById(R.id.btnFlipCoin);
+
 
         addChildActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +45,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //timerActivityBtn = (Button) findViewById(R.id.btnTimer);
+        timerActivityBtn = (Button) findViewById(R.id.btnTimer);
+        timerActivityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent timerIntent = new Intent(MainActivity.this,TimerScreen.class);
+                timerIntent.putExtra("Type",0);
+                startActivity(timerIntent);
+            }
+        });
 
     }
 }

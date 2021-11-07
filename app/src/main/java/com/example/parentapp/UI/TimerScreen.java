@@ -1,7 +1,5 @@
 package com.example.parentapp.UI;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -18,12 +16,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.parentapp.R;
 import com.example.parentapp.ReminderBroadcast;
 
 import java.util.Locale;
 
 public class TimerScreen extends AppCompatActivity {
+
+    //Initialize variables
     private static long START_TIME_MILLIS = 600000;
 
     private TextView txt_countDown;
@@ -57,11 +59,13 @@ public class TimerScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer_screen);
 
+        //See if alarm is picked from notification
         Intent intent = getIntent();
-        int op = intent.getIntExtra("Type",0);
+        int op = intent.getIntExtra("Type", 0);
 
         if (op == 1) cancelAlarm();
 
+        //Creates notification channel//initialize variables
         createNotificationChannel();
 
         txt_countDown = findViewById(R.id.timer_txt_timer);
@@ -79,16 +83,14 @@ public class TimerScreen extends AppCompatActivity {
         editSetTime = findViewById(R.id.timer_inp_timeInp);
         TXT_editSetTime = findViewById(R.id.timer_txt_timeEnter);
 
+        //Set onclick listeners
         buttonStartPauseResume.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(boolTimerRunning) {
+                if (boolTimerRunning) {
                     pauseTimer();
                     cancelAlarm();
-                }
-                else {
-                    endTime = System.currentTimeMillis() + timeLeftMillis;
-                    setAlarm(endTime);
+                } else {
                     startTimer();
                 }
 
@@ -137,6 +139,12 @@ public class TimerScreen extends AppCompatActivity {
         buttonTimeSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (editSetTime.getText().toString().equals("")) {
+
+                    Toast.makeText(TimerScreen.this,
+                            "Please enter a number(in minutes)", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 String minsStr = editSetTime.getText().toString();
                 int mins = Integer.parseInt(minsStr);
                 setTime(mins);
@@ -144,12 +152,12 @@ public class TimerScreen extends AppCompatActivity {
         });
 
 
-
     }
 
+    //Set custom time
     private void setTime(int i) {
-        START_TIME_MILLIS = (long)i*60*1000;
-        timeLeftMillis = (long)i*60*1000;
+        START_TIME_MILLIS = (long) i * 60 * 1000;
+        timeLeftMillis = START_TIME_MILLIS;
         updateCountDownText();
         updateButtons();
     }
@@ -157,17 +165,15 @@ public class TimerScreen extends AppCompatActivity {
     private void pauseTimer() {
 
         countDownTimer.cancel();
-        boolTimerRunning =false;
+        boolTimerRunning = false;
         updateButtons();
-        cancelAlarm();
 
     }
 
     private void startTimer() {
 
-
-
         endTime = System.currentTimeMillis() + timeLeftMillis;
+        setAlarm(endTime);
 
         countDownTimer = new CountDownTimer(timeLeftMillis, 1000) {
             @Override
@@ -181,7 +187,7 @@ public class TimerScreen extends AppCompatActivity {
             public void onFinish() {
                 boolTimerRunning = false;
                 updateButtons();
-
+                cancelAlarm();
             }
         }.start();
 
@@ -196,19 +202,19 @@ public class TimerScreen extends AppCompatActivity {
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(this, ReminderBroadcast.class);
-        pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP,millis,pendingIntent);
-        Toast.makeText(this,"Timer set",Toast.LENGTH_SHORT).show();
+        alarmManager.set(AlarmManager.RTC, millis, pendingIntent);
+        Toast.makeText(this, "Timer set", Toast.LENGTH_SHORT).show();
 
     }
 
-    private void cancelAlarm(){
+    private void cancelAlarm() {
 
-        Intent intent = new Intent(this,ReminderBroadcast.class);
-        pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-        if(alarmManager == null){
+        if (alarmManager == null) {
 
             alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -221,9 +227,9 @@ public class TimerScreen extends AppCompatActivity {
     private void updateCountDownText() {
 
         int minutes = (int) (timeLeftMillis / 1000) / 60;
-        int seconds = (int) (timeLeftMillis/1000) % 60;
+        int seconds = (int) (timeLeftMillis / 1000) % 60;
 
-        String timeLeft = String.format(Locale.getDefault(),"%02d:%02d",minutes,seconds);
+        String timeLeft = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
 
         txt_countDown.setText(timeLeft);
 
@@ -246,14 +252,18 @@ public class TimerScreen extends AppCompatActivity {
             buttonTimeSet.setVisibility(View.INVISIBLE);
             editSetTime.setVisibility(View.INVISIBLE);
             TXT_editSetTime.setVisibility(View.INVISIBLE);
+            oneMin.setVisibility(View.INVISIBLE);
+            twoMin.setVisibility(View.INVISIBLE);
+            threeMin.setVisibility(View.INVISIBLE);
+            fiveMin.setVisibility(View.INVISIBLE);
+            tenMin.setVisibility(View.INVISIBLE);
         } else {
             buttonStartPauseResume.setText("Start");
             buttonStartPauseResume.setVisibility(View.INVISIBLE);
-            buttonTimeSet.setVisibility(View.VISIBLE);
-            editSetTime.setVisibility(View.VISIBLE);
-            TXT_editSetTime.setVisibility(View.VISIBLE);
+
 
             if (timeLeftMillis < 1000) {
+
 
             } else {
                 buttonStartPauseResume.setVisibility(View.VISIBLE);
@@ -263,6 +273,16 @@ public class TimerScreen extends AppCompatActivity {
                 buttonReset.setVisibility(View.VISIBLE);
             } else {
                 buttonReset.setVisibility(View.INVISIBLE);
+            }
+            if (timeLeftMillis == START_TIME_MILLIS) {
+                oneMin.setVisibility(View.VISIBLE);
+                twoMin.setVisibility(View.VISIBLE);
+                threeMin.setVisibility(View.VISIBLE);
+                fiveMin.setVisibility(View.VISIBLE);
+                tenMin.setVisibility(View.VISIBLE);
+                buttonTimeSet.setVisibility(View.VISIBLE);
+                editSetTime.setVisibility(View.VISIBLE);
+                TXT_editSetTime.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -292,7 +312,7 @@ public class TimerScreen extends AppCompatActivity {
 
         SharedPreferences prefs = this.getSharedPreferences("prefs", MODE_PRIVATE);
 
-        timeLeftMillis = prefs.getLong("millisLeft",timeLeftMillis);
+        timeLeftMillis = prefs.getLong("millisLeft", timeLeftMillis);
         boolTimerRunning = prefs.getBoolean("timerRunning", false);
 
 
@@ -316,14 +336,14 @@ public class TimerScreen extends AppCompatActivity {
 
     }
 
-    private void createNotificationChannel(){
+    private void createNotificationChannel() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             CharSequence name = "Timer noti";
             String description = "Channel for noti";
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("timer",name,importance);
+            NotificationChannel channel = new NotificationChannel("timer", name, importance);
             channel.setDescription(description);
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
