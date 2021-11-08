@@ -53,9 +53,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="#89CFF0"
-        android:text="1 min"
         android:fontFamily="@font/coiny"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        android:text="1 min"
+        app:layout_constraintEnd_toStartOf="@+id/timer_txt_timeEnter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,9 +65,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:backgroundTint="#89CFF0"
-        android:text="3 min"
         android:fontFamily="@font/coiny"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        android:text="3 min"
+        app:layout_constraintEnd_toStartOf="@+id/timer_txt_timeEnter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -77,10 +77,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="#89CFF0"
-        android:text="2 min"
         android:fontFamily="@font/coiny"
+        android:text="2 min"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/timer_txt_timeEnter"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -89,11 +89,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:backgroundTint="#89CFF0"
-        android:text="10 min"
         android:fontFamily="@font/coiny"
+        android:text="10 min"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/timer_txt_timeEnter"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -107,16 +106,6 @@
         app:layout_constraintEnd_toStartOf="@+id/timer_bt_10min"
         app:layout_constraintStart_toEndOf="@+id/timer_bt_3min"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_end="206dp"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/timer_inp_timeInp"

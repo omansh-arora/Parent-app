@@ -58,6 +58,7 @@ public class AddChildActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Configure A Child");
 
+        if(getChildManager(this)!=null)
         childManager.setChildrenList(getChildManager(this).getChildrenList());
 
         //get input of name,age
