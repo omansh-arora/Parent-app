@@ -1,0 +1,1 @@
+- Timer screen - Alarm sound and vibration don't work on specific phones
