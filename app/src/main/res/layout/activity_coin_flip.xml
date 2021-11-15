@@ -152,5 +152,17 @@
 
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabOverrideChild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="120dp"
+        android:src="@drawable/ic_baseline_settings_25"
+        app:backgroundTint="@color/baby_blue"
+        app:tint="@color/white" />
 
 </RelativeLayout>

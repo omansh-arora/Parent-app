@@ -28,6 +28,7 @@ import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.util.Random;
@@ -52,16 +53,25 @@ public class CoinFlipActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "CoinPrefs";
     private static final String PREFS2_NAME = "ChildPrefs";
 
-
+    private FloatingActionButton overrideChildFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_flip);
 
-        //
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Flip Coin");
+
+        // load override current child floating button
+        overrideChildFab = (FloatingActionButton) findViewById(R.id.fabOverrideChild);
+        overrideChildFab.setVisibility(View.INVISIBLE);
+        overrideChildFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CoinFlipActivity.this,ChildOverridePickerActivity.class));
+            }
+        });
 
         //initialize singleton instance//get shared preferences
         coinFlipManager = CoinFlipManager.getInstance();
@@ -122,15 +132,20 @@ public class CoinFlipActivity extends AppCompatActivity {
                     if (child == null) {
                         Toast.makeText(CoinFlipActivity.this, "No child added yet.", Toast.LENGTH_SHORT).show();
                         childPickModeSW.setChecked(false);
+
                     } else {
                         childTurnTv.setVisibility(View.VISIBLE);
                         coinRBsGroup.setVisibility(View.VISIBLE);
+
+                        //load override button
+                        overrideChildFab.setVisibility(View.VISIBLE);
                     }
                 } else {
                     //Do something when Switch is off/unchecked
                     childTurnTv.setVisibility(View.INVISIBLE);
                     coinRBsGroup.setVisibility(View.INVISIBLE);
                     coinRBsGroup.clearCheck();
+                    overrideChildFab.setVisibility(View.INVISIBLE);
                 }
             }
         });

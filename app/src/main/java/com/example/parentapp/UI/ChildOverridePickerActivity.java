@@ -1,37 +1,31 @@
 package com.example.parentapp.UI;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-
+import com.example.parentapp.R;
 import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.parentapp.model.CoinFlip;
+import com.example.parentapp.model.CoinFlipManager;
+import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
-import com.example.parentapp.R;
-import com.google.gson.Gson;
 
 import java.util.List;
 
-public class ChildrenActivity extends AppCompatActivity {
+public class ChildOverridePickerActivity extends AppCompatActivity {
 
-    private FloatingActionButton addChildActivityFab;
     private ChildManager childManager;
     private List<Child> childrenList;
     private static final String PREFS_NAME = "ChildPrefs";
@@ -40,10 +34,14 @@ public class ChildrenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_children);
+        setContentView(R.layout.activity_children_picker);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Configure Children");
+        //setup and load popup window
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        getWindow().setLayout((int) (width*.8),(int) (height*.8));
 
         //init child manager
         childManager = ChildManager.getInstance();
@@ -51,35 +49,22 @@ public class ChildrenActivity extends AppCompatActivity {
             childManager = getChildManager(this);
         childrenList = childManager.getChildrenList();
 
-        // direct to Add a child info page
-        addChildActivityFab = (FloatingActionButton) findViewById(R.id.fabAddChild);
-        addChildActivityFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = AddChildActivity.makeIntent(ChildrenActivity.this, "Add", 0);
-                startActivity(intent);
-            }
-        });
         populateListView();
-
-
     }
+
     protected void onStart() {
 
         childManager = ChildManager.getInstance();
         if(getChildManager(this)!=null)
-        childManager = getChildManager(this);
+            childManager = getChildManager(this);
         // show all added children
         populateListView();
 
         //register an event when a child is clicked in the listView
-        registerClickCallback();
         super.onStart();
 
     }
 
-
-    /*** Setup Array Adapter and Display child in listView **/
     private void populateListView() {
         //build adapter
         ArrayAdapter<Child> adapter = new ChildrenListAdapter();
@@ -92,7 +77,7 @@ public class ChildrenActivity extends AppCompatActivity {
 
     private class ChildrenListAdapter extends ArrayAdapter<Child> {
         public ChildrenListAdapter() {
-            super(ChildrenActivity.this, R.layout.item_view, childrenList);
+            super(ChildOverridePickerActivity.this, R.layout.item_view, childrenList);
         }
 
         @NonNull
@@ -105,6 +90,7 @@ public class ChildrenActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.item_view, parent, false);
             }
 
+            //find the toss game to work with
             Child currentChild = childrenList.get(position);
 
             //fill the view
@@ -124,37 +110,11 @@ public class ChildrenActivity extends AppCompatActivity {
         }
     }
 
-    /*** register click event when a child item is clicked in the listview  **/
-    private void registerClickCallback() {
-
-        ListView list = (ListView) findViewById(R.id.listAllChildren);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                // link to add/update child activity page when a child is clicked
-                Intent intent = AddChildActivity.makeIntent(ChildrenActivity.this, "Edit", position);
-                startActivity(intent);
-
-            }
-        });
-    }
-
-
-
     static public ChildManager getChildManager(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         Gson gson = new Gson();
         String json = prefs.getString("ChildManager", "");
         return gson.fromJson(json, ChildManager.class);
-    }
-
-    private void saveChildManager(ChildManager cm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cm);
-        editor.putString("ChildManager", json);
-        editor.commit();
     }
 
 
