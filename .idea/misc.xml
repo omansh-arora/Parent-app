@@ -11,9 +11,11 @@
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_toss_history.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/child_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/content_children.xml" value="0.20416666666666666" />
+        <entry key="app/src/main/res/drawable/ic_baseline_child_girl_35.xml" value="0.31197916666666664" />
         <entry key="app/src/main/res/layout/activity_children_picker.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_coin_flip.xml" value="0.32760416666666664" />
         <entry key="app/src/main/res/layout/child_item.xml" value="0.24635416666666668" />
+        <entry key="app/src/main/res/layout/override_item_view.xml" value="0.21197916666666666" />
       </map>
     </option>
   </component>

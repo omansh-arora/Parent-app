@@ -233,6 +233,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 }
 
                 childManager.setChildID();
+
                 child = childManager.getNextChild();
                 saveChildManager(childManager);
                 if (child == null) {

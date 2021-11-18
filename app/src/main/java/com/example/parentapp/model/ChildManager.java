@@ -25,6 +25,24 @@ public class ChildManager implements Iterable<Child> {
         return childrenList;
     }
 
+    public List<Child> getSortedChildrenList() {
+        List<Child> sortedChildrenList = new ArrayList<>();
+
+        int i = nextChildID;
+        while (i < childrenList.size()){
+            sortedChildrenList.add(childrenList.get(i));
+            i++;
+        }
+
+        i = 0;
+        while (i < nextChildID){
+            sortedChildrenList.add(childrenList.get(i));
+            i++;
+        }
+
+        return sortedChildrenList;
+    }
+
     public void addNewChild(Child child) {
         childrenList.add(child);
     }
@@ -38,6 +56,7 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public void setChildrenList(List<Child>childrenBB) {childrenList = childrenBB;}
+
     /**
      * Return next child who has right to choose a side of a flip.
      * Should give each child a fair chance to play alternatively.
@@ -50,6 +69,14 @@ public class ChildManager implements Iterable<Child> {
         }
         return null;
     }
+
+//    public Child getNextChild() {
+//        if (childrenList.size() > 0) {
+//            return childrenList.get(nextChildID++ % childrenList.size());
+//        }
+//        return null;
+//    }
+
 
     public void setChildID(){
 
