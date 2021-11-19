@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.parentapp.R;
 import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
+import com.example.parentapp.model.ChildrenListMaintainer;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,6 +49,8 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     private CoinFlipManager coinFlipManager;
     private ChildManager childManager;
+    private ChildrenListMaintainer childrenlstMaintainer;
+
     int childChoice;
     Child child;
     private static final String PREFS_NAME = "CoinPrefs";
@@ -95,7 +98,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         // pick up a child
         child = childManager.getNextChild();
 
-        Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
         Toast.makeText(CoinFlipActivity.this, "Current Turn:" + child.getName(), Toast.LENGTH_SHORT).show();
 
         if (child != null) {
@@ -174,7 +177,7 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         child = childManager.getNextChild();
 
-        Toast.makeText(CoinFlipActivity.this, "from onStart() ", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(CoinFlipActivity.this, "from onStart() ", Toast.LENGTH_SHORT).show();
 
 
         if (child != null) {
@@ -286,6 +289,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         ChildManager children = gson.fromJson(json, ChildManager.class);
         return children;
     }
+
     private void saveChildManager(ChildManager cm) {
         SharedPreferences prefs = this.getSharedPreferences(PREFS2_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

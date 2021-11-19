@@ -3,6 +3,7 @@ package com.example.parentapp.UI;
 import com.example.parentapp.R;
 import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
+import com.example.parentapp.model.ChildrenListMaintainer;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipManager;
 import com.google.gson.Gson;
@@ -35,10 +36,12 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
 
     private ChildManager childManager;
     private List<Child> childrenList;
+    private List<Child> sortedChildrenList;
     private static final String PREFS_NAME = "ChildPrefs";
     Child defaultChild;
     Child newSelectedChild;
     Integer newChildPosition = 0;
+    ChildrenListMaintainer childrenlstMaintainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +51,27 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
         //setup and load popup window
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        //getWindow().setBackgroundDrawable(new ColorDrawable(0));
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         getWindow().setLayout((int) (width * .85), (int) (height * .85));
+
 
         //init child manager
         childManager = ChildManager.getInstance();
         if (getChildManager(this) != null)
             childManager = getChildManager(this);
 
-        childrenList = childManager.getSortedChildrenList();
-        defaultChild = childManager.getNextChild();
-        //Toast.makeText(ChildOverridePickerActivity.this, "defaultChild -> " + defaultChild.getName(), Toast.LENGTH_SHORT).show();
+        childrenList = childManager.getChildrenList();
+        //Toast.makeText(ChildOverridePickerActivity.this, "Original childrenList Size -> " + String.valueOf(childrenList.size()), Toast.LENGTH_SHORT).show();
+
+        childrenlstMaintainer = new ChildrenListMaintainer(childrenList);
+
+        childrenlstMaintainer.sortChildrenListByDefaultTop();
+        sortedChildrenList = childrenlstMaintainer.getChildrenList();
+        defaultChild = childrenlstMaintainer.getNextChild();
+
+//        Toast.makeText(ChildOverridePickerActivity.this, "sortedChildrenList Size -> " + String.valueOf(sortedChildrenList.size()), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(ChildOverridePickerActivity.this, "defaultChild(Next) is -> " + defaultChild.getName(), Toast.LENGTH_SHORT).show();
 
         populateListView();
 
@@ -95,6 +106,8 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //close the popup without make any modification
                 finish();
+                Intent myIntent = new Intent(ChildOverridePickerActivity.this, CoinFlipActivity.class);
+                startActivity(myIntent);
             }
         });
 
@@ -104,22 +117,22 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //if no new child has select
-                if(newSelectedChild == null){
+                if (newSelectedChild == null) {
                     Toast.makeText(ChildOverridePickerActivity.this, "You haven't selected a new child yet!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //if radio button equals to default child, stay the order and exit
-                if(newSelectedChild.getName().equals(defaultChild.getName())){
+                if (newSelectedChild.getName().equals(defaultChild.getName())) {
                     Toast.makeText(ChildOverridePickerActivity.this, "You chose to stay with the default child! Nothing will change!", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
                     // if a new child is select, update order
                     Toast.makeText(ChildOverridePickerActivity.this, "New Child Turn -> " + newSelectedChild.getName() + " Index--> " + newChildPosition, Toast.LENGTH_LONG).show();
-                    childManager.setOverrideChildrenList(newChildPosition);
+                    childrenlstMaintainer.setOverrideChildrenList(newChildPosition);
 
-                    if(getChildManager(ChildOverridePickerActivity.this)!=null){
-                        childManager.setNewChildrenList(getChildManager(ChildOverridePickerActivity.this).getOverrideChildrenList());
-                    }
+//                    if(getChildManager(ChildOverridePickerActivity.this)!=null){
+//                        childManager.setNewChildrenList(getChildManager(ChildOverridePickerActivity.this).getOverrideChildrenList());
+//                    }
 
                     finish();
                 }
@@ -134,7 +147,7 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
         RadioButton selected = null;
 
         public ChildrenListAdapter() {
-            super(ChildOverridePickerActivity.this, R.layout.override_item_view, childrenList);
+            super(ChildOverridePickerActivity.this, R.layout.override_item_view, sortedChildrenList);
         }
 
         @NonNull
@@ -148,7 +161,7 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
             }
 
             //find the toss game to work with
-            Child childRow = childrenList.get(position);
+            Child childRow = sortedChildrenList.get(position);
 
             //fill the view
             Integer imgResource;
@@ -176,8 +189,8 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
                     selected = childRowRB;
 
                     //set new selected child
-                    newSelectedChild = childrenList.get(position);
-                    String name = childrenList.get(position).getName();
+                    newSelectedChild = sortedChildrenList.get(position);
+                    String name = sortedChildrenList.get(position).getName();
                     newChildPosition = position;
 
                     //Toast.makeText(ChildOverridePickerActivity.this, "Selected -> " + name, Toast.LENGTH_SHORT).show();

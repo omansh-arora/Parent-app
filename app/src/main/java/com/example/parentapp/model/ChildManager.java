@@ -11,8 +11,6 @@ public class ChildManager implements Iterable<Child> {
 
     private static ChildManager instance;
     private List<Child> childrenList = new ArrayList<>();
-    private List<Child> sortedChildrenList = new ArrayList<>();
-    private List<Child> newChildrenList = new ArrayList<>();
     private int nextChildID = 0;
 
     public static ChildManager getInstance() {
@@ -28,51 +26,6 @@ public class ChildManager implements Iterable<Child> {
         return childrenList;
     }
 
-
-    // sort children list by default. default would be first (top), pre played would be last
-    public List<Child> getSortedChildrenList() {
-
-        sortedChildrenList.clear();
-        if (nextChildID == 0) {
-            sortedChildrenList = childrenList;
-            return sortedChildrenList;
-        }
-
-        int i = nextChildID;
-        while (i < childrenList.size()) {
-            sortedChildrenList.add(childrenList.get(i));
-            i++;
-        }
-
-        i = 0;
-        while (i < nextChildID) {
-            sortedChildrenList.add(childrenList.get(i));
-            i++;
-        }
-
-        return sortedChildrenList;
-    }
-
-
-    public void setOverrideChildrenList(int index) {
-        newChildrenList.clear();
-        newChildrenList.addAll(getSortedChildrenList());
-        //Log.i("newChildrenList size", String.valueOf(newChildrenList.size()));
-
-        Child selectedChildTem = newChildrenList.get(index);
-        newChildrenList.remove(index);
-        newChildrenList.add(0,selectedChildTem);
-
-        //Log.i("setOverrideChildrenList newChildrenList", "index 0: " + newChildrenList.get(0).getName() + "  index 1: " + newChildrenList.get(1).getName() + "  index 2: " + newChildrenList.get(2).getName());
-    }
-
-    public List<Child> getOverrideChildrenList() {
-        return newChildrenList;
-    }
-
-    public void setNewChildrenList(List<Child> newList) {
-        newChildrenList = newList;
-    }
 
     public void addNewChild(Child child) {
         childrenList.add(child);
@@ -97,16 +50,8 @@ public class ChildManager implements Iterable<Child> {
      * @return next child to choose a side.
      */
     public Child getNextChild() {
-
-        if (newChildrenList.size() == 0) {
-            Log.i("newChildrenList hasn't assigned:  ", "True");
-            newChildrenList.addAll(getSortedChildrenList());
-        }
-
-        Log.i("nextChildID (index): ", newChildrenList.get(nextChildID).getName() + " Index: " + String.valueOf(nextChildID));
-
-        if (newChildrenList.size() > 0) {
-            return newChildrenList.get(nextChildID);
+        if (childrenList.size() > 0) {
+            return childrenList.get(nextChildID);
         }
         return null;
     }
