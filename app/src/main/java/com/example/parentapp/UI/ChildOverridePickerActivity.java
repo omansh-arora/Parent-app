@@ -38,6 +38,7 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "ChildPrefs";
     Child defaultChild;
     Child newSelectedChild;
+    Integer newChildPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,10 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
         childManager = ChildManager.getInstance();
         if (getChildManager(this) != null)
             childManager = getChildManager(this);
+
         childrenList = childManager.getSortedChildrenList();
         defaultChild = childManager.getNextChild();
-        Toast.makeText(ChildOverridePickerActivity.this, "defaultChild -> " + defaultChild.getName(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ChildOverridePickerActivity.this, "defaultChild -> " + defaultChild.getName(), Toast.LENGTH_SHORT).show();
 
         populateListView();
 
@@ -86,7 +88,6 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
         ArrayAdapter<Child> adapter = new ChildrenListAdapter();
         list.setAdapter(adapter);
 
-
         // setup buttons
         Button cancelBtn = (Button) findViewById(R.id.cancelOverrideBtn);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -102,12 +103,25 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //if no new child has select
+                if(newSelectedChild == null){
+                    Toast.makeText(ChildOverridePickerActivity.this, "You haven't selected a new child yet!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //if radio button equals to default child, stay the order and exit
                 if(newSelectedChild.getName().equals(defaultChild.getName())){
                     Toast.makeText(ChildOverridePickerActivity.this, "You chose to stay with the default child! Nothing will change!", Toast.LENGTH_LONG).show();
                 }else{
                     // if a new child is select, update order
-                    Toast.makeText(ChildOverridePickerActivity.this, "New Child Turn -> " + newSelectedChild.getName(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChildOverridePickerActivity.this, "New Child Turn -> " + newSelectedChild.getName() + " Index--> " + newChildPosition, Toast.LENGTH_LONG).show();
+                    childManager.setOverrideChildrenList(newChildPosition);
+
+                    if(getChildManager(ChildOverridePickerActivity.this)!=null){
+                        childManager.setNewChildrenList(getChildManager(ChildOverridePickerActivity.this).getOverrideChildrenList());
+                    }
+
+                    finish();
                 }
 
             }
@@ -150,7 +164,7 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
             outputTV.setText(childRowName);
 
 
-            // setup Radio buttons
+            // Setup Radio buttons
             RadioButton childRowRB = (RadioButton) itemView.findViewById(R.id.overrideChildRB);
             childRowRB.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -164,6 +178,8 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
                     //set new selected child
                     newSelectedChild = childrenList.get(position);
                     String name = childrenList.get(position).getName();
+                    newChildPosition = position;
+
                     //Toast.makeText(ChildOverridePickerActivity.this, "Selected -> " + name, Toast.LENGTH_SHORT).show();
                 }
             });

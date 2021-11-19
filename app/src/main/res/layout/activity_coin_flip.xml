@@ -71,13 +71,13 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:fontFamily="@font/boogaloo"
+                    android:fontFamily="@font/coiny"
                     android:gravity="center|center_horizontal"
                     android:paddingHorizontal="@dimen/cardview_compat_inset_shadow"
                     android:text="Child Pick Mode"
                     android:textAlignment="center"
                     android:textColor="@color/sky_blue"
-                    android:textSize="20sp"
+                    android:textSize="17sp"
                     android:thumbTint="@color/light_gray" />
 
                 <TextView

@@ -94,10 +94,13 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         // pick up a child
         child = childManager.getNextChild();
+
+        Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(CoinFlipActivity.this, "Current Turn:" + child.getName(), Toast.LENGTH_SHORT).show();
+
         if (child != null) {
             childTurnTv.setText(child.getName() + "'s turn to pick");
         }
-
 
 
         // initialize sounds
@@ -161,7 +164,6 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
     protected void onStart(){
 
-
         //initialize singleton instance//get shared preferences
         coinFlipManager = CoinFlipManager.getInstance();
         if(getCoinManager(this)!=null)
@@ -169,7 +171,12 @@ public class CoinFlipActivity extends AppCompatActivity {
         childManager = ChildManager.getInstance();
         if(getChildManager(this)!=null)
             childManager = getChildManager(this);
+
         child = childManager.getNextChild();
+
+        Toast.makeText(CoinFlipActivity.this, "from onStart() ", Toast.LENGTH_SHORT).show();
+
+
         if (child != null) {
             childTurnTv.setText(child.getName() + "'s turn to pick");
         }
