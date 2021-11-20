@@ -8,83 +8,43 @@ import java.util.List;
 public class ChildrenListMaintainer {
 
     private static ChildrenListMaintainer instance;
-    private List<Child> childrenList = new ArrayList<>();
-    private List<Child> sortedChildrenList = new ArrayList<>();
-    private List<Child> newChildrenList = new ArrayList<>();
+    private List<Child> childrenList;
     private int nextChildID = 0;
-    private Child defaultChild;
+    private Child selectedChild;
+    public static final Child DEFAULT_CHILD = ChildManager.DEFAULT_CHILD;
 
     public ChildrenListMaintainer(List<Child> list) {
-        this.childrenList.clear();
-        this.childrenList.addAll(list);
+        this.childrenList = new ArrayList<>(list);
 
         if (childrenList.size() > 0) {
-            defaultChild = this.childrenList.get(0);
+            selectedChild = this.childrenList.get(0);
+        } else {
+            selectedChild = DEFAULT_CHILD;
         }
     }
 
-    public Child getDefaultChild() {
-        return defaultChild;
+    public void setSelectedChild(int index) {
+        this.selectedChild = childrenList.get(index);
     }
+
+
+    public Child getSelectedChild() {
+
+        return selectedChild;
+    }
+
 
 
     public Child getNextChild() {
         if (childrenList.size() > 0) {
             return childrenList.get(nextChildID++ % childrenList.size());
         }
-        return null;
+        return DEFAULT_CHILD;
     }
 
-    // sort children list from default(first/top) to previous/last played
-    //This list is used to display in the popup window
-    public void sortChildrenListByDefaultTop() {
-
-        sortedChildrenList.clear();
-        //if nextChildID is at index 0, the list stays it's order
-        if (nextChildID == 0) {
-            sortedChildrenList.addAll(childrenList);
-            return;
-        }
-
-        int i = nextChildID;
-        while (i < childrenList.size()) {
-            sortedChildrenList.add(childrenList.get(i));
-            i++;
-        }
-
-        i = 0;
-        while (i < nextChildID) {
-            sortedChildrenList.add(childrenList.get(i));
-            i++;
-        }
-
-        //update childrenlist with sorted display children order
-        setChildrenList(sortedChildrenList);
-    }
-
-    // move the selected override child to top of the list
-    public void setOverrideChildrenList(int index) {
-        newChildrenList.clear();
-        newChildrenList.addAll(childrenList);
-        //Log.i("newChildrenList size", String.valueOf(newChildrenList.size()));
-
-        Child selectedChildTem = newChildrenList.get(index);
-        newChildrenList.remove(index);
-        newChildrenList.add(0, selectedChildTem);
-
-        //update childrenlist with override children order
-        setChildrenList(newChildrenList);
-
-        Log.i("setOverrideChildrenList newChildrenList", "index 0: " + newChildrenList.get(0).getName() + "  index 1: " + newChildrenList.get(1).getName() + "  index 2: " + newChildrenList.get(2).getName());
-    }
 
     public List<Child> getChildrenList() {
         return childrenList;
-    }
-
-    public void setChildrenList(List<Child> newList) {
-        this.childrenList.clear();
-        this.childrenList.addAll(newList);
     }
 
 

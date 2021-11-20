@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ChildManager implements Iterable<Child> {
 
+    public static final Child DEFAULT_CHILD = new Child("DEFAULT", 0, "");
     private static ChildManager instance;
     private List<Child> childrenList = new ArrayList<>();
     private int nextChildID = 0;
@@ -69,6 +70,7 @@ public class ChildManager implements Iterable<Child> {
     public Iterator<Child> iterator() {
         return childrenList.iterator();
     }
+
 
 
 }

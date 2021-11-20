@@ -51,17 +51,20 @@ public class CoinFlipActivity extends AppCompatActivity {
     private ChildManager childManager;
     private ChildrenListMaintainer childrenlstMaintainer;
 
+    private Child child;
     int childChoice;
-    Child child;
+
     private static final String PREFS_NAME = "CoinPrefs";
     private static final String PREFS2_NAME = "ChildPrefs";
 
     private FloatingActionButton overrideChildFab;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_flip);
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Flip Coin");
@@ -96,15 +99,14 @@ public class CoinFlipActivity extends AppCompatActivity {
         coinRBsGroup.setVisibility(View.INVISIBLE);
 
         // pick up a child
-        child = childManager.getNextChild();
+        child = childrenlstMaintainer.getSelectedChild();
 
-//        Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
         Toast.makeText(CoinFlipActivity.this, "Current Turn:" + child.getName(), Toast.LENGTH_SHORT).show();
 
-        if (child != null) {
+        if (child != childrenlstMaintainer.DEFAULT_CHILD) {
             childTurnTv.setText(child.getName() + "'s turn to pick");
         }
-
 
         // initialize sounds
         initSounds();
@@ -135,7 +137,7 @@ public class CoinFlipActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton cb, boolean on) {
                 if (on) {
                     //Do something when Switch button is on/checked
-                    if (child == null) {
+                    if (child == childrenlstMaintainer.DEFAULT_CHILD) {
                         Toast.makeText(CoinFlipActivity.this, "No child added yet.", Toast.LENGTH_SHORT).show();
                         childPickModeSW.setChecked(false);
 
@@ -175,7 +177,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         if(getChildManager(this)!=null)
             childManager = getChildManager(this);
 
-        child = childManager.getNextChild();
+        child = childrenlstMaintainer.getSelectedChild();
 
         //Toast.makeText(CoinFlipActivity.this, "from onStart() ", Toast.LENGTH_SHORT).show();
 

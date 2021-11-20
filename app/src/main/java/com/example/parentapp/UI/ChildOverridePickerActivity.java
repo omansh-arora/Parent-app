@@ -43,6 +43,8 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
     Integer newChildPosition = 0;
     ChildrenListMaintainer childrenlstMaintainer;
 
+    private CoinFlipManager coinFlipManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,18 +57,19 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
         int height = dm.heightPixels;
         getWindow().setLayout((int) (width * .85), (int) (height * .85));
 
+        //init coin flip manager
+        coinFlipManager = CoinFlipManager.getInstance();
+
 
         //init child manager
         childManager = ChildManager.getInstance();
+
         if (getChildManager(this) != null)
             childManager = getChildManager(this);
+        
 
-        childrenList = childManager.getChildrenList();
-        //Toast.makeText(ChildOverridePickerActivity.this, "Original childrenList Size -> " + String.valueOf(childrenList.size()), Toast.LENGTH_SHORT).show();
-
-        childrenlstMaintainer = new ChildrenListMaintainer(childrenList);
-
-        childrenlstMaintainer.sortChildrenListByDefaultTop();
+        childrenlstMaintainer = CoinFlipManager.getMaintainer();
+                
         sortedChildrenList = childrenlstMaintainer.getChildrenList();
         defaultChild = childrenlstMaintainer.getNextChild();
 
@@ -74,6 +77,8 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
 //        Toast.makeText(ChildOverridePickerActivity.this, "defaultChild(Next) is -> " + defaultChild.getName(), Toast.LENGTH_SHORT).show();
 
         populateListView();
+
+        registerClickCallback();
 
     }
 
@@ -122,13 +127,15 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
                     return;
                 }
 
+                coinFlipManager.setSelectedChild(newSelectedChild);
+                finish();
+
                 //if radio button equals to default child, stay the order and exit
                 if (newSelectedChild.getName().equals(defaultChild.getName())) {
                     Toast.makeText(ChildOverridePickerActivity.this, "You chose to stay with the default child! Nothing will change!", Toast.LENGTH_LONG).show();
                 } else {
                     // if a new child is select, update order
                     Toast.makeText(ChildOverridePickerActivity.this, "New Child Turn -> " + newSelectedChild.getName() + " Index--> " + newChildPosition, Toast.LENGTH_LONG).show();
-                    childrenlstMaintainer.setOverrideChildrenList(newChildPosition);
 
 //                    if(getChildManager(ChildOverridePickerActivity.this)!=null){
 //                        childManager.setNewChildrenList(getChildManager(ChildOverridePickerActivity.this).getOverrideChildrenList());
@@ -213,6 +220,19 @@ public class ChildOverridePickerActivity extends AppCompatActivity {
 
             return itemView;
         }
+    }
+
+    /*** register click event when a child item is clicked in the listview  **/
+    private void registerClickCallback() {
+
+        ListView list = (ListView) findViewById(R.id.listOverrideChildren);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                childrenlstMaintainer.setSelectedChild(position);
+                finish();
+            }
+        });
     }
 
     static public ChildManager getChildManager(Context context) {

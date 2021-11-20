@@ -31,6 +31,7 @@ public class CoinFlipManager implements Iterable<CoinFlip> {
     private static CoinFlipManager instance;
     private List<CoinFlip> flipsList = new ArrayList<>();
     private ChildManager childManager;
+    private Child selectedChild;
 
     private CoinFlipManager() {
         childManager = new ChildManager();
@@ -58,5 +59,8 @@ public class CoinFlipManager implements Iterable<CoinFlip> {
     }
 
 
+    public void setSelectedChild(Child newSelectedChild) {
+        selectedChild = newSelectedChild;
+    }
 
 }
