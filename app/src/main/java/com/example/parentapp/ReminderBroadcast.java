@@ -10,11 +10,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.parentapp.UI.TimerScreen;
 
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
-
-import com.example.parentapp.R;
 
 public class ReminderBroadcast extends BroadcastReceiver {
     @Override

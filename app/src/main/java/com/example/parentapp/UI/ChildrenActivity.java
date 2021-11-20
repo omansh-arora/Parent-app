@@ -1,8 +1,6 @@
 package com.example.parentapp.UI;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.parentapp.model.Child;
@@ -21,11 +19,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.parentapp.R;
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -46,10 +42,8 @@ public class ChildrenActivity extends AppCompatActivity {
         actionBar.setTitle("Configure Children");
 
         //init child manager
-        childManager = ChildManager.getInstance();
-        if(getChildManager(this)!=null)
-            childManager = getChildManager(this);
-        childrenList = childManager.getChildrenList();
+        childManager = new ChildManager();
+        childrenList = childManager.getChildren();
 
         // direct to Add a child info page
         addChildActivityFab = (FloatingActionButton) findViewById(R.id.fabAddChild);
@@ -66,9 +60,7 @@ public class ChildrenActivity extends AppCompatActivity {
     }
     protected void onStart() {
 
-        childManager = ChildManager.getInstance();
-        if(getChildManager(this)!=null)
-        childManager = getChildManager(this);
+        childManager = new ChildManager();
         // show all added children
         populateListView();
 
@@ -137,24 +129,6 @@ public class ChildrenActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-
-
-    static public ChildManager getChildManager(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString("ChildManager", "");
-        return gson.fromJson(json, ChildManager.class);
-    }
-
-    private void saveChildManager(ChildManager cm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cm);
-        editor.putString("ChildManager", json);
-        editor.commit();
     }
 
 

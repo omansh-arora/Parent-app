@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
-            android:name=".UI.ChildOverridePickerActivity"
+            android:name=".UI.ChildQueueActivity"
             android:theme="@style/Theme.ParentApp.CustomPopUp"
             android:exported="false" />
         <activity

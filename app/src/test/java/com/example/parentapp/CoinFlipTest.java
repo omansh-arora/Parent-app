@@ -15,12 +15,5 @@ import com.example.parentapp.model.CoinFlipManager;
 public class CoinFlipTest {
     @Test
     public void flipsRandomUniformDistribution() {
-        CoinFlipManager manager = CoinFlipManager.getInstance();
-        for (int i = 0; i < 100; i++) {
-            System.out.println(manager.flip(null, null));
-
-        }
-        assertTrue(40 < manager.getFlips().stream().filter(x -> x.side == CoinFlip.Side.HEAD).count());
-        assertTrue(40 < manager.getFlips().stream().filter(x -> x.side == CoinFlip.Side.TAIL).count());
     }
 }

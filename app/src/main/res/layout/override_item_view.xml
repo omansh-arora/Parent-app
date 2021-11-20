@@ -24,29 +24,4 @@
         android:gravity="center_vertical"
         android:textSize="20dp" />
 
-    <CheckedTextView
-        android:id="@+id/defaultChildCtv"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_weight=".20"
-        android:checkMark="@drawable/ic_baseline_check_circle_outline_24"
-        android:checked="true"
-        android:fontFamily="@font/boogaloo"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:textColor="@color/baby_blue"
-        android:textSize="15dp"
-        android:visibility="invisible" />
-
-    <RadioButton
-        android:id="@+id/overrideChildRB"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="right"
-        android:layout_weight=".10" />
-
 </LinearLayout>

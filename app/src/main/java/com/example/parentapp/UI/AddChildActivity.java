@@ -7,9 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +19,7 @@ import android.widget.Toast;
 import com.example.parentapp.R;
 import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
-import com.google.gson.Gson;
+import com.example.parentapp.model.LocalStorage;
 
 import java.util.List;
 
@@ -53,13 +51,10 @@ public class AddChildActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_child);
 
         //init child manager
-        childManager = ChildManager.getInstance();
+        childManager = new ChildManager();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Configure A Child");
-
-        if(getChildManager(this)!=null)
-        childManager.setChildrenList(getChildManager(this).getChildrenList());
 
         //get input of name,age
         childNameEt = (EditText) findViewById(R.id.childNameEt);
@@ -115,13 +110,12 @@ public class AddChildActivity extends AppCompatActivity {
             case "Add":
                 Child child = new Child(name, age, gender);
                 childManager.addNewChild(child);
-                saveChildManager(childManager);
                 break;
             case "Edit":
                 editChild.setName(name);
                 editChild.setAge(age);
                 editChild.setGender(gender);
-                saveChildManager(childManager);
+                childManager.saveChildren();
 
                 break;
             default:
@@ -147,9 +141,7 @@ public class AddChildActivity extends AppCompatActivity {
             public void onClick(DialogInterface arg0, int arg1) {
                 childManager.deleteChild(childClickedIndex);
                 Toast.makeText(AddChildActivity.this,"Child Deleted!",Toast.LENGTH_LONG).show();
-                saveChildManager(childManager);
-                Intent myIntent = new Intent(AddChildActivity.this, ChildrenActivity.class);
-                startActivity(myIntent);
+                finish();
             }
         });
 
@@ -174,7 +166,7 @@ public class AddChildActivity extends AppCompatActivity {
                 formTitleTv.setText("Edit a child");
                 saveChildBtn.setText("Update");
                 //get all the children in list
-                childrenList = childManager.getChildrenList();
+                childrenList = childManager.getChildren();
                 //get clicked child and load child info to input fields
                 editChild = childrenList.get(childClickedIndex);
                 childNameEt.setText(editChild.getName());
@@ -221,8 +213,7 @@ public class AddChildActivity extends AppCompatActivity {
                     childAge = Integer.parseInt(childAgeEt.getText().toString());
                     //Toast.makeText(AddChildActivity.this, "Gender: " + gender, Toast.LENGTH_SHORT).show();
                     configChild(childName, childAge, gender);
-                    Intent childrenListIntent = new Intent(AddChildActivity.this, ChildrenActivity.class);
-                    startActivity(childrenListIntent);
+                    finish();
                 }
 
             }
@@ -230,23 +221,5 @@ public class AddChildActivity extends AppCompatActivity {
         });
 
     }
-    private void saveChildManager(ChildManager cm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cm);
-        editor.putString("ChildManager", json);
-        editor.commit();
-    }
-
-    static public ChildManager getChildManager(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString("ChildManager", "");
-        ChildManager children = gson.fromJson(json, ChildManager.class);
-        return children;
-    }
-
-
 
 }

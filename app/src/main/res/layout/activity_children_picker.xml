@@ -9,10 +9,10 @@
     android:paddingRight="15dp"
     android:paddingTop="10dp"
     android:paddingBottom="15dp"
-    tools:context=".UI.ChildOverridePickerActivity">
+    tools:context=".UI.ChildQueueActivity">
 
             <ListView
-                android:id="@+id/listOverrideChildren"
+                android:id="@+id/queueLv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -23,30 +23,6 @@
                 android:gravity="center_horizontal">
 
             </ListView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/cancelOverrideBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Nobody's turn" />
-
-                <Button
-                    android:id="@+id/confirmOverrideBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="OK" />
-            </LinearLayout>
 
 
 </LinearLayout>

@@ -4,9 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,13 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parentapp.R;
-import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
-import com.example.parentapp.model.ChildrenListMaintainer;
+import com.example.parentapp.model.ChildrenQueue;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
 
 import java.util.Random;
 
@@ -49,13 +45,9 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     private CoinFlipManager coinFlipManager;
     private ChildManager childManager;
-    private ChildrenListMaintainer childrenlstMaintainer;
+    private ChildrenQueue childrenQueue;
 
-    private Child child;
     int childChoice;
-
-    private static final String PREFS_NAME = "CoinPrefs";
-    private static final String PREFS2_NAME = "ChildPrefs";
 
     private FloatingActionButton overrideChildFab;
 
@@ -72,20 +64,12 @@ public class CoinFlipActivity extends AppCompatActivity {
         // load override current child floating button
         overrideChildFab = (FloatingActionButton) findViewById(R.id.fabOverrideChild);
         overrideChildFab.setVisibility(View.INVISIBLE);
-        overrideChildFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(CoinFlipActivity.this,ChildOverridePickerActivity.class));
-            }
-        });
+        overrideChildFab.setOnClickListener(
+                view -> startActivity(new Intent(CoinFlipActivity.this, ChildQueueActivity.class)));
 
         //initialize singleton instance//get shared preferences
-        coinFlipManager = CoinFlipManager.getInstance();
-        if(getChildManager(this)!=null)
-            coinFlipManager = getCoinManager(this);
-        childManager = ChildManager.getInstance();
-        if(getChildManager(this)!=null)
-            childManager = getChildManager(this);
+        coinFlipManager = new CoinFlipManager();
+        childManager = new ChildManager();
 
         coin = (ImageView) findViewById(R.id.coinImgView);
         tossResultTv = (TextView) findViewById(R.id.tossResultTv);
@@ -99,13 +83,13 @@ public class CoinFlipActivity extends AppCompatActivity {
         coinRBsGroup.setVisibility(View.INVISIBLE);
 
         // pick up a child
-        child = childrenlstMaintainer.getSelectedChild();
+        childrenQueue = new ChildrenQueue();
 
         // Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
-        Toast.makeText(CoinFlipActivity.this, "Current Turn:" + child.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(CoinFlipActivity.this, "Current Turn:" + childrenQueue.getSelectedChild().getName(), Toast.LENGTH_SHORT).show();
 
-        if (child != childrenlstMaintainer.DEFAULT_CHILD) {
-            childTurnTv.setText(child.getName() + "'s turn to pick");
+        if (childrenQueue.getSelectedChild() != childManager.DEFAULT_CHILD) {
+            childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
         }
 
         // initialize sounds
@@ -137,19 +121,21 @@ public class CoinFlipActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton cb, boolean on) {
                 if (on) {
                     //Do something when Switch button is on/checked
-                    if (child == childrenlstMaintainer.DEFAULT_CHILD) {
-                        Toast.makeText(CoinFlipActivity.this, "No child added yet.", Toast.LENGTH_SHORT).show();
-                        childPickModeSW.setChecked(false);
-
-                    } else {
-                        childTurnTv.setVisibility(View.VISIBLE);
-                        coinRBsGroup.setVisibility(View.VISIBLE);
-
-                        //load override button
-                        overrideChildFab.setVisibility(View.VISIBLE);
+                    if (childrenQueue.getSelectedChild() == childManager.DEFAULT_CHILD) {
+                        if (childrenQueue.getNextChild() == childManager.DEFAULT_CHILD) {
+                            Toast.makeText(CoinFlipActivity.this, "No child added yet.", Toast.LENGTH_SHORT).show();
+                            childPickModeSW.setChecked(false);
+                            return;
+                        }
                     }
+                    childTurnTv.setText(childrenQueue.getSelectedChild().getName());
+                    childTurnTv.setVisibility(View.VISIBLE);
+                    coinRBsGroup.setVisibility(View.VISIBLE);
+                    //load override button
+                    overrideChildFab.setVisibility(View.VISIBLE);
                 } else {
                     //Do something when Switch is off/unchecked
+                    childrenQueue.cleanSelection();
                     childTurnTv.setVisibility(View.INVISIBLE);
                     coinRBsGroup.setVisibility(View.INVISIBLE);
                     coinRBsGroup.clearCheck();
@@ -168,25 +154,20 @@ public class CoinFlipActivity extends AppCompatActivity {
         });
     }
     protected void onStart(){
-
-        //initialize singleton instance//get shared preferences
-        coinFlipManager = CoinFlipManager.getInstance();
-        if(getCoinManager(this)!=null)
-            coinFlipManager = getCoinManager(this);
-        childManager = ChildManager.getInstance();
-        if(getChildManager(this)!=null)
-            childManager = getChildManager(this);
-
-        child = childrenlstMaintainer.getSelectedChild();
-
-        //Toast.makeText(CoinFlipActivity.this, "from onStart() ", Toast.LENGTH_SHORT).show();
-
-
-        if (child != null) {
-            childTurnTv.setText(child.getName() + "'s turn to pick");
-        }
         super.onStart();
+        childrenQueue = new ChildrenQueue();
+        coinFlipManager = new CoinFlipManager();
 
+        if (childrenQueue.getSelectedChild() != ChildManager.DEFAULT_CHILD) {
+            childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        childrenQueue = new ChildrenQueue();
+        childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
     }
 
     private void initSounds() {
@@ -200,7 +181,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         // check current state of a Switch (true or false).
         Boolean isChildPickMode = childPickModeSW.isChecked();
 
-        if (isChildPickMode && child != null && coinRBsGroup.getCheckedRadioButtonId() == -1) {
+        if (isChildPickMode && childrenQueue.getSelectedChild() != null && coinRBsGroup.getCheckedRadioButtonId() == -1) {
             Toast.makeText(CoinFlipActivity.this, "Please select the side.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -219,8 +200,6 @@ public class CoinFlipActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onAnimationEnd(Animation animation) {
-                saveCoinFlipManager(coinFlipManager);
-
                 tossResultNum = ranNum.nextInt(2);
                 //Toast.makeText(CoinFlipActivity.this, String.valueOf(tossResultNum), Toast.LENGTH_SHORT).show();
                 if (tossResultNum == 0) {
@@ -237,23 +216,17 @@ public class CoinFlipActivity extends AppCompatActivity {
                 coin.startAnimation(fadeIn);
                 tossResultTv.setText(tossResultText);
                 // add result to records
-                if(isChildPickMode && child != null) {
-                    assert child != null;
-                    CoinFlip flip = new CoinFlip(child.getName(), childChoice, tossResultNum);
-                    coinFlipManager.addFlipGame(flip);
-                    saveCoinFlipManager(coinFlipManager);
+                if(isChildPickMode && childrenQueue.getSelectedChild() != null) {
+                    assert childrenQueue.getSelectedChild() != null;
+                    CoinFlip flip = new CoinFlip(childrenQueue.getSelectedChild().getName(), childChoice, tossResultNum);
+                    coinFlipManager.addFlipRecord(flip);
                 }
 
-                childManager.setChildID();
-
-                child = childManager.getNextChild();
-                saveChildManager(childManager);
-                if (child == null) {
+                if (childrenQueue.getNextChild() == childManager.DEFAULT_CHILD) {
                     Toast.makeText(CoinFlipActivity.this, "No child added yet.", Toast.LENGTH_SHORT).show();
                     childPickModeSW.setChecked(false);
                 } else {
-                    childTurnTv.setText(child.getName() + "'s turn to pick");
-                    saveChildManager(childManager);
+                    childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
                 }
             }
 
@@ -266,40 +239,5 @@ public class CoinFlipActivity extends AppCompatActivity {
         coin.startAnimation(rotateAnimation);
 
     }
-
-    private void saveCoinFlipManager(CoinFlipManager cfm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cfm);
-        editor.putString("CoinManager", json);
-        editor.commit();
-    }
-
-    static public CoinFlipManager getCoinManager(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString("CoinManager", "");
-        CoinFlipManager cfm = gson.fromJson(json, CoinFlipManager.class);
-        return cfm;
-    }
-
-    static public ChildManager getChildManager(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS2_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString("ChildManager", "");
-        ChildManager children = gson.fromJson(json, ChildManager.class);
-        return children;
-    }
-
-    private void saveChildManager(ChildManager cm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS2_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cm);
-        editor.putString("ChildManager", json);
-        editor.commit();
-    }
-
 
 }
