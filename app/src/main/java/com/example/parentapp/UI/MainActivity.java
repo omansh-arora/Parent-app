@@ -14,7 +14,7 @@ import com.example.parentapp.model.ChildManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button flipCoinActivityBtn, timerActivityBtn, addChildActivityBtn;
+    private Button flipCoinActivityBtn, timerActivityBtn, addChildActivityBtn, taskActivityBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent timerIntent = new Intent(MainActivity.this,TimerScreen.class);
                 timerIntent.putExtra("Type",0);
                 startActivity(timerIntent);
+            }
+        });
+
+
+        taskActivityBtn = (Button) findViewById(R.id.btnTask);
+        taskActivityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, TaskActivity.class));
             }
         });
 

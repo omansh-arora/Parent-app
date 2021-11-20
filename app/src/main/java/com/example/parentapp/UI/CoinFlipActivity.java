@@ -239,14 +239,6 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     }
 
-    private void saveCoinFlipManager(CoinFlipManager cfm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cfm);
-        editor.putString("CoinManager", json);
-        editor.commit();
-    }
 
     static public CoinFlipManager getCoinManager(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -263,6 +255,16 @@ public class CoinFlipActivity extends AppCompatActivity {
         ChildManager children = gson.fromJson(json, ChildManager.class);
         return children;
     }
+
+    private void saveCoinFlipManager(CoinFlipManager cfm) {
+        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(cfm);
+        editor.putString("CoinManager", json);
+        editor.commit();
+    }
+
     private void saveChildManager(ChildManager cm) {
         SharedPreferences prefs = this.getSharedPreferences(PREFS2_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
