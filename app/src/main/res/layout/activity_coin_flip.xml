@@ -71,13 +71,13 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:fontFamily="@font/boogaloo"
+                    android:fontFamily="@font/coiny"
                     android:gravity="center|center_horizontal"
                     android:paddingHorizontal="@dimen/cardview_compat_inset_shadow"
                     android:text="Child Pick Mode"
                     android:textAlignment="center"
                     android:textColor="@color/sky_blue"
-                    android:textSize="20sp"
+                    android:textSize="17sp"
                     android:thumbTint="@color/light_gray" />
 
                 <TextView
@@ -152,5 +152,17 @@
 
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabOverrideChild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="120dp"
+        android:src="@drawable/ic_baseline_settings_25"
+        app:backgroundTint="@color/baby_blue"
+        app:tint="@color/white" />
 
 </RelativeLayout>

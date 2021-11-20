@@ -1,15 +1,7 @@
 package com.example.parentapp.model;
 
-import android.os.Build;
-import android.util.Log;
-
-import androidx.annotation.RequiresApi;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 /**
  * As a parent...
@@ -27,36 +19,24 @@ import java.util.Random;
  */
 public class CoinFlipManager implements Iterable<CoinFlip> {
 
-    private static Random random = new Random();
-    private static CoinFlipManager instance;
-    private List<CoinFlip> flipsList = new ArrayList<>();
-    private ChildManager childManager;
+    public List<CoinFlip> history;
 
-    private CoinFlipManager() {
-        childManager = new ChildManager();
+    public CoinFlipManager() {
+        history = LocalStorage.getInstance().getHistory();
     }
 
-    public static CoinFlipManager getInstance() {
-        if (instance == null) {
-            instance = new CoinFlipManager();
-        }
-        return instance;
+    public void addFlipRecord(CoinFlip coinFlip) {
+        history.add(coinFlip);
+        LocalStorage.getInstance().saveHistory(history);
     }
-
-    public void addFlipGame(CoinFlip coinFlip) {
-        flipsList.add(coinFlip);
-    }
-
 
     public List<CoinFlip> getFlips() {
-        return flipsList;
+        return history;
     }
 
     @Override
     public Iterator<CoinFlip> iterator() {
-        return flipsList.iterator();
+        return history.iterator();
     }
-
-
 
 }

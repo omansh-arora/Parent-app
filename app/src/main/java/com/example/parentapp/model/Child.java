@@ -1,5 +1,7 @@
 package com.example.parentapp.model;
 
+import java.util.Objects;
+
 public class Child {
 
     private String name;
@@ -42,5 +44,18 @@ public class Child {
         String output = "";
         output += "Child Name: " + getName() + "  Gender: " + getGender() + "  Age: " + getAge();
         return output;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Child)) return false;
+        Child child = (Child) o;
+        return name.equals(child.name) && age.equals(child.age) && gender.equals(child.gender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age, gender);
     }
 }

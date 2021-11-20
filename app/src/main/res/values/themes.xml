@@ -23,5 +23,16 @@
 
     <style name="Theme.ParentApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Theme.ParentApp.CustomPopUp">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 
 </resources>

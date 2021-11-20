@@ -8,18 +8,20 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.parentapp.R;
-import com.example.parentapp.ReminderBroadcast;
-import com.example.parentapp.model.ChildManager;
+import com.example.parentapp.model.LocalStorage;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private Button flipCoinActivityBtn, timerActivityBtn, addChildActivityBtn, taskActivityBtn;
+    private LocalStorage localStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        localStorage = LocalStorage.getInstance(this.getApplicationContext());
 
         addChildActivityBtn = (Button) findViewById(R.id.btnAddChild);
         flipCoinActivityBtn = (Button) findViewById(R.id.btnFlipCoin);
