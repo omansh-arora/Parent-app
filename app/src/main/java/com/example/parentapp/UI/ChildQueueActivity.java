@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -27,6 +28,7 @@ public class ChildQueueActivity extends AppCompatActivity {
     private List<Child> children;
     ChildrenQueue childrenQueue;
     private CoinFlipHistory coinFlipHistory;
+    String taskName = TaskManager.DEFAULT_TASK.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +42,16 @@ public class ChildQueueActivity extends AppCompatActivity {
         int height = dm.heightPixels;
         getWindow().setLayout((int) (width * .85), (int) (height * .85));
 
+        // get current task
+        Intent intent = getIntent();
+        taskName = intent.getStringExtra("task_name");
+        if (taskName == null) {
+            taskName = TaskManager.DEFAULT_TASK.getName();
+        }
+
         //init coin flip manager
-        coinFlipHistory = new CoinFlipHistory(TaskManager.DEFAULT_TASK.getName());
-        childrenQueue = new ChildrenQueue(TaskManager.DEFAULT_TASK.getName());
+        coinFlipHistory = new CoinFlipHistory(taskName);
+        childrenQueue = new ChildrenQueue(taskName);
         children = childrenQueue.getChildren();
         populateListView();
         registerClickCallback();

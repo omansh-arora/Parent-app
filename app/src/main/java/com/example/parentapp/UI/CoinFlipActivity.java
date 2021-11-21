@@ -36,7 +36,7 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     public static final Random ranNum = new Random();
     private ImageView coin;
-    private TextView tossResultTv, childTurnTv;
+    private TextView tossResultTv, childTurnTv, currentTaskTv;
     private RadioGroup coinRBsGroup;
     private Switch childPickModeSW;
     private Button tossHistoryBtn;
@@ -49,27 +49,43 @@ public class CoinFlipActivity extends AppCompatActivity {
     private ChildrenQueue childrenQueue;
 
     int childChoice;
+    String taskName = TaskManager.DEFAULT_TASK.getName();
 
     private FloatingActionButton overrideChildFab;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_flip);
 
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Flip Coin");
+
+        // get current task
+        Intent intent = getIntent();
+        taskName = intent.getStringExtra("task_name");
+        if (taskName == null) {
+            taskName = TaskManager.DEFAULT_TASK.getName();
+        }
+        currentTaskTv = (TextView) findViewById(R.id.currentTaskTv);
+        currentTaskTv.setText("Task: " + (taskName.length() > 10 ? taskName.substring(0, 10) + "..." : taskName));
+
 
         // load override current child floating button
         overrideChildFab = (FloatingActionButton) findViewById(R.id.fabOverrideChild);
         overrideChildFab.setVisibility(View.INVISIBLE);
-        overrideChildFab.setOnClickListener(
-                view -> startActivity(new Intent(CoinFlipActivity.this, ChildQueueActivity.class)));
+        overrideChildFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //start intent (open popup)
+                Intent intent = new Intent(getApplicationContext(), ChildQueueActivity.class);
+                intent.putExtra("task_name", taskName);
+                startActivity(intent);
+            }
+        });
 
         //initialize singleton instance//get shared preferences
-        coinFlipHistory = new CoinFlipHistory(TaskManager.DEFAULT_TASK.getName());
+        coinFlipHistory = new CoinFlipHistory(taskName);
         childManager = new ChildManager();
 
         coin = (ImageView) findViewById(R.id.coinImgView);
@@ -84,7 +100,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         coinRBsGroup.setVisibility(View.INVISIBLE);
 
         // pick up a child
-        childrenQueue = new ChildrenQueue(TaskManager.DEFAULT_TASK.getName());
+        childrenQueue = new ChildrenQueue(taskName);
 
         // Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
         Toast.makeText(CoinFlipActivity.this, "Current Turn:" + childrenQueue.getSelectedChild().getName(), Toast.LENGTH_SHORT).show();
@@ -101,9 +117,14 @@ public class CoinFlipActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int choiceID) {
                 switch (choiceID) {
-                    case R.id.headsRB: childChoice = 0; break;
-                    case R.id.tailsRB: childChoice = 1; break;
-                    default: break;
+                    case R.id.headsRB:
+                        childChoice = 0;
+                        break;
+                    case R.id.tailsRB:
+                        childChoice = 1;
+                        break;
+                    default:
+                        break;
                 }
             }
         });
@@ -149,15 +170,17 @@ public class CoinFlipActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //launch history page
-                Intent intentHistory = new Intent(CoinFlipActivity.this, TossHistoryActivity.class);
-                startActivity(intentHistory);
+                Intent intent = new Intent(getApplicationContext(), TossHistoryActivity.class);
+                intent.putExtra("task_name", taskName);
+                startActivity(intent);
             }
         });
     }
-    protected void onStart(){
+
+    protected void onStart() {
         super.onStart();
-        childrenQueue = new ChildrenQueue(TaskManager.DEFAULT_TASK.getName());
-        coinFlipHistory = new CoinFlipHistory(TaskManager.DEFAULT_TASK.getName());
+        childrenQueue = new ChildrenQueue(taskName);
+        coinFlipHistory = new CoinFlipHistory(taskName);
 
         if (childrenQueue.getSelectedChild() != ChildManager.DEFAULT_CHILD) {
             childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
@@ -167,8 +190,11 @@ public class CoinFlipActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        childrenQueue = new ChildrenQueue(TaskManager.DEFAULT_TASK.getName());
-        childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
+        childrenQueue = new ChildrenQueue(taskName);
+        coinFlipHistory = new CoinFlipHistory(taskName);
+        if (childrenQueue.getSelectedChild() != ChildManager.DEFAULT_CHILD) {
+            childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
+        }
     }
 
     private void initSounds() {
@@ -217,7 +243,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 coin.startAnimation(fadeIn);
                 tossResultTv.setText(tossResultText);
                 // add result to records
-                if(isChildPickMode && childrenQueue.getSelectedChild() != null) {
+                if (isChildPickMode && childrenQueue.getSelectedChild() != null) {
                     assert childrenQueue.getSelectedChild() != null;
                     CoinFlip flip = new CoinFlip(childrenQueue.getSelectedChild().getName(), childChoice, tossResultNum);
                     coinFlipHistory.addFlipRecord(flip);

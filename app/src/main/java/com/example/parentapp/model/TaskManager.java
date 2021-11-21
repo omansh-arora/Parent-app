@@ -16,9 +16,9 @@ public class TaskManager {
         LocalStorage.getInstance().saveTasks(tasks);
     }
 
-    public void deleteTask(int taskIndex) {
-        tasks.remove(taskIndex);
-        //LocalStorage.getInstance().saveChildren(children);
+    public void deleteTask(Task task) {
+        tasks.remove(task);
+        LocalStorage.getInstance().saveTasks(tasks);
     }
 
     public List<Task> getTasks() {

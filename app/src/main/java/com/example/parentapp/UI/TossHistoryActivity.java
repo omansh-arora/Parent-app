@@ -10,6 +10,7 @@ import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipHistory;
 import com.example.parentapp.model.TaskManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ public class TossHistoryActivity extends AppCompatActivity {
 
     private CoinFlipHistory coinFlipHistory;
     private List<CoinFlip> gamesList;
-
+    String taskName = TaskManager.DEFAULT_TASK.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,14 @@ public class TossHistoryActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("View All Flips");
 
-        coinFlipHistory = new CoinFlipHistory(TaskManager.DEFAULT_TASK.getName());
+        // get current task
+        Intent intent = getIntent();
+        taskName = intent.getStringExtra("task_name");
+        if (taskName == null) {
+            taskName = TaskManager.DEFAULT_TASK.getName();
+        }
+
+        coinFlipHistory = new CoinFlipHistory(taskName);
         gamesList = coinFlipHistory.getFlips();
         populateListView();
     }

@@ -1,5 +1,7 @@
 package com.example.parentapp.model;
 
+import java.util.Objects;
+
 public class Task {
 
     private String name;
@@ -19,4 +21,16 @@ public class Task {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return name.equals(task.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }

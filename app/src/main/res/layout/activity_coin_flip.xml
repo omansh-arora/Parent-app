@@ -19,6 +19,16 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/currentTaskTv"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/coiny"
+                android:gravity="center"
+                android:textColor="@color/baby_purple"
+                android:textSize="30sp" />
+
+            <TextView
                 android:id="@+id/tossResultTv"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -27,7 +37,7 @@
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/baby_purple"
-                android:textSize="35sp" />
+                android:textSize="30sp" />
 
             <ImageView
                 android:id="@+id/coinImgView"

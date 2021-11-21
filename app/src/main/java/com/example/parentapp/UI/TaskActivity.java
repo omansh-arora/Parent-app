@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,6 +50,8 @@ public class TaskActivity extends AppCompatActivity {
 
         //load listview
         populateListView();
+
+        registerClickCallback();
     }
 
 
@@ -59,6 +62,21 @@ public class TaskActivity extends AppCompatActivity {
         //configure the list view
         ListView list = (ListView) findViewById(R.id.tasksLv);
         list.setAdapter(adapter);
+    }
+
+    /*** register click event when a child item is clicked in the listview  **/
+    private void registerClickCallback() {
+
+        ListView list = (ListView) findViewById(R.id.tasksLv);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                //start intent (open popup)
+                Intent intent = new Intent(getApplicationContext(), ViewTaskWindowActivity.class);
+                intent.putExtra("task_name", taskManager.getTasks().get(position).getName());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
