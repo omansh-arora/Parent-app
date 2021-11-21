@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.parentapp.R;
@@ -60,6 +61,9 @@ public class ChildrenActivity extends AppCompatActivity {
     }
     protected void onStart() {
 
+
+        Toast.makeText(ChildrenActivity.this, "onStart() ", Toast.LENGTH_SHORT).show();
+
         childManager = new ChildManager();
         // show all added children
         populateListView();
@@ -71,6 +75,7 @@ public class ChildrenActivity extends AppCompatActivity {
     }
 
 
+
     /*** Setup Array Adapter and Display child in listView **/
     private void populateListView() {
         //build adapter
@@ -79,6 +84,8 @@ public class ChildrenActivity extends AppCompatActivity {
         //configure the list view
         ListView list = (ListView) findViewById(R.id.listAllChildren);
         list.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
 
     }
 

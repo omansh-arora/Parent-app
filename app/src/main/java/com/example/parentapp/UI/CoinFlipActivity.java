@@ -25,7 +25,8 @@ import com.example.parentapp.R;
 import com.example.parentapp.model.ChildManager;
 import com.example.parentapp.model.ChildrenQueue;
 import com.example.parentapp.model.CoinFlip;
-import com.example.parentapp.model.CoinFlipManager;
+import com.example.parentapp.model.CoinFlipHistory;
+import com.example.parentapp.model.TaskManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Random;
@@ -43,7 +44,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     String tossResultText;
     private MediaPlayer mediaPlayer;
 
-    private CoinFlipManager coinFlipManager;
+    private CoinFlipHistory coinFlipHistory;
     private ChildManager childManager;
     private ChildrenQueue childrenQueue;
 
@@ -68,7 +69,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 view -> startActivity(new Intent(CoinFlipActivity.this, ChildQueueActivity.class)));
 
         //initialize singleton instance//get shared preferences
-        coinFlipManager = new CoinFlipManager();
+        coinFlipHistory = new CoinFlipHistory(TaskManager.DEFAULT_TASK.getName());
         childManager = new ChildManager();
 
         coin = (ImageView) findViewById(R.id.coinImgView);
@@ -83,7 +84,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         coinRBsGroup.setVisibility(View.INVISIBLE);
 
         // pick up a child
-        childrenQueue = new ChildrenQueue();
+        childrenQueue = new ChildrenQueue(TaskManager.DEFAULT_TASK.getName());
 
         // Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
         Toast.makeText(CoinFlipActivity.this, "Current Turn:" + childrenQueue.getSelectedChild().getName(), Toast.LENGTH_SHORT).show();
@@ -155,8 +156,8 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
     protected void onStart(){
         super.onStart();
-        childrenQueue = new ChildrenQueue();
-        coinFlipManager = new CoinFlipManager();
+        childrenQueue = new ChildrenQueue(TaskManager.DEFAULT_TASK.getName());
+        coinFlipHistory = new CoinFlipHistory(TaskManager.DEFAULT_TASK.getName());
 
         if (childrenQueue.getSelectedChild() != ChildManager.DEFAULT_CHILD) {
             childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
@@ -166,7 +167,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        childrenQueue = new ChildrenQueue();
+        childrenQueue = new ChildrenQueue(TaskManager.DEFAULT_TASK.getName());
         childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
     }
 
@@ -219,7 +220,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                 if(isChildPickMode && childrenQueue.getSelectedChild() != null) {
                     assert childrenQueue.getSelectedChild() != null;
                     CoinFlip flip = new CoinFlip(childrenQueue.getSelectedChild().getName(), childChoice, tossResultNum);
-                    coinFlipManager.addFlipRecord(flip);
+                    coinFlipHistory.addFlipRecord(flip);
                 }
 
                 if (childrenQueue.getNextChild() == childManager.DEFAULT_CHILD) {

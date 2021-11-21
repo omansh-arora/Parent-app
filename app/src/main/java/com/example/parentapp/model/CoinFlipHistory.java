@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * As a parent...
- *
+ * <p>
  * If there are no configured children, I want to have the app skip allowing someone
  * to pick heads or tails and instead just flip the coin.
  * It is critical that the flip be random (i.e., not repeat the same result each time the app is started!)
@@ -17,26 +17,23 @@ import java.util.List;
  * easy to understand (at a glance) display of if the "picker" won.
  * For example, show a check mark icon if they won, X if they lost
  */
-public class CoinFlipManager implements Iterable<CoinFlip> {
+public class CoinFlipHistory {
 
     public List<CoinFlip> history;
+    private String taskName;
 
-    public CoinFlipManager() {
-        history = LocalStorage.getInstance().getHistory();
+    public CoinFlipHistory(String taskName) {
+        this.taskName = taskName;
+        history = LocalStorage.getInstance().getHistory(taskName);
     }
 
     public void addFlipRecord(CoinFlip coinFlip) {
         history.add(coinFlip);
-        LocalStorage.getInstance().saveHistory(history);
+        LocalStorage.getInstance().saveHistory(taskName, history);
     }
 
     public List<CoinFlip> getFlips() {
         return history;
-    }
-
-    @Override
-    public Iterator<CoinFlip> iterator() {
-        return history.iterator();
     }
 
 }

@@ -12,18 +12,20 @@ public class ChildrenQueue {
 
     private List<Child> children;
     private Child selectedChild;
+    private String taskName;
 
-    public ChildrenQueue() {
-        children = LocalStorage.getInstance().getChildrenQueue();
+    public ChildrenQueue(String taskName) {
+        this.taskName = taskName;
+        children = LocalStorage.getInstance().getChildrenQueue(taskName);
         if (children.size() == 0) {
             children = new ArrayList<>(LocalStorage.getInstance().getChildren());
         }
-        selectedChild = LocalStorage.getInstance().getSelectedChild();
+        selectedChild = LocalStorage.getInstance().getSelectedChild(taskName);
     }
 
     public void setSelectedChild(int index) {
         selectedChild = children.get(index);
-        LocalStorage.getInstance().saveSelectedChild(selectedChild);
+        LocalStorage.getInstance().saveSelectedChild(taskName, selectedChild);
     }
 
     public Child getSelectedChild() {
@@ -32,14 +34,14 @@ public class ChildrenQueue {
 
     public void cleanSelection() {
         selectedChild = ChildManager.DEFAULT_CHILD;
-        LocalStorage.getInstance().saveSelectedChild(selectedChild);
+        LocalStorage.getInstance().saveSelectedChild(taskName, selectedChild);
     }
 
     private void moveToEnd() {
         if (selectedChild != ChildManager.DEFAULT_CHILD) {
             children.remove(selectedChild);
             children.add(selectedChild);
-            LocalStorage.getInstance().saveChildrenQueue(children);
+            LocalStorage.getInstance().saveChildrenQueue(taskName, children);
         }
     }
 

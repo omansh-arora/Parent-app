@@ -3,7 +3,8 @@ package com.example.parentapp.UI;
 import com.example.parentapp.R;
 import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildrenQueue;
-import com.example.parentapp.model.CoinFlipManager;
+import com.example.parentapp.model.CoinFlipHistory;
+import com.example.parentapp.model.TaskManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +26,7 @@ public class ChildQueueActivity extends AppCompatActivity {
 
     private List<Child> children;
     ChildrenQueue childrenQueue;
-    private CoinFlipManager coinFlipManager;
+    private CoinFlipHistory coinFlipHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,8 @@ public class ChildQueueActivity extends AppCompatActivity {
         getWindow().setLayout((int) (width * .85), (int) (height * .85));
 
         //init coin flip manager
-        coinFlipManager = new CoinFlipManager();
-        childrenQueue = new ChildrenQueue();
+        coinFlipHistory = new CoinFlipHistory(TaskManager.DEFAULT_TASK.getName());
+        childrenQueue = new ChildrenQueue(TaskManager.DEFAULT_TASK.getName());
         children = childrenQueue.getChildren();
         populateListView();
         registerClickCallback();

@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.parentapp.R;
 import com.example.parentapp.model.CoinFlip;
-import com.example.parentapp.model.CoinFlipManager;
+import com.example.parentapp.model.CoinFlipHistory;
+import com.example.parentapp.model.TaskManager;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,7 @@ import java.util.List;
 
 public class TossHistoryActivity extends AppCompatActivity {
 
-    private CoinFlipManager coinFlipManager;
+    private CoinFlipHistory coinFlipHistory;
     private List<CoinFlip> gamesList;
 
 
@@ -33,8 +35,8 @@ public class TossHistoryActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("View All Flips");
 
-        coinFlipManager = new CoinFlipManager();
-        gamesList = coinFlipManager.getFlips();
+        coinFlipHistory = new CoinFlipHistory(TaskManager.DEFAULT_TASK.getName());
+        gamesList = coinFlipHistory.getFlips();
         populateListView();
     }
 

@@ -16,14 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
+            android:name=".UI.AddTaskActivity"
+            android:parentActivityName=".UI.TaskActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.TaskActivity"
             android:exported="false"
             android:parentActivityName=".UI.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.ChildQueueActivity"
-            android:theme="@style/Theme.ParentApp.CustomPopUp"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.ParentApp.CustomPopUp" />
         <activity
             android:name=".UI.ChildrenActivity"
             android:exported="false"
