@@ -59,7 +59,9 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //start Edit Task Activity
-
+                // link to add/update child activity page when a child is clicked
+                Intent intent = AddTaskActivity.makeIntent(ViewTaskWindowActivity.this, "Edit", taskName);
+                startActivity(intent);
             }
 
         });

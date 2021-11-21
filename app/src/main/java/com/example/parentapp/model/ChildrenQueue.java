@@ -17,9 +17,6 @@ public class ChildrenQueue {
     public ChildrenQueue(String taskName) {
         this.taskName = taskName;
         children = LocalStorage.getInstance().getChildrenQueue(taskName);
-        if (children.size() == 0) {
-            children = new ArrayList<>(LocalStorage.getInstance().getChildren());
-        }
         selectedChild = LocalStorage.getInstance().getSelectedChild(taskName);
     }
 

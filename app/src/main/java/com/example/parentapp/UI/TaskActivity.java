@@ -16,9 +16,12 @@ import android.widget.TextView;
 import com.example.parentapp.R;
 import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
+import com.example.parentapp.model.LocalStorage;
 import com.example.parentapp.model.Task;
 import com.example.parentapp.model.TaskManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -43,7 +46,7 @@ public class TaskActivity extends AppCompatActivity {
         addTaskActivityFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddTaskActivity.makeIntent(TaskActivity.this, "Add", 0);
+                Intent intent = AddTaskActivity.makeIntent(TaskActivity.this, "Add", taskManager.DEFAULT_TASK.getName() );
                 startActivity(intent);
             }
         });
@@ -111,6 +114,9 @@ public class TaskActivity extends AppCompatActivity {
             // build output String
             TextView outputTV = (TextView) itemView.findViewById(R.id.item_task_txt);
             outputTV.setText(currentTask.getName());
+
+            TextView selectedChildTv = (TextView) itemView.findViewById(R.id.selected_child_Tv) ;
+            selectedChildTv.setText(LocalStorage.getInstance().getSelectedChild(currentTask.getName()).getName());
 
             return itemView;
         }

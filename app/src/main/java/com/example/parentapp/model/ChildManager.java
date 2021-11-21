@@ -18,12 +18,13 @@ public class ChildManager implements Iterable<Child> {
 
     public void addNewChild(Child child) {
         children.add(child);
-        LocalStorage.getInstance().saveChildren(children);
+        LocalStorage.getInstance().addNewChild(child);
     }
 
     public void deleteChild(int childIndex) {
         children.remove(childIndex);
         LocalStorage.getInstance().saveChildren(children);
+        // TODO: remove child from all existing queues, and selectedChildren
     }
 
     @Override

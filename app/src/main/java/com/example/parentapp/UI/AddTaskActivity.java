@@ -21,7 +21,7 @@ import com.example.parentapp.model.TaskManager;
 public class AddTaskActivity extends AppCompatActivity {
 
     public static final String ACTION_NAME = "Action";
-    public static final String TASK_POSITION = "Task Index";
+    public static final String TASK_NAME = "Task Name";
     private TaskManager taskManager;
     private String formAction;
     private Integer taskClickedIndex = 0;
@@ -29,7 +29,6 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private EditText taskNameEt;
     private Button saveTaskBtn;
-    private Button deleteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +38,15 @@ public class AddTaskActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Configure A Task");
 
+        extractDataFromIntent();
+
         //init child manager
         taskManager = new TaskManager();
+        Task currentTask = new Task(taskName);
 
         //get name
         taskNameEt = (EditText) findViewById(R.id.taskNameET);
         saveTaskBtn = (Button) findViewById(R.id.addChildBtn);
-        deleteBtn = (Button) findViewById(R.id.deleteChildBtn);
 
         saveTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,9 +59,9 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
 
                 if (validate) {
-                    taskName = taskNameEt.getText().toString();
+                    String newTaskName = taskNameEt.getText().toString();
                     //Toast.makeText(AddChildActivity.this, "Gender: " + gender, Toast.LENGTH_SHORT).show();
-                    configTask(taskName);
+                    configTask(newTaskName);
                     finish();
                 }
 
@@ -68,17 +69,18 @@ public class AddTaskActivity extends AppCompatActivity {
 
         });
 
-        extractDataFromIntent();
+
     }
 
-    private void configTask(String taskName){
+    private void configTask(String name){
         switch (formAction) {
             case "Add":
-                Task task = new Task(taskName);
-                taskManager.addNewTask(task);
+                taskManager.addNewTask(name);
                 break;
             case "Edit":
                 //to do..
+                // (old , new)
+                taskManager.renameTask(taskName, name);
                 break;
             default:
                 break;
@@ -88,13 +90,13 @@ public class AddTaskActivity extends AppCompatActivity {
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         formAction = intent.getStringExtra(ACTION_NAME);
-        taskClickedIndex = intent.getIntExtra(TASK_POSITION, 0);
+        taskName = intent.getStringExtra(TASK_NAME);
     }
 
-    public static Intent makeIntent(Context context, String actionName, int position) {
+    public static Intent makeIntent(Context context, String actionName, String taskName) {
         Intent intent = new Intent(context, AddTaskActivity.class);
         intent.putExtra(ACTION_NAME, actionName);
-        intent.putExtra(TASK_POSITION, position);
+        intent.putExtra(TASK_NAME, taskName);
         return intent;
     }
 

@@ -51,15 +51,6 @@
                 android:gravity="center"
                 android:text="Add" />
 
-            <Button
-                android:id="@+id/deleteChildBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="2"
-                android:backgroundTint="@color/red"
-                android:fontFamily="@font/coiny"
-                android:text="Delete" />
         </LinearLayout>
 
     </LinearLayout>

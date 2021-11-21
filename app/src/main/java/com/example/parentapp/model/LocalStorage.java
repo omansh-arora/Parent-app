@@ -46,7 +46,6 @@ public class LocalStorage {
     }
 
     private void loadQueues() {
-
         SharedPreferences prefs = appContext.getSharedPreferences(PREFS_QUEUES, MODE_PRIVATE);
         String json = prefs.getString(PREFS_QUEUES, "");
         queues = new Gson().fromJson(json, new TypeToken<Map<String, List<Child>>>() {
@@ -55,7 +54,6 @@ public class LocalStorage {
     }
 
     private void loadHistories() {
-
         SharedPreferences prefs = appContext.getSharedPreferences(PREFS_HISTORIES, MODE_PRIVATE);
         String json = prefs.getString(PREFS_HISTORIES, "");
         histories = new Gson().fromJson(json, new TypeToken<Map<String, List<CoinFlip>>>() {
@@ -89,14 +87,18 @@ public class LocalStorage {
         return histories.get(taskName);
     }
 
-    public void saveHistory(String taskName, List<CoinFlip> history) {
-        histories.put(taskName, history);
+    private void saveHistories() {
         SharedPreferences prefs = appContext.getSharedPreferences(PREFS_HISTORIES, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(histories);
         editor.putString(PREFS_HISTORIES, json);
         editor.commit();
+    }
+
+    public void saveHistory(String taskName, List<CoinFlip> history) {
+        histories.put(taskName, history);
+        saveHistories();
     }
 
     public List<Child> getChildren() {
@@ -124,14 +126,18 @@ public class LocalStorage {
         return queues.get(taskName);
     }
 
-    public void saveChildrenQueue(String taskName, List<Child> children) {
-        queues.put(taskName, children);
+    private void saveQueues() {
         SharedPreferences prefs = appContext.getSharedPreferences(PREFS_QUEUES, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(queues);
         editor.putString(PREFS_QUEUES, json);
         editor.commit();
+    }
+
+    public void saveChildrenQueue(String taskName, List<Child> children) {
+        queues.put(taskName, children);
+        saveQueues();
     }
 
     public Child getSelectedChild(String taskName) {
@@ -141,14 +147,18 @@ public class LocalStorage {
         return selected_children.get(taskName);
     }
 
-    public void saveSelectedChild(String taskName, Child child) {
-        selected_children.put(taskName, child);
+    private void saveSelectedChildren() {
         SharedPreferences prefs = appContext.getSharedPreferences(PREFS_SELECTED_CHILDREN, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(selected_children);
         editor.putString(PREFS_SELECTED_CHILDREN, json);
         editor.commit();
+    }
+
+    public void saveSelectedChild(String taskName, Child child) {
+        selected_children.put(taskName, child);
+        saveSelectedChildren();
     }
 
     public List<Task> getTasks() {
@@ -160,17 +170,41 @@ public class LocalStorage {
         return tasks;
     }
 
-    public void saveTasks(List<Task> tasks) {
-        taskNames = new ArrayList<>();
-        for (Task task : tasks){
-            taskNames.add(task.getName());
-        }
-
+    private void saveTaskNames() {
         SharedPreferences prefs = appContext.getSharedPreferences(PREFS_TASKS, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(taskNames);
         editor.putString(PREFS_TASKS, json);
         editor.commit();
+    }
+
+    public void saveTasks(List<Task> tasks) {
+        taskNames = new ArrayList<>();
+        for (Task task : tasks){
+            taskNames.add(task.getName());
+        }
+        saveTaskNames();
+    }
+
+    public void deleteTask(String taskName){
+        histories.remove(taskName);
+        saveHistories();
+        queues.remove(taskName);
+        saveQueues();
+        selected_children.remove(taskName);
+        saveSelectedChildren();
+        taskNames.remove(taskName);
+        saveTaskNames();
+    }
+
+    public void addNewChild(Child child) {
+        for (String taskName : queues.keySet()) {
+            queues.get(taskName).add(child);
+        }
+        saveQueues();
+        List<Child> children = getChildren();
+        children.add(child);
+        saveChildren(children);
     }
 }

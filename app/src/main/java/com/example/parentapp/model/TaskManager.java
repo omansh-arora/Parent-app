@@ -11,14 +11,19 @@ public class TaskManager {
         this.tasks = LocalStorage.getInstance().getTasks();
     }
 
-    public void addNewTask(Task task) {
-        tasks.add(task);
+    public void addNewTask(String taskName) {
+        tasks.add(new Task(taskName));
         LocalStorage.getInstance().saveTasks(tasks);
     }
 
     public void deleteTask(Task task) {
         tasks.remove(task);
-        LocalStorage.getInstance().saveTasks(tasks);
+        LocalStorage.getInstance().deleteTask(task.getName());
+    }
+
+    public void deleteTask(String taskName) {
+        tasks.remove(new Task(taskName));
+        LocalStorage.getInstance().deleteTask(taskName);
     }
 
     public List<Task> getTasks() {
@@ -26,4 +31,14 @@ public class TaskManager {
         return tasks;
     }
 
+    public void renameTask(String oldName, String newName) {
+        List<Child> oldChildrenQueue = LocalStorage.getInstance().getChildrenQueue(oldName);
+        List<CoinFlip> history = LocalStorage.getInstance().getHistory(oldName);
+        Child selectedChild = LocalStorage.getInstance().getSelectedChild(oldName);
+        LocalStorage.getInstance().saveChildrenQueue(newName,oldChildrenQueue);
+        LocalStorage.getInstance().saveHistory(newName,history);
+        LocalStorage.getInstance().saveSelectedChild(newName, selectedChild);
+        deleteTask(oldName);
+        addNewTask(newName);
+    }
 }
