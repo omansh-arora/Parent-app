@@ -1,5 +1,7 @@
 package com.example.parentapp.model;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,6 +62,18 @@ public class ChildManager implements Iterable<Child> {
         nextChildID = 0;
 
     }
+
+    public void setChildPic(int index, String uri){
+
+        childrenList.get(index).setPicture(uri);
+
+    }
+    public String getChildPic(int index){
+
+       return childrenList.get(index).getPicture();
+
+    }
+
 
     @Override
     public Iterator<Child> iterator() {

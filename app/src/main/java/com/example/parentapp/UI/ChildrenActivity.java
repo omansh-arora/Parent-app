@@ -3,6 +3,7 @@ package com.example.parentapp.UI;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.parentapp.model.Child;
@@ -31,6 +32,7 @@ import java.util.List;
 
 public class ChildrenActivity extends AppCompatActivity {
 
+
     private FloatingActionButton addChildActivityFab;
     private ChildManager childManager;
     private List<Child> childrenList;
@@ -39,6 +41,9 @@ public class ChildrenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        SharedPreferences preferences = getSharedPreferences(PREFS_NAME,0);
+//        preferences.edit().remove("ChildManager").commit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children);
 
@@ -109,11 +114,10 @@ public class ChildrenActivity extends AppCompatActivity {
             Child currentChild = childrenList.get(position);
 
             //fill the view
-            Integer imgResource;
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon);
-
-            imgResource = currentChild.getGender().equals("Boy") ? R.drawable.ic_baseline_child_boy_35 : R.drawable.ic_baseline_child_girl_35;
-            imageView.setImageResource(imgResource);
+            Uri imgPFP = Uri.parse(currentChild.getPicture());
+            ImageView imageView = itemView.findViewById(R.id.item_icon);
+            imageView.setImageURI(imgPFP);
+            
             imageView.setPadding(5,2,5,2);
 
             // build output String
