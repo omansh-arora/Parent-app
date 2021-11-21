@@ -57,21 +57,18 @@ public class ChildrenActivity extends AppCompatActivity {
         });
         populateListView();
 
-
     }
+
     protected void onStart() {
 
-
-        Toast.makeText(ChildrenActivity.this, "onStart() ", Toast.LENGTH_SHORT).show();
-
+        super.onStart();
+        //Toast.makeText(ChildrenActivity.this, "onStart() ", Toast.LENGTH_SHORT).show();
         childManager = new ChildManager();
         // show all added children
         populateListView();
 
         //register an event when a child is clicked in the listView
         registerClickCallback();
-        super.onStart();
-
     }
 
 
@@ -91,7 +88,7 @@ public class ChildrenActivity extends AppCompatActivity {
 
     private class ChildrenListAdapter extends ArrayAdapter<Child> {
         public ChildrenListAdapter() {
-            super(ChildrenActivity.this, R.layout.item_view, childrenList);
+            super(ChildrenActivity.this, R.layout.item_view, childManager.getChildren());
         }
 
         @NonNull
@@ -104,7 +101,7 @@ public class ChildrenActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.item_view, parent, false);
             }
 
-            Child currentChild = childrenList.get(position);
+            Child currentChild = childManager.getChildren().get(position);
 
             //fill the view
             Integer imgResource;

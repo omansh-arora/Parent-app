@@ -8,12 +8,16 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parentapp.R;
+import com.example.parentapp.model.LocalStorage;
 import com.example.parentapp.model.Task;
 import com.example.parentapp.model.TaskManager;
+
+import org.w3c.dom.Text;
 
 public class ViewTaskWindowActivity extends AppCompatActivity {
 
@@ -21,8 +25,8 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
     private TextView taskNameTv;
     private Button editBtn;
     private Button deleteBtn;
-    private Button coinFlipBtn;
-    private TextView selectedChildTv;
+    private ImageButton coinFlipBtn;
+    private TextView selectedChildNameTv;
     private Task task;
     private TaskManager taskManager;
 
@@ -38,7 +42,6 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
         int height = dm.heightPixels;
         getWindow().setLayout((int) (width * .85), (int) (height * .85));
 
-
         //get task name via Intent
         Intent intent = getIntent();
         taskName = intent.getStringExtra("task_name");
@@ -53,7 +56,10 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
 
         editBtn = (Button) findViewById(R.id.editBtn);
         deleteBtn = (Button) findViewById(R.id.deleteBtn);
-        coinFlipBtn = (Button) findViewById(R.id.coinFlipBtn);
+        coinFlipBtn = (ImageButton) findViewById(R.id.coinFlipBtn);
+        selectedChildNameTv = (TextView) findViewById(R.id.selectedChildNameTv);
+        selectedChildNameTv.setText(LocalStorage.getInstance().getSelectedChild(taskName).getName());
+
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override

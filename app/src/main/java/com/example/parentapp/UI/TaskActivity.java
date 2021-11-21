@@ -113,7 +113,8 @@ public class TaskActivity extends AppCompatActivity {
 
             // build output String
             TextView outputTV = (TextView) itemView.findViewById(R.id.item_task_txt);
-            outputTV.setText(currentTask.getName());
+            //        currentTaskTv.setText("Task: " + (taskName.length() > 10 ? taskName.substring(0, 10) + "..." : taskName));
+            outputTV.setText(currentTask.getName().length() > 20 ? currentTask.getName().substring(0,20) + "..." :  currentTask.getName());
 
             TextView selectedChildTv = (TextView) itemView.findViewById(R.id.selected_child_Tv) ;
             selectedChildTv.setText(LocalStorage.getInstance().getSelectedChild(currentTask.getName()).getName());

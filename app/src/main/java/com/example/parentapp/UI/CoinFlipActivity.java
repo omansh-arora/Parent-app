@@ -103,7 +103,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         childrenQueue = new ChildrenQueue(taskName);
 
         // Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
-        Toast.makeText(CoinFlipActivity.this, "Current Turn:" + childrenQueue.getSelectedChild().getName(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(CoinFlipActivity.this, "Current Turn:" + childrenQueue.getSelectedChild().getName(), Toast.LENGTH_SHORT).show();
 
         if (childrenQueue.getSelectedChild() != childManager.DEFAULT_CHILD) {
             childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
@@ -150,7 +150,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                             return;
                         }
                     }
-                    childTurnTv.setText(childrenQueue.getSelectedChild().getName());
+                    childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
                     childTurnTv.setVisibility(View.VISIBLE);
                     coinRBsGroup.setVisibility(View.VISIBLE);
                     //load override button
