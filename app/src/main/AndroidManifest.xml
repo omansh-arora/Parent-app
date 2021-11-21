@@ -19,9 +19,6 @@
             android:name=".UI.addImageActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.HelpActivity"
-            android:exported="false" />
-        <activity
             android:name=".UI.ChildrenActivity"
             android:exported="false"
             android:label="@string/title_activity_children"
