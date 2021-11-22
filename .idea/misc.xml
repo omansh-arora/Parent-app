@@ -5,13 +5,21 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="1.6336633663366336" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/drawable/ic_baseline_child_boy_35.xml" value="0.19270833333333334" />
+        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_add_child.xml" value="0.22" />
+        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_add_image.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_add_image.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_children.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_coin_flip.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_main.xml" value="0.18" />
+        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_help.xml" value="0.16354166666666667" />
+        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_main.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_select_child.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_timer_screen.xml" value="0.2" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_toss_history.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/child_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/content_children.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/game_item.xml" value="0.16354166666666667" />
+        <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/item_view.xml" value="0.16354166666666667" />
+
         <entry key="app/src/main/res/layout/activity_add_task.xml" value="0.1354679802955665" />
         <entry key="app/src/main/res/layout/activity_children.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/activity_children_picker.xml" value="0.22916666666666666" />

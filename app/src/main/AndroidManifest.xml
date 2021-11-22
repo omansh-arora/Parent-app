@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
+            android:name=".UI.addImageActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.ViewTaskWindowActivity"
             android:theme="@style/Theme.ParentApp.CustomPopUp"
             android:exported="false" />
@@ -56,6 +59,10 @@
             android:name=".UI.TimerScreen"
             android:exported="true"
             android:parentActivityName=".UI.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.HelpActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.MainActivity"

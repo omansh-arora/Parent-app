@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.addImageActivity">
+
+    <ImageView
+        android:id="@+id/imgPFPFinal"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toTopOf="@+id/bt_setImageFinal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/bt_setImageFinal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65999997"
+        android:fontFamily="@font/coiny"
+        />
+
+    <Button
+        android:id="@+id/bt_setImageReturn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Return"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_delImage"
+        app:layout_constraintVertical_bias="0.279"
+        android:fontFamily="@font/coiny"
+
+        />
+
+    <Button
+        android:id="@+id/bt_delImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_setImageFinal"
+        android:fontFamily="@font/coiny"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

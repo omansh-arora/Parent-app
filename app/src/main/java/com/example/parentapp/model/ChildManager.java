@@ -1,5 +1,7 @@
 package com.example.parentapp.model;
 
+import android.net.Uri;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,6 +28,18 @@ public class ChildManager implements Iterable<Child> {
         LocalStorage.getInstance().saveChildren(children);
         // TODO: remove child from all existing queues, and selectedChildren
     }
+
+    public void setChildPic(int index, String uri){
+
+        children.get(index).setPicture(uri);
+
+    }
+    public String getChildPic(int index){
+
+       return children.get(index).getPicture();
+
+    }
+
 
     @Override
     public Iterator<Child> iterator() {

@@ -15,20 +15,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingTop="30dp"
-            android:paddingRight="20dp"
-            android:orientation="vertical">
+            android:paddingRight="20dp">
 
             <TextView
                 android:id="@+id/AddChildLabelTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:fontFamily="@font/coiny"
+                android:gravity="center"
+                android:text="Add a Child"
                 android:textColor="@color/baby_blue"
-                android:textSize="35sp"
-                android:text="Add a Child" />
+                android:textSize="35sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,37 +102,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_weight="1" >
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/genderGirlRb"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/boogaloo"
-                        android:textColor="@color/baby_pink"
-                        android:textSize="20dp"
                         android:layout_weight="1"
-                        android:text="Girl" />
+                        android:fontFamily="@font/boogaloo"
+                        android:text="Girl"
+                        android:textColor="@color/baby_pink"
+                        android:textSize="20dp" />
 
                     <RadioButton
                         android:id="@+id/genderBoyRb"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/boogaloo"
-                        android:textColor="@color/baby_blue"
-                        android:textSize="20dp"
                         android:layout_weight="2"
-                        android:text="Boy" />
+                        android:fontFamily="@font/boogaloo"
+                        android:text="Boy"
+                        android:textColor="@color/baby_blue"
+                        android:textSize="20dp" />
                 </RadioGroup>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingTop="15dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingTop="20dp">
 
                 <Button
                     android:id="@+id/addChildBtn"
@@ -155,6 +155,21 @@
                     android:fontFamily="@font/coiny"
                     android:text="Delete" />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_setPFP"
+                android:layout_width="370dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/coiny"
+                android:text="Change profile picture" />
+
+            <ImageView
+                android:paddingTop="20dp"
+                android:id="@+id/imgPFP"
+                android:layout_width="371dp"
+                android:layout_height="200dp"
+                android:layout_weight="0"
+                tools:srcCompat="@tools:sample/avatars" />
 
         </LinearLayout>
 

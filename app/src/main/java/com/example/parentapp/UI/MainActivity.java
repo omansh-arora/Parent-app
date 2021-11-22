@@ -13,7 +13,7 @@ import com.example.parentapp.model.LocalStorage;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button flipCoinActivityBtn, timerActivityBtn, addChildActivityBtn, taskActivityBtn;
+    private Button flipCoinActivityBtn, timerActivityBtn, addChildActivityBtn, taskActivityBtn, helpBtn;
     private LocalStorage localStorage;
 
     @Override
@@ -26,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
         addChildActivityBtn = (Button) findViewById(R.id.btnAddChild);
         flipCoinActivityBtn = (Button) findViewById(R.id.btnFlipCoin);
 
+        helpBtn = findViewById(R.id.btnHelp);
+
+        helpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent help = new Intent(MainActivity.this,HelpActivity.class);
+                startActivity(help);
+            }
+        });
 
         addChildActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
