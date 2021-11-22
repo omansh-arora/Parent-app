@@ -68,6 +68,15 @@
                     android:textSize="16sp" />
 
                 <Button
+                    android:id="@+id/btnTask"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/coiny"
+                    android:backgroundTint="@color/baby_blue"
+                    android:text="Tasks"
+                    android:textSize="16sp" />
+
+                <Button
                     android:id="@+id/bt_help"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
