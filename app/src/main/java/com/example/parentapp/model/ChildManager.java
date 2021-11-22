@@ -31,12 +31,12 @@ public class ChildManager implements Iterable<Child> {
 
     public void setChildPic(int index, String uri){
 
-        childrenList.get(index).setPicture(uri);
+        children.get(index).setPicture(uri);
 
     }
     public String getChildPic(int index){
 
-       return childrenList.get(index).getPicture();
+       return children.get(index).getPicture();
 
     }
 

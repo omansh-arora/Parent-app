@@ -28,7 +28,6 @@ import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.gson.Gson;
-=======
 import com.example.parentapp.model.LocalStorage;
 
 import java.util.List;
@@ -171,7 +170,6 @@ public class AddChildActivity extends AppCompatActivity {
                 editChild.setAge(age);
                 editChild.setGender(gender);
                 editChild.setPicture(imageURI);
-                saveChildManager(childManager);
                 childManager.saveChildren();
 
                 break;
@@ -181,7 +179,7 @@ public class AddChildActivity extends AppCompatActivity {
 
     }
 
-    public void comfirmDelete(){
+    public void confirmDelete(){
         /*
         AlertDialog creation code token from: https://abhiandroid.com/ui/alertdialog
          */
@@ -244,7 +242,7 @@ public class AddChildActivity extends AppCompatActivity {
                 deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        comfirmDelete();
+                        confirmDelete();
                     }
                 });
 
