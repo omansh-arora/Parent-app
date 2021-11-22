@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.parentapp.R;
+import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.gson.Gson;
@@ -29,7 +30,7 @@ public class addImageActivity extends AppCompatActivity {
     private Button button_del;
     private static final String PREFS_NAME = "ChildPrefs";
     private ImageView pfp;
-    ChildManager cm;
+    ChildManager childManager;
     int childIndex;
     int mode = 0;
     String baseIMAGE;
@@ -39,15 +40,15 @@ public class addImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
 
-        Resources resources = this.getResources();
+        childManager = new ChildManager();
 
+        Resources resources = this.getResources();
         baseIMAGE = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
                 .authority(resources.getResourcePackageName(R.drawable.ic_default))
                 .appendPath(resources.getResourceTypeName(R.drawable.ic_default))
                 .appendPath(resources.getResourceEntryName(R.drawable.ic_default))
                 .build().toString();
-
 
         button_addImage = findViewById(R.id.bt_setImageFinal);
         button_return = findViewById(R.id.bt_setImageReturn);
@@ -59,15 +60,17 @@ public class addImageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.getStringExtra("mode").equals("Edit")){
             button_addImage.setText("Change image");
-
             childIndex = intent.getIntExtra("position",0);
-            cm = getChildManager(this);
-            pfp.setImageURI(Uri.parse(cm.getChildPic(childIndex)));
-            if (cm.getChildPic(childIndex).equals(baseIMAGE))
+
+            //childManager = getChildManager(this);
+            Child currentChild = childManager.getChildren().get(childIndex);
+
+            pfp.setImageURI(Uri.parse(currentChild.getPicture()));
+
+            if (currentChild.getPicture().equals(baseIMAGE))
                 button_del.setVisibility(View.INVISIBLE);
             else button_del.setVisibility(View.VISIBLE);
             mode = 1;
-
         }
 
         button_return.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +112,6 @@ public class addImageActivity extends AppCompatActivity {
                 .build().toString();
 
         if(getPFPUri(this)==Uri.parse(baseIMAGE)){
-
             button_del.setVisibility(View.INVISIBLE);
         }
         else button_del.setVisibility(View.VISIBLE);
@@ -118,8 +120,6 @@ public class addImageActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-
-
 
 
         if (resultCode == Activity.RESULT_OK) {

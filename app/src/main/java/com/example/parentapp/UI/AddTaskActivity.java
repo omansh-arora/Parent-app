@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.parentapp.R;
@@ -16,6 +18,8 @@ import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
 import com.example.parentapp.model.Task;
 import com.example.parentapp.model.TaskManager;
+
+import org.w3c.dom.Text;
 
 
 public class AddTaskActivity extends AppCompatActivity {
@@ -29,6 +33,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private EditText taskNameEt;
     private Button saveTaskBtn;
+    private TextView formTitleTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +49,11 @@ public class AddTaskActivity extends AppCompatActivity {
         taskManager = new TaskManager();
         Task currentTask = new Task(taskName);
 
-        //get name
+        //get UI fields
+
         taskNameEt = (EditText) findViewById(R.id.taskNameET);
         saveTaskBtn = (Button) findViewById(R.id.addChildBtn);
+        formTitleTv = (TextView) findViewById(R.id.taskFormTitleTv);
 
         saveTaskBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +77,21 @@ public class AddTaskActivity extends AppCompatActivity {
         });
 
 
+        initialInputFields();
+    }
+
+    private void initialInputFields() {
+        switch (formAction) {
+            case "Edit":
+                formTitleTv.setText("Edit a Task");
+                saveTaskBtn.setText("Update");
+                taskNameEt.setText(taskName);
+                break;
+            case "Add":
+                formTitleTv.setText("Add a Task");
+                break;
+        }
+
     }
 
     private void configTask(String name){
@@ -78,13 +100,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 taskManager.addNewTask(name);
                 break;
             case "Edit":
-                //to do..
-                // (old , new)
                 taskManager.renameTask(taskName, name);
                 break;
             default:
                 break;
         }
+
     }
 
     private void extractDataFromIntent() {

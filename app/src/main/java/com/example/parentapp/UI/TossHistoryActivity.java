@@ -34,6 +34,7 @@ public class TossHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_toss_history);
 
         ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         actionBar.setTitle("View All Flips");
 
         // get current task
@@ -77,7 +78,8 @@ public class TossHistoryActivity extends AppCompatActivity {
             //find the toss game to work with
             CoinFlip currentFlip = gamesList.get(position);
 
-            //fill the view
+
+            //fill the WIN/LOSE view
             ImageView imageView = (ImageView)itemView.findViewById(R.id.item_icon);
             Integer imgResource = currentFlip.getGameResult().equals("Win") ? R.drawable.ic_baseline_happy_35 : R.drawable.ic_baseline_mood_bad_35_pink;
             imageView.setImageResource(imgResource);

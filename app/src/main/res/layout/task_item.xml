@@ -19,7 +19,7 @@
             android:paddingRight="5dp"
             android:paddingBottom="5sp"
             android:textAlignment="viewStart"
-            android:textSize="30dp" />
+            android:textSize="27dp" />
 
         <TextView
             android:id="@+id/selected_child_Tv"
@@ -28,8 +28,10 @@
             android:layout_weight="1"
             android:fontFamily="@font/boogaloo"
             android:text="Default"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:textAlignment="textEnd"
-            android:textSize="18dp" />
+            android:textSize="25dp" />
 
 
     </LinearLayout>

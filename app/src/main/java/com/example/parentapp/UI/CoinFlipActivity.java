@@ -4,8 +4,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -35,8 +38,8 @@ import java.util.Random;
 public class CoinFlipActivity extends AppCompatActivity {
 
     public static final Random ranNum = new Random();
-    private ImageView coin;
     private TextView tossResultTv, childTurnTv, currentTaskTv;
+    private ImageView coin, selectedChildImgView;
     private RadioGroup coinRBsGroup;
     private Switch childPickModeSW;
     private Button tossHistoryBtn;
@@ -47,6 +50,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     private CoinFlipHistory coinFlipHistory;
     private ChildManager childManager;
     private ChildrenQueue childrenQueue;
+    String baseIMAGE;
 
     int childChoice;
     String taskName = TaskManager.DEFAULT_TASK.getName();
@@ -60,6 +64,14 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Flip Coin");
+
+        Resources resources = this.getResources();
+        baseIMAGE = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.ic_default))
+                .appendPath(resources.getResourceTypeName(R.drawable.ic_default))
+                .appendPath(resources.getResourceEntryName(R.drawable.ic_default))
+                .build().toString();
 
         // get current task
         Intent intent = getIntent();
@@ -96,14 +108,17 @@ public class CoinFlipActivity extends AppCompatActivity {
         //hide child custom pick section
         childTurnTv = (TextView) findViewById(R.id.childTurnTv);
         coinRBsGroup = (RadioGroup) findViewById(R.id.coinRBsGroup);
+        selectedChildImgView = (ImageView) findViewById(R.id.selectedChildImgView);
+
         childTurnTv.setVisibility(View.INVISIBLE);
         coinRBsGroup.setVisibility(View.INVISIBLE);
+        selectedChildImgView.setVisibility(View.INVISIBLE);
 
         // pick up a child
         childrenQueue = new ChildrenQueue(taskName);
 
         // Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
-        Toast.makeText(CoinFlipActivity.this, "Current Turn:" + childrenQueue.getSelectedChild().getName(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(CoinFlipActivity.this, "Current Turn:" + childrenQueue.getSelectedChild().getName(), Toast.LENGTH_SHORT).show();
 
         if (childrenQueue.getSelectedChild() != childManager.DEFAULT_CHILD) {
             childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
@@ -150,10 +165,16 @@ public class CoinFlipActivity extends AppCompatActivity {
                             return;
                         }
                     }
-                    childTurnTv.setText(childrenQueue.getSelectedChild().getName());
+                    childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
                     childTurnTv.setVisibility(View.VISIBLE);
                     coinRBsGroup.setVisibility(View.VISIBLE);
-                    //load override button
+
+                    // set selected Child picture
+                    Uri imgPFP = childrenQueue.getSelectedChild().getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(childrenQueue.getSelectedChild().getPicture());
+                    selectedChildImgView.setImageURI(imgPFP);
+                    selectedChildImgView.setVisibility(View.VISIBLE);
+
+
                     overrideChildFab.setVisibility(View.VISIBLE);
                 } else {
                     //Do something when Switch is off/unchecked
@@ -161,6 +182,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                     childTurnTv.setVisibility(View.INVISIBLE);
                     coinRBsGroup.setVisibility(View.INVISIBLE);
                     coinRBsGroup.clearCheck();
+                    selectedChildImgView.setVisibility(View.INVISIBLE);
                     overrideChildFab.setVisibility(View.INVISIBLE);
                 }
             }

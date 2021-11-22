@@ -74,7 +74,6 @@ public class AddChildActivity extends AppCompatActivity {
         baseIMG = imageURI;
 
 
-
         //init child manager
         childManager = new ChildManager();
 
@@ -86,7 +85,7 @@ public class AddChildActivity extends AppCompatActivity {
         childAgeEt = (EditText) findViewById(R.id.childAgeEditText);
         formTitleTv = (TextView) findViewById(R.id.AddChildLabelTv);
         saveChildBtn = (Button) findViewById(R.id.addChildBtn);
-        deleteBtn = (Button) findViewById(R.id.deleteChildBtn) ;
+        deleteBtn = (Button) findViewById(R.id.deleteChildBtn);
         genderRBs = (RadioGroup) findViewById(R.id.genderRBsGroup);
 
         //Addpfp
@@ -119,23 +118,25 @@ public class AddChildActivity extends AppCompatActivity {
         button_addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(AddChildActivity.this,addImageActivity.class);
-                if (formAction.equals("Edit")){
-                    i.putExtra("position",childClickedIndex);
-                    i.putExtra("mode","Edit");
+//                Toast.makeText(AddChildActivity.this, "change pic clicked!!", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(AddChildActivity.this, addImageActivity.class);
+                if (formAction.equals("Edit")) {
+                    i.putExtra("position", childClickedIndex);
+                    i.putExtra("mode", "Edit");
+                } else {
+                    i.putExtra("mode", "");
                 }
-                else i.putExtra("mode","");
                 startActivity(i);
+
             }
         });
-
 
 
     }
 
     protected void onResume() {
 
-        if(getPFPUri(this)!=Uri.parse(baseIMG)){
+        if (getPFPUri(this) != Uri.parse(baseIMG)) {
             imgPFP.setImageURI(getPFPUri(this));
             imageURI = getPFPUri(this).toString();
         }
@@ -166,12 +167,13 @@ public class AddChildActivity extends AppCompatActivity {
                 childManager.addNewChild(child);
                 break;
             case "Edit":
-                editChild.setName(name);
-                editChild.setAge(age);
-                editChild.setGender(gender);
-                editChild.setPicture(imageURI);
-                childManager.saveChildren();
-
+//                editChild.setName(name);
+//                editChild.setAge(age);
+//                editChild.setGender(gender);
+//                editChild.setPicture(imageURI);
+//                childManager.saveChildren();
+                childManager.updateChild(editChild, name, age, gender, imageURI);
+                //LocalStorage.getInstance().saveQueues();
                 break;
             default:
                 break;
@@ -179,7 +181,7 @@ public class AddChildActivity extends AppCompatActivity {
 
     }
 
-    public void confirmDelete(){
+    public void confirmDelete() {
         /*
         AlertDialog creation code token from: https://abhiandroid.com/ui/alertdialog
          */
@@ -187,7 +189,7 @@ public class AddChildActivity extends AppCompatActivity {
         // Setting Alert Dialog Title
         alertDialogBuilder.setTitle("Delete");
         alertDialogBuilder.setIcon(R.drawable.ic_baseline_delete_forever_35);
-        alertDialogBuilder.setMessage("Are you sure you want to delete "+ editChild.getName() + " ?");
+        alertDialogBuilder.setMessage("Are you sure you want to delete " + editChild.getName() + " ?");
         alertDialogBuilder.setCancelable(false);
 
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -195,7 +197,7 @@ public class AddChildActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
                 childManager.deleteChild(childClickedIndex);
-                Toast.makeText(AddChildActivity.this,"Child Deleted!",Toast.LENGTH_LONG).show();
+                Toast.makeText(AddChildActivity.this, "Child Deleted!", Toast.LENGTH_LONG).show();
                 finish();
             }
         });
@@ -203,7 +205,7 @@ public class AddChildActivity extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(AddChildActivity.this,"You cancelled delete",Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddChildActivity.this, "You cancelled delete", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -230,12 +232,12 @@ public class AddChildActivity extends AppCompatActivity {
                 childAgeEt.setText(Integer.toString(editChild.getAge()));
                 gender = editChild.getGender();
 
-                switch (gender){
+                switch (gender) {
                     case "Girl":
-                        ((RadioButton)genderRBs.getChildAt(0)).setChecked(true);
+                        ((RadioButton) genderRBs.getChildAt(0)).setChecked(true);
                         break;
                     case "Boy":
-                        ((RadioButton)genderRBs.getChildAt(1)).setChecked(true);
+                        ((RadioButton) genderRBs.getChildAt(1)).setChecked(true);
                         break;
                 }
 
@@ -290,10 +292,9 @@ public class AddChildActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getSharedPreferences("imgURIprefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         String uriString = uri.toString();
-        editor.putString("Image",uriString);
+        editor.putString("Image", uriString);
         editor.apply();
     }
-
 
 
 }

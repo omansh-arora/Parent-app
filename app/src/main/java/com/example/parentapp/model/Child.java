@@ -1,6 +1,7 @@
 package com.example.parentapp.model;
 
 import android.net.Uri;
+
 import java.util.Objects;
 
 public class Child {
@@ -40,13 +41,11 @@ public class Child {
         this.age = age;
     }
 
-    public void setPicture(String pic){
-
+    public void setPicture(String pic) {
         picture = pic;
-
     }
 
-    public String getPicture(){
+    public String getPicture() {
         return picture;
     }
 

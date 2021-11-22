@@ -1,7 +1,8 @@
 package com.example.parentapp.UI;
 
+import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -30,22 +31,27 @@ import java.util.List;
 
 public class ChildrenActivity extends AppCompatActivity {
 
-
     private FloatingActionButton addChildActivityFab;
     private ChildManager childManager;
     private List<Child> childrenList;
     private static final String PREFS_NAME = "ChildPrefs";
-
+    String baseIMAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Configure Children");
+
+        Resources resources = this.getResources();
+        baseIMAGE = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.ic_default))
+                .appendPath(resources.getResourceTypeName(R.drawable.ic_default))
+                .appendPath(resources.getResourceEntryName(R.drawable.ic_default))
+                .build().toString();
 
         //init child manager
         childManager = new ChildManager();
@@ -61,42 +67,31 @@ public class ChildrenActivity extends AppCompatActivity {
             }
         });
         populateListView();
-
-
     }
+
     protected void onStart() {
-
-
-        Toast.makeText(ChildrenActivity.this, "onStart() ", Toast.LENGTH_SHORT).show();
-
+        super.onStart();
+        //Toast.makeText(ChildrenActivity.this, "onStart() ", Toast.LENGTH_SHORT).show();
         childManager = new ChildManager();
         // show all added children
         populateListView();
-
         //register an event when a child is clicked in the listView
         registerClickCallback();
-        super.onStart();
-
     }
-
-
 
     /*** Setup Array Adapter and Display child in listView **/
     private void populateListView() {
         //build adapter
         ArrayAdapter<Child> adapter = new ChildrenListAdapter();
-
         //configure the list view
         ListView list = (ListView) findViewById(R.id.listAllChildren);
         list.setAdapter(adapter);
-
         adapter.notifyDataSetChanged();
-
     }
 
     private class ChildrenListAdapter extends ArrayAdapter<Child> {
         public ChildrenListAdapter() {
-            super(ChildrenActivity.this, R.layout.item_view, childrenList);
+            super(ChildrenActivity.this, R.layout.item_view, childManager.getChildren());
         }
 
         @NonNull
@@ -109,14 +104,17 @@ public class ChildrenActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.item_view, parent, false);
             }
 
-            Child currentChild = childrenList.get(position);
+            Child currentChild = childManager.getChildren().get(position);
 
             //fill the view
-            Uri imgPFP = Uri.parse(currentChild.getPicture());
+            Uri imgPFP = currentChild.getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(currentChild.getPicture());
             ImageView imageView = itemView.findViewById(R.id.item_icon);
             imageView.setImageURI(imgPFP);
-            
             imageView.setPadding(5,2,5,2);
+
+//            imgResource = currentChild.getGender().equals("Boy") ? R.drawable.ic_baseline_child_boy_35 : R.drawable.ic_baseline_child_girl_35;
+//            imageView.setImageResource(imgResource);
+//            imageView.setPadding(5,2,5,2);
 
             // build output String
             TextView outputTV = (TextView) itemView.findViewById(R.id.item_txt);

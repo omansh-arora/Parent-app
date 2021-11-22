@@ -126,7 +126,7 @@ public class LocalStorage {
         return queues.get(taskName);
     }
 
-    private void saveQueues() {
+    public void saveQueues() {
         SharedPreferences prefs = appContext.getSharedPreferences(PREFS_QUEUES, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
@@ -207,4 +207,15 @@ public class LocalStorage {
         children.add(child);
         saveChildren(children);
     }
+
+    public void removeChild(Child child) {
+        for (String taskName : queues.keySet()) {
+            queues.get(taskName).remove(child);
+        }
+        saveQueues();
+        List<Child> children = getChildren();
+        children.remove(child);
+        saveChildren(children);
+    }
+
 }
