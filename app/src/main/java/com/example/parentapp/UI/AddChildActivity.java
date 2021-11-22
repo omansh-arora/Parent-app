@@ -71,8 +71,6 @@ public class AddChildActivity extends AppCompatActivity {
 
         baseIMG = imageURI;
 
-        //savePFPUri(Uri.parse(imageURI));
-
 
 
         //init child manager
@@ -254,6 +252,7 @@ public class AddChildActivity extends AppCompatActivity {
 
                 break;
             case "Add":
+                savePFPUri(Uri.parse(baseIMG));
                 formTitleTv.setText("Add a child");
                 deleteBtn.setVisibility(View.INVISIBLE);
                 saveChildBtn.setWidth(400);

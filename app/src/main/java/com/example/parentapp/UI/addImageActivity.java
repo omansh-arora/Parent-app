@@ -26,12 +26,13 @@ public class addImageActivity extends AppCompatActivity {
 
     private Button button_addImage;
     private Button button_return;
+    private Button button_del;
     private static final String PREFS_NAME = "ChildPrefs";
     private ImageView pfp;
     ChildManager cm;
     int childIndex;
     int mode = 0;
-    String image;
+    String baseIMAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,18 @@ public class addImageActivity extends AppCompatActivity {
 
         Resources resources = this.getResources();
 
+        baseIMAGE = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.ic_default))
+                .appendPath(resources.getResourceTypeName(R.drawable.ic_default))
+                .appendPath(resources.getResourceEntryName(R.drawable.ic_default))
+                .build().toString();
+
+
         button_addImage = findViewById(R.id.bt_setImageFinal);
         button_return = findViewById(R.id.bt_setImageReturn);
+        button_del = findViewById(R.id.bt_delImage);
+        button_del.setVisibility(View.INVISIBLE);
         pfp = findViewById(R.id.imgPFPFinal);
         pfp.setImageResource(R.drawable.ic_default);
 
@@ -52,6 +63,9 @@ public class addImageActivity extends AppCompatActivity {
             childIndex = intent.getIntExtra("position",0);
             cm = getChildManager(this);
             pfp.setImageURI(Uri.parse(cm.getChildPic(childIndex)));
+            if (cm.getChildPic(childIndex).equals(baseIMAGE))
+                button_del.setVisibility(View.INVISIBLE);
+            else button_del.setVisibility(View.VISIBLE);
             mode = 1;
 
         }
@@ -66,10 +80,40 @@ public class addImageActivity extends AppCompatActivity {
         button_addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ImagePicker.with(addImageActivity.this).start();
+                ImagePicker.with(addImageActivity.this).
+                        cropSquare().start();
             }
         });
 
+        button_del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pfp.setImageURI(Uri.parse(baseIMAGE));
+                savePFPUri(Uri.parse(baseIMAGE));
+                button_del.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+
+        Resources resources = this.getResources();
+
+        baseIMAGE = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.ic_default))
+                .appendPath(resources.getResourceTypeName(R.drawable.ic_default))
+                .appendPath(resources.getResourceEntryName(R.drawable.ic_default))
+                .build().toString();
+
+        if(getPFPUri(this)==Uri.parse(baseIMAGE)){
+
+            button_del.setVisibility(View.INVISIBLE);
+        }
+        else button_del.setVisibility(View.VISIBLE);
+        super.onResume();
     }
 
     @Override
@@ -83,6 +127,7 @@ public class addImageActivity extends AppCompatActivity {
             button_addImage.setText("Change image");
             Uri fileUri= data.getData();
             pfp.setImageURI(fileUri);
+            button_del.setVisibility(View.VISIBLE);
             savePFPUri(fileUri);
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
