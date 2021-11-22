@@ -34,6 +34,7 @@ public class TossHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_toss_history);
 
         ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         actionBar.setTitle("View All Flips");
 
         // get current task

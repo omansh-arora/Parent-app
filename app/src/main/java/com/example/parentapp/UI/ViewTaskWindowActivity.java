@@ -68,6 +68,7 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
                 // link to add/update child activity page when a child is clicked
                 Intent intent = AddTaskActivity.makeIntent(ViewTaskWindowActivity.this, "Edit", taskName);
                 startActivity(intent);
+                finish();
             }
 
         });

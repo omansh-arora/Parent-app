@@ -105,6 +105,7 @@ public class AddTaskActivity extends AppCompatActivity {
             default:
                 break;
         }
+
     }
 
     private void extractDataFromIntent() {
