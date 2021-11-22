@@ -67,14 +67,6 @@
                     android:text="Timer"
                     android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/btnHelp"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/baby_blue"
-                    android:fontFamily="@font/coiny"
-                    android:text="Help"
-                    android:textSize="16sp" />
 
             </LinearLayout>
 
