@@ -24,8 +24,10 @@ public class ChildManager implements Iterable<Child> {
     }
 
     public void deleteChild(int childIndex) {
+        LocalStorage.getInstance().removeChild(children.get(childIndex));
         children.remove(childIndex);
-        LocalStorage.getInstance().saveChildren(children);
+
+        //LocalStorage.getInstance().saveChildren(children);
         // TODO: remove child from all existing queues, and selectedChildren
     }
 
@@ -49,4 +51,14 @@ public class ChildManager implements Iterable<Child> {
     public void saveChildren() {
         LocalStorage.getInstance().saveChildren(children);
     }
+
+    public void updateChild(Child child,String name, Integer age, String gender, String imgURI) {
+        //remove the child from Local Storage
+        child.setName(name);
+        child.setAge(age);
+        child.setGender(gender);
+        child.setPicture(imgURI);
+        LocalStorage.getInstance().saveChildren(getChildren());
+    }
+
 }

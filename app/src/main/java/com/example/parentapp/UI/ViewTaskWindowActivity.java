@@ -2,13 +2,17 @@ package com.example.parentapp.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +31,10 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
     private Button deleteBtn;
     private ImageButton coinFlipBtn;
     private TextView selectedChildNameTv;
+    private ImageView selectedChildPicIV;
     private Task task;
     private TaskManager taskManager;
+    String baseIMAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,14 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
         int height = dm.heightPixels;
         getWindow().setLayout((int) (width * .85), (int) (height * .85));
 
+        Resources resources = this.getResources();
+        baseIMAGE = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.ic_default))
+                .appendPath(resources.getResourceTypeName(R.drawable.ic_default))
+                .appendPath(resources.getResourceEntryName(R.drawable.ic_default))
+                .build().toString();
+
         //get task name via Intent
         Intent intent = getIntent();
         taskName = intent.getStringExtra("task_name");
@@ -52,13 +66,19 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
 
         //display task Name, selected Child name
         taskNameTv = (TextView) findViewById(R.id.taskNameTV);
-        taskNameTv.setText(taskName);
+        taskNameTv.setText("Task Name: " + taskName);
 
         editBtn = (Button) findViewById(R.id.editBtn);
         deleteBtn = (Button) findViewById(R.id.deleteBtn);
         coinFlipBtn = (ImageButton) findViewById(R.id.coinFlipBtn);
+
         selectedChildNameTv = (TextView) findViewById(R.id.selectedChildNameTv);
-        selectedChildNameTv.setText(LocalStorage.getInstance().getSelectedChild(taskName).getName());
+        selectedChildNameTv.setText("Next Child: " + LocalStorage.getInstance().getSelectedChild(taskName).getName());
+
+        Uri imgPFP = LocalStorage.getInstance().getSelectedChild(taskName).getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(LocalStorage.getInstance().getSelectedChild(taskName).getPicture());
+        selectedChildPicIV = (ImageView) findViewById(R.id.selectedChildPicIV);
+        selectedChildPicIV.setImageURI(imgPFP);
+        selectedChildPicIV.setPadding(5,2,5,2);
 
 
         editBtn.setOnClickListener(new View.OnClickListener() {

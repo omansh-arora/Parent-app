@@ -10,7 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -29,11 +32,20 @@ public class ChildQueueActivity extends AppCompatActivity {
     ChildrenQueue childrenQueue;
     private CoinFlipHistory coinFlipHistory;
     String taskName = TaskManager.DEFAULT_TASK.getName();
+    String baseIMAGE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children_picker);
+
+        Resources resources = this.getResources();
+        baseIMAGE = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.ic_default))
+                .appendPath(resources.getResourceTypeName(R.drawable.ic_default))
+                .appendPath(resources.getResourceEntryName(R.drawable.ic_default))
+                .build().toString();
 
         //setup and load popup window
         DisplayMetrics dm = new DisplayMetrics();
@@ -86,12 +98,15 @@ public class ChildQueueActivity extends AppCompatActivity {
             Child childRow = children.get(position);
 
             //fill the view
-            Integer imgResource;
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon);
+//            Integer imgResource;
+//            ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon);
+//            imgResource = childRow.getGender().equals("Boy") ? R.drawable.ic_baseline_child_boy_35 : R.drawable.ic_baseline_child_girl_35;
+//            imageView.setImageResource(imgResource);
+            Uri imgPFP = childRow.getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(childRow.getPicture());
+            ImageView imageView = itemView.findViewById(R.id.item_icon);
+            imageView.setImageURI(imgPFP);
+            imageView.setPadding(5,2,5,2);
 
-            imgResource = childRow.getGender().equals("Boy") ? R.drawable.ic_baseline_child_boy_35 : R.drawable.ic_baseline_child_girl_35;
-            imageView.setImageResource(imgResource);
-            //imageView.setPadding(5, 2, 5, 2);
 
             // build output String
             TextView outputTV = (TextView) itemView.findViewById(R.id.item_txt);
