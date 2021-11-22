@@ -206,6 +206,8 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         if (childrenQueue.getSelectedChild() != ChildManager.DEFAULT_CHILD) {
             childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
+            Uri imgPFP = childrenQueue.getSelectedChild().getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(childrenQueue.getSelectedChild().getPicture());
+            selectedChildImgView.setImageURI(imgPFP);
         }
     }
 
@@ -216,7 +218,10 @@ public class CoinFlipActivity extends AppCompatActivity {
         coinFlipHistory = new CoinFlipHistory(taskName);
         if (childrenQueue.getSelectedChild() != ChildManager.DEFAULT_CHILD) {
             childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
+            Uri imgPFP = childrenQueue.getSelectedChild().getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(childrenQueue.getSelectedChild().getPicture());
+            selectedChildImgView.setImageURI(imgPFP);
         }
+
     }
 
     private void initSounds() {

@@ -101,6 +101,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_weight=".5"
+                        android:visibility="invisible"
                         android:src="@drawable/ic_baseline_child_boy_35" />
 
                     <TextView
