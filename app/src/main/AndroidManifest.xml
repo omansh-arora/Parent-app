@@ -19,6 +19,23 @@
             android:name=".UI.addImageActivity"
             android:exported="false" />
         <activity
+            android:name=".UI.ViewTaskWindowActivity"
+            android:theme="@style/Theme.ParentApp.CustomPopUp"
+            android:exported="false" />
+        <activity
+            android:name=".UI.AddTaskActivity"
+            android:exported="false"
+            android:parentActivityName=".UI.TaskActivity" />
+        <activity
+            android:name=".UI.TaskActivity"
+            android:exported="false"
+            android:parentActivityName=".UI.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.ChildQueueActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ParentApp.CustomPopUp" />
+        <activity
             android:name=".UI.ChildrenActivity"
             android:exported="false"
             android:label="@string/title_activity_children"

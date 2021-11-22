@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,8 @@ import com.example.parentapp.model.Child;
 import com.example.parentapp.model.ChildManager;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.gson.Gson;
+=======
+import com.example.parentapp.model.LocalStorage;
 
 import java.util.List;
 
@@ -74,13 +77,10 @@ public class AddChildActivity extends AppCompatActivity {
 
 
         //init child manager
-        childManager = ChildManager.getInstance();
+        childManager = new ChildManager();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Configure A Child");
-
-        if(getChildManager(this)!=null)
-        childManager.setChildrenList(getChildManager(this).getChildrenList());
 
         //get input of name,age
         childNameEt = (EditText) findViewById(R.id.childNameEt);
@@ -165,7 +165,6 @@ public class AddChildActivity extends AppCompatActivity {
                 Child child = new Child(name, age, gender);
                 child.setPicture(imageURI);
                 childManager.addNewChild(child);
-                saveChildManager(childManager);
                 break;
             case "Edit":
                 editChild.setName(name);
@@ -173,6 +172,7 @@ public class AddChildActivity extends AppCompatActivity {
                 editChild.setGender(gender);
                 editChild.setPicture(imageURI);
                 saveChildManager(childManager);
+                childManager.saveChildren();
 
                 break;
             default:
@@ -198,9 +198,7 @@ public class AddChildActivity extends AppCompatActivity {
             public void onClick(DialogInterface arg0, int arg1) {
                 childManager.deleteChild(childClickedIndex);
                 Toast.makeText(AddChildActivity.this,"Child Deleted!",Toast.LENGTH_LONG).show();
-                saveChildManager(childManager);
-                Intent myIntent = new Intent(AddChildActivity.this, ChildrenActivity.class);
-                startActivity(myIntent);
+                finish();
             }
         });
 
@@ -225,7 +223,7 @@ public class AddChildActivity extends AppCompatActivity {
                 formTitleTv.setText("Edit a child");
                 saveChildBtn.setText("Update");
                 //get all the children in list
-                childrenList = childManager.getChildrenList();
+                childrenList = childManager.getChildren();
                 //get clicked child and load child info to input fields
                 editChild = childrenList.get(childClickedIndex);
                 imgPFP.setImageURI(Uri.parse(childrenList.get(childClickedIndex).getPicture()));
@@ -275,8 +273,7 @@ public class AddChildActivity extends AppCompatActivity {
                     childAge = Integer.parseInt(childAgeEt.getText().toString());
                     //Toast.makeText(AddChildActivity.this, "Gender: " + gender, Toast.LENGTH_SHORT).show();
                     configChild(childName, childAge, gender);
-                    Intent childrenListIntent = new Intent(AddChildActivity.this, ChildrenActivity.class);
-                    startActivity(childrenListIntent);
+                    finish();
                 }
 
             }
@@ -284,22 +281,6 @@ public class AddChildActivity extends AppCompatActivity {
         });
 
     }
-    private void saveChildManager(ChildManager cm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cm);
-        editor.putString("ChildManager", json);
-        editor.commit();
-    }
-
-    static public ChildManager getChildManager(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString("ChildManager", "");
-        return gson.fromJson(json, ChildManager.class);
-    }
-
 
     static public Uri getPFPUri(Context context) {
         SharedPreferences prefs = context.getSharedPreferences("imgURIprefs", MODE_PRIVATE);
@@ -314,6 +295,7 @@ public class AddChildActivity extends AppCompatActivity {
         editor.putString("Image",uriString);
         editor.apply();
     }
+
 
 
 }

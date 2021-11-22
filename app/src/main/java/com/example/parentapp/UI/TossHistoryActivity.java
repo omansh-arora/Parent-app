@@ -7,11 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.parentapp.R;
 import com.example.parentapp.model.CoinFlip;
-import com.example.parentapp.model.CoinFlipManager;
-import com.google.gson.Gson;
+import com.example.parentapp.model.CoinFlipHistory;
+import com.example.parentapp.model.TaskManager;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +23,9 @@ import java.util.List;
 
 public class TossHistoryActivity extends AppCompatActivity {
 
-    private CoinFlipManager coinFlipManager;
+    private CoinFlipHistory coinFlipHistory;
     private List<CoinFlip> gamesList;
-    private static final String PREFS_NAME = "CoinPrefs";
-
+    String taskName = TaskManager.DEFAULT_TASK.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,26 +36,16 @@ public class TossHistoryActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("View All Flips");
 
-        coinFlipManager = CoinFlipManager.getInstance();
+        // get current task
+        Intent intent = getIntent();
+        taskName = intent.getStringExtra("task_name");
+        if (taskName == null) {
+            taskName = TaskManager.DEFAULT_TASK.getName();
+        }
 
-        //Get CoinFlip Instance
-        if(CoinFlipActivity.getCoinManager(this)!=null)
-            coinFlipManager = getCoinManager(this);
-
-        gamesList = coinFlipManager.getFlips();
-
+        coinFlipHistory = new CoinFlipHistory(taskName);
+        gamesList = coinFlipHistory.getFlips();
         populateListView();
-    }
-
-    protected void onStart(){
-        coinFlipManager = CoinFlipManager.getInstance();
-
-        //Get CoinFlip Instance
-        if(getCoinManager(this)!=null)
-            coinFlipManager = getCoinManager(this);
-        saveCoinFlipManager(coinFlipManager);
-        populateListView();
-        super.onStart();
     }
 
     private void populateListView() {
@@ -102,22 +90,4 @@ public class TossHistoryActivity extends AppCompatActivity {
             return itemView;
         }
     }
-
-    private void saveCoinFlipManager(CoinFlipManager cfm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cfm);
-        editor.putString("CoinManager", json);
-        editor.commit();
-    }
-
-    static public CoinFlipManager getCoinManager(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString("CoinManager", "");
-        CoinFlipManager cfm = gson.fromJson(json, CoinFlipManager.class);
-        return cfm;
-    }
-
 }

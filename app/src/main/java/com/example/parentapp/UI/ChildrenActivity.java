@@ -1,6 +1,5 @@
 package com.example.parentapp.UI;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -26,7 +25,6 @@ import android.widget.Toast;
 
 
 import com.example.parentapp.R;
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -42,8 +40,7 @@ public class ChildrenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        SharedPreferences preferences = getSharedPreferences(PREFS_NAME,0);
-//        preferences.edit().remove("ChildManager").commit();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_children);
 
@@ -51,10 +48,8 @@ public class ChildrenActivity extends AppCompatActivity {
         actionBar.setTitle("Configure Children");
 
         //init child manager
-        childManager = ChildManager.getInstance();
-        if(getChildManager(this)!=null)
-            childManager = getChildManager(this);
-        childrenList = childManager.getChildrenList();
+        childManager = new ChildManager();
+        childrenList = childManager.getChildren();
 
         // direct to Add a child info page
         addChildActivityFab = (FloatingActionButton) findViewById(R.id.fabAddChild);
@@ -71,9 +66,10 @@ public class ChildrenActivity extends AppCompatActivity {
     }
     protected void onStart() {
 
-        childManager = ChildManager.getInstance();
-        if(getChildManager(this)!=null)
-        childManager = getChildManager(this);
+
+        Toast.makeText(ChildrenActivity.this, "onStart() ", Toast.LENGTH_SHORT).show();
+
+        childManager = new ChildManager();
         // show all added children
         populateListView();
 
@@ -84,6 +80,7 @@ public class ChildrenActivity extends AppCompatActivity {
     }
 
 
+
     /*** Setup Array Adapter and Display child in listView **/
     private void populateListView() {
         //build adapter
@@ -92,6 +89,8 @@ public class ChildrenActivity extends AppCompatActivity {
         //configure the list view
         ListView list = (ListView) findViewById(R.id.listAllChildren);
         list.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -110,7 +109,6 @@ public class ChildrenActivity extends AppCompatActivity {
                 itemView = getLayoutInflater().inflate(R.layout.item_view, parent, false);
             }
 
-            //find the toss game to work with
             Child currentChild = childrenList.get(position);
 
             //fill the view
@@ -142,24 +140,6 @@ public class ChildrenActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-
-
-    static public ChildManager getChildManager(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = prefs.getString("ChildManager", "");
-        return gson.fromJson(json, ChildManager.class);
-    }
-
-    private void saveChildManager(ChildManager cm) {
-        SharedPreferences prefs = this.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(cm);
-        editor.putString("ChildManager", json);
-        editor.commit();
     }
 
 

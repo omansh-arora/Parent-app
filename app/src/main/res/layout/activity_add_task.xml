@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.AddTaskActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:paddingRight="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/taskFormTitleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/coiny"
+            android:textColor="@color/baby_blue"
+            android:textSize="35sp"
+            android:text="Add a Task" />
+
+        <EditText
+            android:id="@+id/taskNameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="150"
+            android:minHeight="100dp"
+            android:gravity="start|top"
+            android:inputType="textMultiLine" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="15dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/addChildBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/baby_blue"
+                android:fontFamily="@font/coiny"
+                android:gravity="center"
+                android:text="Add" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
