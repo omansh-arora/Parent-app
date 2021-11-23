@@ -284,8 +284,6 @@ public class CoinFlipActivity extends AppCompatActivity {
 
                     Uri imgPFP = childrenQueue.getSelectedChild().getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(childrenQueue.getSelectedChild().getPicture());
                     selectedChildImgView.setImageURI(imgPFP);
-                    selectedChildImgView.setVisibility(View.VISIBLE);
-
                 }
             }
 

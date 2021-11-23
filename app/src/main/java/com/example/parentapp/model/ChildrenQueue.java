@@ -35,7 +35,7 @@ public class ChildrenQueue {
     }
 
     private void moveToEnd() {
-        if (selectedChild != ChildManager.DEFAULT_CHILD) {
+        if (!selectedChild.equals(ChildManager.DEFAULT_CHILD)) {
             children.remove(selectedChild);
             children.add(selectedChild);
             LocalStorage.getInstance().saveChildrenQueue(taskName, children);
