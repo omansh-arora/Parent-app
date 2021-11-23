@@ -144,6 +144,12 @@ public class LocalStorage {
         if (!selected_children.containsKey(taskName)) {
             saveSelectedChild(taskName, ChildManager.DEFAULT_CHILD);
         }
+
+        //hotfix
+        if (selected_children.get(taskName).getName().equals("DEFAULT")){
+            return getChildren().get(0);
+        }
+
         return selected_children.get(taskName);
     }
 

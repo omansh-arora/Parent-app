@@ -1,10 +1,10 @@
 Scrum roles
 
-Scrum Master: 	Omansh Arora
+Scrum Master: 	Zelin(Erwin) Zhu
 
-Product Owner: 	Danni Zhang
+Product Owner: 	Omansh Arora
 
-Repo Manager:	Zelin(Erwin) Zhu
+Repo Manager:	Xinyi(Iris) Zeng
 
-Team Member:	Xinyi(Iris) Zeng
+Team Member:	Danni Zhang
 

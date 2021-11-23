@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.parentapp.R;
 import com.example.parentapp.model.Child;
@@ -117,6 +118,7 @@ public class TaskActivity extends AppCompatActivity {
             outputTV.setText(currentTask.getName().length() > 20 ? currentTask.getName().substring(0,20) + "..." :  currentTask.getName());
 
             TextView selectedChildTv = (TextView) itemView.findViewById(R.id.selected_child_Tv) ;
+
             selectedChildTv.setText(LocalStorage.getInstance().getSelectedChild(currentTask.getName()).getName());
 
             return itemView;
