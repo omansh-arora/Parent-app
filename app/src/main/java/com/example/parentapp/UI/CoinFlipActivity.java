@@ -281,6 +281,11 @@ public class CoinFlipActivity extends AppCompatActivity {
                     childPickModeSW.setChecked(false);
                 } else {
                     childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
+
+                    Uri imgPFP = childrenQueue.getSelectedChild().getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(childrenQueue.getSelectedChild().getPicture());
+                    selectedChildImgView.setImageURI(imgPFP);
+                    selectedChildImgView.setVisibility(View.VISIBLE);
+
                 }
             }
 
