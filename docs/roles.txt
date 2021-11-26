@@ -1,4 +1,15 @@
-Scrum roles
+Scrum roles Iteration 1
+
+Scrum Master: 	Omansh Arora
+
+Product Owner:  Danni Zhang
+
+Repo Manager:	Zelin(Erwin) Zhu
+
+Team Member:	Xinyi(Iris) Zeng
+
+
+Scrum roles Iteration 2
 
 Scrum Master: 	Zelin(Erwin) Zhu
 
@@ -8,3 +19,13 @@ Repo Manager:	Xinyi(Iris) Zeng
 
 Team Member:	Danni Zhang
 
+
+Scrum roles Iteration 3
+
+Scrum Master: 	Danni Zhang
+
+Product Owner:  Xinyi(Iris) Zeng
+
+Repo Manager:	Omansh Arora
+
+Team Member:    Zelin(Erwin) Zhu

@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,6 +24,7 @@ public class LocalStorage {
     private static final String PREFS_QUEUES = "queues";
     private static final String PREFS_SELECTED_CHILDREN = "selected_children";
     private static final String PREFS_CHILDREN = "children";
+    private static final String PREFS_BREATHS_NUM = "breathsNum";
 
     private List<String> taskNames;
     private Map<String, Child> selected_children;
@@ -224,4 +226,17 @@ public class LocalStorage {
         saveChildren(children);
     }
 
+
+    public void saveBreaths(String breathsNum) {
+        SharedPreferences prefs = appContext.getSharedPreferences(PREFS_BREATHS_NUM, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(PREFS_BREATHS_NUM,breathsNum);
+        editor.apply();
+    }
+
+    public String getBreaths() {
+        SharedPreferences prefs = appContext.getSharedPreferences(PREFS_BREATHS_NUM, MODE_PRIVATE);
+        String breaths = prefs.getString(PREFS_BREATHS_NUM, "1");
+        return breaths;
+    }
 }

@@ -49,6 +49,15 @@
 
 
                 <Button
+                    android:id="@+id/btnTask"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/coiny"
+                    android:backgroundTint="@color/baby_blue"
+                    android:text="Task"
+                    android:textSize="16sp" />
+
+                <Button
                     android:id="@+id/btnFlipCoin"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -68,12 +77,12 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/btnTask"
+                    android:id="@+id/btnTakeBreath"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/coiny"
                     android:backgroundTint="@color/baby_blue"
-                    android:text="Task"
+                    android:text="Take Breath"
                     android:textSize="16sp" />
 
                 <Button

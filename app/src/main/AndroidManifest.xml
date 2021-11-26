@@ -16,16 +16,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
+            android:name=".UI.BreathsConfigActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ParentApp.CustomPopUp" />
+        <activity
+            android:name=".UI.TakeBreathActivity"
+            android:exported="false"
+            android:parentActivityName=".UI.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".UI.addImageActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UI.ViewTaskWindowActivity"
-            android:theme="@style/Theme.ParentApp.CustomPopUp"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.ParentApp.CustomPopUp" />
         <activity
             android:name=".UI.AddTaskActivity"
             android:exported="false"
-            android:parentActivityName=".UI.TaskActivity" />
+            android:parentActivityName=".UI.TaskActivity"
+             />
         <activity
             android:name=".UI.TaskActivity"
             android:exported="false"
@@ -39,7 +50,8 @@
             android:name=".UI.ChildrenActivity"
             android:exported="false"
             android:label="@string/title_activity_children"
-            android:parentActivityName=".UI.MainActivity" />
+            android:parentActivityName=".UI.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UI.AddChildActivity"
             android:exported="false"
@@ -54,7 +66,7 @@
             android:name=".UI.CoinFlipActivity"
             android:exported="true"
             android:parentActivityName=".UI.MainActivity"
-            android:screenOrientation="portrait" />
+            />
         <activity
             android:name=".UI.TimerScreen"
             android:exported="true"
