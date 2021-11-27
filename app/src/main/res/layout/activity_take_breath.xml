@@ -8,7 +8,7 @@
     android:gravity="center_vertical"
     tools:context=".UI.TakeBreathActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -34,11 +34,19 @@
             android:textSize="22dp"
             android:text="Hello World!" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/breathCircleIV"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/circle"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/breathBtn"
@@ -47,15 +55,26 @@
                 android:fontFamily="@font/coiny"
                 android:textColor="@color/baby_blue"
                 android:textSize="25dp"
+                android:layout_centerInParent="true"
                 android:textAlignment="center"
                 android:layout_weight="1"
                 android:background="@drawable/off"
                 android:gravity="center"
                 android:text="Begin" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/stateTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/coiny"
+                android:text="State: "
+                android:textAlignment="center"
+                android:textColor="@color/baby_blue"
+                android:textSize="22dp" />
 
-    </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabEditBreaths"
