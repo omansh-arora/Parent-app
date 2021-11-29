@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <item android:id = "@+id/tr_speed_25"
+        android:title = "@string/_25"
+        app:showAsAction="never"
+        />
+    <item android:id = "@+id/tr_speed_50"
+        android:title = "@string/_50"
+        app:showAsAction="never"
+        />
+    <item android:id = "@+id/tr_speed_75"
+        android:title = "@string/_75"
+        app:showAsAction="never"
+        />
+    <item android:id = "@+id/tr_speed_100"
+        android:title = "@string/_100"
+        app:showAsAction="never"
+        />
+    <item android:id = "@+id/tr_speed_200"
+        android:title = "@string/_200"
+        app:showAsAction="never"
+        />
+    <item android:id = "@+id/tr_speed_300"
+        android:title = "@string/_300"
+        app:showAsAction="never"
+        />
+    <item android:id = "@+id/tr_speed_400"
+        android:title = "@string/_400"
+        app:showAsAction="never"
+        />
+</menu>
