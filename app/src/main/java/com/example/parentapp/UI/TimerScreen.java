@@ -53,10 +53,10 @@ public class TimerScreen extends AppCompatActivity {
     private boolean boolTimerRunning;
 
     private long timeLeftMillis = START_TIME_MILLIS;
-    private long timeMillisUnmultiplied = -1;
+    private long timeMillisUnmultiplied = START_TIME_MILLIS;
     private double multiplier = 1;
-    private int minutes;
-    private int seconds;
+    private int OGminutes;
+
 
     ProgressBar progressBar;
 
@@ -69,6 +69,11 @@ public class TimerScreen extends AppCompatActivity {
     private PendingIntent pendingIntent;
 
     private TextView TXTspeed;
+
+    double millisCounted = 0;
+
+    int i = 0;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,9 +100,9 @@ public class TimerScreen extends AppCompatActivity {
                 TXTspeed.setText("Speed@50%");
                 return true;
             case R.id.tr_speed_75:
-                if(multiplier!=1.5) speedChanged = boolTimerRunning;
+                if(multiplier!=1.33) speedChanged = boolTimerRunning;
                 else speedChanged = false;
-                multiplier = 1.5;
+                multiplier = 1.33;
                 TXTspeed.setText("Speed@75%");
                 return true;
             case R.id.tr_speed_100:
@@ -125,6 +130,7 @@ public class TimerScreen extends AppCompatActivity {
                 multiplier = .25;
                 return true;
             default:
+                multiplier = 1;
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -134,12 +140,19 @@ public class TimerScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer_screen);
+
+        SharedPreferences preferences = getSharedPreferences("prefs", 0);
+        preferences.edit().remove("speed").commit();
+
         TXTspeed = findViewById(R.id.timer_txt_speed);
 
-        TXTspeed.setText("Speed@100%");
+        TXTspeed.setText("Speed@" + (int)(100/multiplier) +"%");
 
         progressBar = findViewById(R.id.timer_progressBar);
 
+        multiplier = 1;
+
+        updateButtons();
 
         //See if alarm is picked from notification
         Intent intent = getIntent();
@@ -238,11 +251,12 @@ public class TimerScreen extends AppCompatActivity {
 
     //Set custom time
     private void setTime(int i) {
-        START_TIME_MILLIS = (long) ((long) i * 60 * 1000);
-        timeMillisUnmultiplied = (long) ((long) i * 60 * 1000);
+        START_TIME_MILLIS = ((long) i * 60 * 1000);
+        timeMillisUnmultiplied = ((long) i * 60 * 1000);
         timeLeftMillis = (long) (START_TIME_MILLIS*multiplier);
         updateCountDownText();
         updateButtons();
+        OGminutes = i;
     }
 
     private void pauseTimer() {
@@ -259,8 +273,9 @@ public class TimerScreen extends AppCompatActivity {
         timeLeftMillis = (long) (timeMillisUnmultiplied*multiplier);
         endTime = System.currentTimeMillis() + timeLeftMillis;
         setAlarm(endTime);
-        countDownTimer = new CountDownTimer((long) (timeLeftMillis), (int)(1000*multiplier)) {
-            int millisCounted = 0;
+        double milliBar = timeLeftMillis / (double)(100-progressBar.getProgress());
+
+        countDownTimer = new CountDownTimer(timeLeftMillis, (int)(1000*multiplier)) {
             @Override
             public void onTick(long millisLeftUntilDone) {
                 if(speedChanged){
@@ -270,12 +285,11 @@ public class TimerScreen extends AppCompatActivity {
                     startTimer();
                 }
 
-
-                timeLeftMillis = (long) (millisLeftUntilDone);
+                timeLeftMillis = millisLeftUntilDone;
                 timeMillisUnmultiplied = (long) (timeLeftMillis/multiplier);
 
-                double milliBar = timeLeftMillis / (double)(100-progressBar.getProgress());
-                millisCounted+=1000*multiplier;
+                millisCounted+= 1000 *multiplier;
+
                 if(millisCounted>=milliBar) {
                     progressBar.setProgress(progressBar.getProgress() + 1);
                     millisCounted = 0;
@@ -289,8 +303,12 @@ public class TimerScreen extends AppCompatActivity {
             @Override
             public void onFinish() {
                 boolTimerRunning = false;
+                progressBar.setProgress(0);
                 updateButtons();
                 cancelAlarm();
+                timeLeftMillis = START_TIME_MILLIS;
+                timeMillisUnmultiplied = ((long) OGminutes * 60 * 1000);
+
             }
         }.start();
 
@@ -309,7 +327,7 @@ public class TimerScreen extends AppCompatActivity {
         Intent intent = new Intent(this, ReminderBroadcast.class);
         pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-        alarmManager.set(AlarmManager.RTC, millis*2, pendingIntent);
+        alarmManager.set(AlarmManager.RTC, millis, pendingIntent);
         Toast.makeText(this, "Timer set", Toast.LENGTH_SHORT).show();
 
     }
@@ -331,8 +349,8 @@ public class TimerScreen extends AppCompatActivity {
 
     private void updateCountDownText() {
 
-             minutes = (int) (timeMillisUnmultiplied / 1000) / 60;
-             seconds = (int) (timeMillisUnmultiplied / 1000) % 60;
+            int minutes = (int) (timeMillisUnmultiplied / 1000) / 60;
+            int seconds = (int) (timeMillisUnmultiplied / 1000) % 60;
 
         String timeLeft = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
 
@@ -353,6 +371,21 @@ public class TimerScreen extends AppCompatActivity {
     }
 
     private void updateButtons() {
+
+
+        buttonStartPauseResume = findViewById(R.id.timer_bt_start_pause_reset);
+        buttonReset = findViewById(R.id.timer_bt_reset);
+
+        oneMin = findViewById(R.id.timer_bt_1min);
+        twoMin = findViewById(R.id.timer_bt_2min);
+        threeMin = findViewById(R.id.timer_bt_3min);
+        fiveMin = findViewById(R.id.timer_bt_5min);
+        tenMin = findViewById(R.id.timer_bt_10min);
+
+        buttonTimeSet = findViewById(R.id.timer_btn_setTime);
+        editSetTime = findViewById(R.id.timer_inp_timeInp);
+        TXT_editSetTime = findViewById(R.id.timer_txt_timeEnter);
+
         if (boolTimerRunning) {
             buttonReset.setVisibility(View.INVISIBLE);
             buttonStartPauseResume.setText("Pause");
@@ -366,12 +399,20 @@ public class TimerScreen extends AppCompatActivity {
             tenMin.setVisibility(View.INVISIBLE);
         } else {
             buttonStartPauseResume.setText("Start");
-            buttonStartPauseResume.setVisibility(View.INVISIBLE);
+            buttonStartPauseResume.setVisibility(View.VISIBLE);
 
+            //if(START_TIME_MILLIS == 0 || timeLeftMillis == 0) buttonStartPauseResume.setVisibility(View.INVISIBLE);
 
             if (timeLeftMillis < 1000) {
 
-
+                oneMin.setVisibility(View.VISIBLE);
+                twoMin.setVisibility(View.VISIBLE);
+                threeMin.setVisibility(View.VISIBLE);
+                fiveMin.setVisibility(View.VISIBLE);
+                tenMin.setVisibility(View.VISIBLE);
+                buttonTimeSet.setVisibility(View.VISIBLE);
+                editSetTime.setVisibility(View.VISIBLE);
+                TXT_editSetTime.setVisibility(View.VISIBLE);
             } else {
                 buttonStartPauseResume.setVisibility(View.VISIBLE);
             }
@@ -403,6 +444,8 @@ public class TimerScreen extends AppCompatActivity {
         editor.putLong("millisLeft", timeLeftMillis);
         editor.putBoolean("timerRunning", boolTimerRunning);
         editor.putLong("endTime", endTime);
+        editor.putFloat("speed", (float)multiplier);
+        editor.putInt("progress", progressBar.getProgress());
 
         editor.apply();
 
@@ -421,7 +464,11 @@ public class TimerScreen extends AppCompatActivity {
 
         timeLeftMillis = prefs.getLong("millisLeft", timeLeftMillis);
         boolTimerRunning = prefs.getBoolean("timerRunning", false);
-
+        if(boolTimerRunning)
+        multiplier = prefs.getFloat("speed",0);
+        else multiplier = 1;
+        int progress = prefs.getInt("progress",0);
+        progressBar.setProgress(progress);
 
         updateCountDownText();
         updateButtons();
