@@ -236,7 +236,7 @@ public class LocalStorage {
 
     public String getBreaths() {
         SharedPreferences prefs = appContext.getSharedPreferences(PREFS_BREATHS_NUM, MODE_PRIVATE);
-        String breaths = prefs.getString(PREFS_BREATHS_NUM, "1");
+        String breaths = prefs.getString(PREFS_BREATHS_NUM, "2");
         return breaths;
     }
 }

@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,28 +24,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class TakeBreathActivity extends AppCompatActivity {
 
-    private static final long MIN_INHALE_IN_MILLISEC = 3000;
+    private static final long MIN_INHALE_EXHALE_IN_MILLISEC = 3000;
     private static final long MAX_INHALE_IN_MILLISEC = 10000;
 
     // State Pattern's base states
     private abstract class State {
         // Empty implementations, so derived class don't need to
         // override methods they don't care about.
-        void handleEnter() {
-
-        }
-
-        void handleExit() {
-
-        }
-
-        void handleClickOn() {
-
-        }
-
-        void handleClickOff() {
-
-        }
+        void handleEnter() {}
+        void handleExit() {}
+        void handleClickOn() {}
+        void handleClickOff() {}
     }
 
     public final State inState = new InState(); // Breath In
@@ -50,12 +42,12 @@ public class TakeBreathActivity extends AppCompatActivity {
     private State currentState = new IdleState();
 
     public void setState(State newState) {
-        currentState.handleExit();
+        //currentState.handleExit();
         currentState = newState;
-        currentState.handleEnter();
+        //currentState.handleEnter();
     }
 
-    private TextView takeBreathImgBtn, breathsNumTV, tv, stateTV;
+    private TextView takeBreathImgBtn, breathsNumTV, tv, helpTV;
     private ImageView breathCircleIV;
     private FloatingActionButton fabEditBreaths;
     private MediaPlayer mediaPlayer;
@@ -72,18 +64,15 @@ public class TakeBreathActivity extends AppCompatActivity {
         //init UI components
         breathsNumTV = (TextView) findViewById(R.id.breathsNumTV);
         breathCircleIV = (ImageView) findViewById(R.id.breathCircleIV);
-        tv = (TextView) findViewById(R.id.txtMessage);
         animZoomOut = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.zoom_out);
         animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.zoom_in);
         takeBreathImgBtn = (TextView) findViewById(R.id.breathBtn);
-        stateTV =  (TextView) findViewById(R.id.stateTV);
+        helpTV =  (TextView) findViewById(R.id.helpTV);
 
         loadBreathsConfigBtn();
         loadBreathsTitle();
         registerTakeBreathEvent();
 
-        // set initial state
-        //setState(inState); //default is breath in state, unless btn hold for at least 3 sec
 
         if (LocalStorage.getInstance().getBreaths() != null) {
             breathsConfig = Integer.parseInt(LocalStorage.getInstance().getBreaths());
@@ -122,43 +111,40 @@ public class TakeBreathActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
                 switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_UP: // ACTION_UP: when user release finger
+                    case MotionEvent.ACTION_UP: // ACTION_UP: when user release finger the image button
                         takeBreathImgBtn.setBackgroundResource(R.drawable.off);
                         timeElapsed = motionEvent.getEventTime() - timeElapsed;
 
-                        // FOR TESTING, REMOVE B4 submit
-                        if(currentState.equals(inState)){
-                            stateTV.setText("Current State: inState ");
-                        }
+                        // clear Instate Time Runners
+                        inState.handleExit();
 
-                        if(currentState.equals(outState)){
-                            stateTV.setText("Current State: outState ");
-                        }
-                        // FOR TESTING, REMOVE B4 submit
-
-                        if(currentState.equals(inState) && timeElapsed >= MIN_INHALE_IN_MILLISEC){
+                        if(timeElapsed < MIN_INHALE_EXHALE_IN_MILLISEC){
+                            Toast.makeText(TakeBreathActivity.this, "That is too Short! Let's try again", Toast.LENGTH_SHORT).show();
+                            outState.handleClickOff();
+                        }else {
                             setState(outState);
-                            break;
-                        }
-
-                        if(currentState.equals(inState) && timeElapsed < MIN_INHALE_IN_MILLISEC){
-                            inState.handleExit();
-                            setState(outState);
-                        }
-
-                        if(timeElapsed < MAX_INHALE_IN_MILLISEC){
-                            Toast.makeText(TakeBreathActivity.this, "Hold: " + timeElapsed + " milliSecond", Toast.LENGTH_SHORT).show();
-                            doStopSound();
-                            clearAnimations();
+                            outState.handleEnter();
                         }
 
                         break;
                     case MotionEvent.ACTION_DOWN: // ACTION_DOWN: when user hold/press the image button
                         timeElapsed = motionEvent.getDownTime();
                         takeBreathImgBtn.setBackgroundResource(R.drawable.on);
+
+                        //clear any running timer handles
+                        inState.handleExit();
+                        outState.handleExit();
+
                         setState(inState);
-//                        doStartSound();
-//                        startBreathInAnimation();
+                        currentState.handleEnter();
+                        updateRemainingUI();
+
+                        //reset and restart
+                        doStopSound();
+                        doStartSound();
+                        clearAnimations("both");
+                        startBreathInAnimation();
+
                         break;
                 }
                 return true;
@@ -167,13 +153,23 @@ public class TakeBreathActivity extends AppCompatActivity {
         });
     }
 
-    private void clearAnimations() {
-        //Toast.makeText(TakeBreathActivity.this, "clear Animation,Button only hold for " + timeElapsed + " Second", Toast.LENGTH_SHORT).show();
-        animZoomIn.reset();
-        animZoomOut.reset();
+    private void clearAnimations(String action) {
+        switch (action){
+            case "In":
+                animZoomIn.reset();
+                break;
+            case "Out":
+                animZoomOut.reset();
+                break;
+            case "both":
+                animZoomIn.reset();
+                animZoomOut.reset();
+        }
+
         breathCircleIV.clearAnimation();
-        breathCircleIV.setImageResource(R.drawable.circle);
+        //breathCircleIV.setImageResource(R.drawable.circle);
     }
+
 
     private void doStopSound() {
         if(mediaPlayer == null){
@@ -196,10 +192,12 @@ public class TakeBreathActivity extends AppCompatActivity {
     }
 
     private void startBreathOutAnimation() {
+        breathCircleIV.setImageResource(R.drawable.circle_out);
         breathCircleIV.startAnimation(animZoomOut);
     }
 
     private void startBreathInAnimation() {
+        breathCircleIV.setImageResource(R.drawable.circle);
         // Animation: https://www.tutlane.com/tutorial/android/android-zoom-in-out-animations-with-examples
         breathCircleIV.startAnimation(animZoomIn);
     }
@@ -209,8 +207,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         //get saved Breaths N Size from localStorage
         if (LocalStorage.getInstance().getBreaths() != null) {
             breathsConfig = Integer.parseInt(LocalStorage.getInstance().getBreaths());
-            //Toast.makeText(TakeBreathActivity.this, "breathsNum: " + breathsNum, Toast.LENGTH_SHORT).show();
-            breathsNumTV.setText("Let's take " + String.valueOf(breathsConfig) + " breaths together");
+            updateRemainingUI();
         }
     }
 
@@ -226,90 +223,169 @@ public class TakeBreathActivity extends AppCompatActivity {
         });
     }
 
+    private void updateRemainingUI() {
+
+        if(currentState.equals(inState) && breathsTaken > 0){
+            takeBreathImgBtn.setText("In");
+        }
+
+        if(currentState.equals(outState)){
+            takeBreathImgBtn.setText("Out");
+        }
+
+        helpTV.setText("Hold the button and breath In");
+
+        // once a breath has begun, we wanna disable config N
+        fabEditBreaths.setVisibility(breathsTaken > 0 ? View.INVISIBLE : View.VISIBLE);
+
+        if(breathsTaken == 0){
+            breathsNumTV.setText("Let's take " + String.valueOf(breathsConfig) + " breaths together");
+        }
+
+        if(breathsConfig == breathsTaken){
+            //reset back to Begin
+            resetToInitialState();
+        }
+
+        if(breathsTaken > 0 && breathsTaken < breathsConfig){
+            breathsNumTV.setText("Remaining Breaths: " + String.valueOf(breathsConfig - breathsTaken));
+        }
+
+    }
+
+    private void resetToInitialState() {
+        breathsTaken = 0;
+        helpTV.setText("Hold the button and breath In");
+        fabEditBreaths.setVisibility(View.VISIBLE);
+        breathsNumTV.setText("Let's take " + String.valueOf(breathsConfig) + " breaths together");
+        takeBreathImgBtn.setText("Begin");
+    }
+
     // ************************************************************
     // State Pattern states
     // ************************************************************
     private class OutState extends State {
         private int count = 0;
-        Handler timerHandler = new Handler();
-        //Runnable timerRunnable = () -> setState(inState);
-        Runnable timerRunnable = new Runnable() {
+        Handler doneExhaleTimerHandler = new Handler();
+        Runnable doneExhaleTimerRunnable = new Runnable() {
             @Override
             public void run() {
-                clearAnimations();
-                doStopSound();
+                setState(inState); // set back to inState
+                outState.handleExit(); // stop Animation and sound
+                updateRemainingUI();
+
+            }
+        };
+
+        Handler updateCounterTimerHandler = new Handler();
+        Runnable updateCounterTimerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                //after 3s,update button text "Great Job" or "In", update remaining breaths
+                takeBreathImgBtn.setText(breathsTaken == breathsConfig ? "Great Job" : "In");
+                if(breathsConfig == breathsTaken){
+                    breathsNumTV.setText("Great Job! All Breaths Completed! ");
+                }
+
+                if(breathsTaken > 0 && breathsTaken < breathsConfig){
+                    breathsNumTV.setText("Remaining Breaths: " + String.valueOf(breathsConfig - breathsTaken));
+                }
+
+                //after 10s(which is 7s at this point)
+                doneExhaleTimerHandler.postDelayed(doneExhaleTimerRunnable, MAX_INHALE_IN_MILLISEC - MIN_INHALE_EXHALE_IN_MILLISEC);
             }
         };
 
         @Override
         void handleEnter() {
-            tv.setText("Out!");
+            //tv.setText("Out!");
+
             takeBreathImgBtn.setText("Out");
-            startBreathOutAnimation();
-            //stop any playing sound:
+            helpTV.setText("Now breath out..");
+
+            clearAnimations("both");
             doStopSound();
-
-            //load and start breath out sound:
             doStartSound();
+            startBreathOutAnimation();
 
-            timerHandler.postDelayed(timerRunnable, MAX_INHALE_IN_MILLISEC);
-//            if(timeElapsed < MIN_INHALE_IN_MILLISEC){
-//                clearAnimations();
-//            }
+            // update count....
+            breathsTaken++;
 
+            // after 3 s, update count....
+            updateCounterTimerHandler.postDelayed(updateCounterTimerRunnable, MIN_INHALE_EXHALE_IN_MILLISEC);
         }
 
         @Override
         void handleExit() {
-            clearAnimations();
+            clearAnimations("both");
             doStopSound();
-            Toast.makeText(TakeBreathActivity.this, "OutState: Just exited off state", Toast.LENGTH_SHORT).show();
+            updateCounterTimerHandler.removeCallbacks(updateCounterTimerRunnable);
+            doneExhaleTimerHandler.removeCallbacks(doneExhaleTimerRunnable);
+            updateRemainingUI();
         }
 
         @Override
         void handleClickOn() {
-            count++;
-            Toast.makeText(TakeBreathActivity.this, "From out state, clicked ON: " + count, Toast.LENGTH_SHORT)
-                    .show();
             setState(inState);
         }
 
         @Override
         void handleClickOff() {
-            Toast.makeText(TakeBreathActivity.this, "From OUT state, clicked OUT", Toast.LENGTH_SHORT)
-                    .show();
+            this.handleExit();
+
+            // rollback to inState
+            setState(inState);
+            takeBreathImgBtn.setText("In");
         }
     }
 
     private class InState extends State {
+
         Handler timerHandler = new Handler();
-        Runnable timerRunnable = () -> setState(outState);
+        Runnable timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // don't change state until button released
+                helpTV.setText("Release button and breath out");
+                Toast.makeText(TakeBreathActivity.this, "held for 10s, now release button and breath out", Toast.LENGTH_SHORT).show();
+                doStopSound();
+            }
+        };
+
+        Handler updateBtnTimerHandler = new Handler();
+        Runnable updateBtnTimerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                takeBreathImgBtn.setText("Out");
+                Toast.makeText(TakeBreathActivity.this, "Nice, Inhaled for 3s", Toast.LENGTH_SHORT).show();
+            }
+        };
 
         @Override
         void handleEnter() {
-            tv.setText("In ON state!");
-            takeBreathImgBtn.setText("In");
-            doStopSound();
-            doStartSound();
-            clearAnimations();
-            startBreathInAnimation();
 
-            //inhaled for 10s, change state to "out"
+            //tv.setText("handleEnter: In ON state!");
+            takeBreathImgBtn.setText("In");
+            helpTV.setText("Hold the button and breath In");
+
+            //user held the button for at least 3 seconds continuously, change button message to "Out"
+            updateBtnTimerHandler.postDelayed(updateBtnTimerRunnable, MIN_INHALE_EXHALE_IN_MILLISEC);
+
+            //inhaled for 10s, update text and stop animation and sound (but don't change state until button released)
             timerHandler.postDelayed(timerRunnable, MAX_INHALE_IN_MILLISEC);
+
         }
 
         @Override
         void handleExit() {
-            Toast.makeText(TakeBreathActivity.this, "INT state, handleExit", Toast.LENGTH_SHORT)
-                    .show();
-            clearAnimations();
+            clearAnimations("both");
             doStopSound();
+            updateBtnTimerHandler.removeCallbacks(updateBtnTimerRunnable);
             timerHandler.removeCallbacks(timerRunnable);
         }
 
         @Override
         void handleClickOff() {
-            setState(outState);
         }
 
         @Override
