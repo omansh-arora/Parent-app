@@ -12,16 +12,21 @@
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/activity_toss_history.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/child_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Omans/AndroidStudioProjects/Parentapp/app/src/main/res/layout/content_children.xml" value="0.20416666666666666" />
+        <entry key="app/src/main/res/drawable/circle.xml" value="0.29270833333333335" />
+        <entry key="app/src/main/res/drawable/circle_out.xml" value="0.3323076923076923" />
         <entry key="app/src/main/res/drawable/ic_default.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/activity_add_task.xml" value="0.1354679802955665" />
+        <entry key="app/src/main/res/layout/activity_breaths_config.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/layout/activity_children.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/activity_children_picker.xml" value="0.22916666666666666" />
         <entry key="app/src/main/res/layout/activity_coin_flip.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19655521783181357" />
         <entry key="app/src/main/res/layout/activity_select_child.xml" value="0.22916666666666666" />
+        <entry key="app/src/main/res/layout/activity_take_breath.xml" value="0.3736434108527132" />
         <entry key="app/src/main/res/layout/activity_task.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/activity_toss_history.xml" value="0.34601449275362317" />
         <entry key="app/src/main/res/layout/activity_view_task_window.xml" value="0.3619791666666667" />
+        <entry key="app/src/main/res/layout/breath_config_item.xml" value="0.228125" />
         <entry key="app/src/main/res/layout/content_tasks.xml" value="0.14260385005065856" />
         <entry key="app/src/main/res/layout/history_item_view.xml" value="0.34601449275362317" />
         <entry key="app/src/main/res/layout/item_view.xml" value="0.234375" />

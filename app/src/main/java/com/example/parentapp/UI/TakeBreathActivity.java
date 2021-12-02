@@ -363,8 +363,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleEnter() {
-
-            //tv.setText("handleEnter: In ON state!");
             takeBreathImgBtn.setText("In");
             helpTV.setText("Hold the button and breath In");
 
@@ -373,7 +371,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             //inhaled for 10s, update text and stop animation and sound (but don't change state until button released)
             timerHandler.postDelayed(timerRunnable, MAX_INHALE_IN_MILLISEC);
-
         }
 
         @Override
