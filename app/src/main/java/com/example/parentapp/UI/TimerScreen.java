@@ -54,7 +54,7 @@ public class TimerScreen extends AppCompatActivity {
 
     private long timeLeftMillis = START_TIME_MILLIS;
     private long timeMillisUnmultiplied = START_TIME_MILLIS;
-    private double multiplier = 1;
+    private double multiplier;
     private int OGminutes;
 
 
@@ -68,11 +68,15 @@ public class TimerScreen extends AppCompatActivity {
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
 
+    boolean timerReset = true;
+
     private TextView TXTspeed;
 
     double millisCounted = 0;
 
     int i = 0;
+
+    int mode = 0;
 
 
     @Override
@@ -118,9 +122,11 @@ public class TimerScreen extends AppCompatActivity {
                 TXTspeed.setText("Speed@200%");
                 return true;
             case R.id.tr_speed_300:
-                if(multiplier!=.33) speedChanged = boolTimerRunning;
+                if(multiplier!=0.33333333333
+                ) speedChanged = boolTimerRunning;
                 else speedChanged = false;
-                multiplier = .33;
+                multiplier = 0.33333333333
+                ;
                 TXTspeed.setText("Speed@300%");
                 return true;
             case R.id.tr_speed_400:
@@ -130,7 +136,6 @@ public class TimerScreen extends AppCompatActivity {
                 multiplier = .25;
                 return true;
             default:
-                multiplier = 1;
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -141,16 +146,12 @@ public class TimerScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer_screen);
 
-        SharedPreferences preferences = getSharedPreferences("prefs", 0);
-        preferences.edit().remove("speed").commit();
-
         TXTspeed = findViewById(R.id.timer_txt_speed);
 
-        TXTspeed.setText("Speed@" + (int)(100/multiplier) +"%");
+        this.getSharedPreferences("prefs", 0).edit().clear().commit();
 
         progressBar = findViewById(R.id.timer_progressBar);
-
-        multiplier = 1;
+        progressBar.setProgress(0);
 
         updateButtons();
 
@@ -184,6 +185,7 @@ public class TimerScreen extends AppCompatActivity {
             public void onClick(View view) {
                 if (boolTimerRunning) {
                     pauseTimer();
+                    updateButtons();
                     cancelAlarm();
                 } else {
                     startTimer();
@@ -197,6 +199,8 @@ public class TimerScreen extends AppCompatActivity {
             public void onClick(View view) {
                 resetTimer();
                 cancelAlarm();
+                timerReset = true;
+                updateButtons();
             }
         });
 
@@ -269,7 +273,7 @@ public class TimerScreen extends AppCompatActivity {
 
     private void startTimer() {
 
-
+        timerReset = false;
         timeLeftMillis = (long) (timeMillisUnmultiplied*multiplier);
         endTime = System.currentTimeMillis() + timeLeftMillis;
         setAlarm(endTime);
@@ -306,8 +310,9 @@ public class TimerScreen extends AppCompatActivity {
                 progressBar.setProgress(0);
                 updateButtons();
                 cancelAlarm();
-                timeLeftMillis = START_TIME_MILLIS;
+                timeLeftMillis = (long) (START_TIME_MILLIS * multiplier);
                 timeMillisUnmultiplied = ((long) OGminutes * 60 * 1000);
+                timerReset = true;
 
             }
         }.start();
@@ -328,7 +333,7 @@ public class TimerScreen extends AppCompatActivity {
         pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         alarmManager.set(AlarmManager.RTC, millis, pendingIntent);
-        Toast.makeText(this, "Timer set", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Timer set", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -417,12 +422,12 @@ public class TimerScreen extends AppCompatActivity {
                 buttonStartPauseResume.setVisibility(View.VISIBLE);
             }
 
-            if (timeLeftMillis < START_TIME_MILLIS) {
+            if (timeLeftMillis/multiplier < START_TIME_MILLIS) {
                 buttonReset.setVisibility(View.VISIBLE);
             } else {
                 buttonReset.setVisibility(View.INVISIBLE);
             }
-            if (timeLeftMillis == START_TIME_MILLIS) {
+            if (timerReset) {
                 oneMin.setVisibility(View.VISIBLE);
                 twoMin.setVisibility(View.VISIBLE);
                 threeMin.setVisibility(View.VISIBLE);
@@ -436,47 +441,55 @@ public class TimerScreen extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
 
         SharedPreferences prefs = this.getSharedPreferences("prefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         editor.putLong("millisLeft", timeLeftMillis);
         editor.putBoolean("timerRunning", boolTimerRunning);
+        editor.putLong("millisUn",timeMillisUnmultiplied);
         editor.putLong("endTime", endTime);
-        editor.putFloat("speed", (float)multiplier);
+        editor.putLong("speed", Double.doubleToRawLongBits(multiplier));
         editor.putInt("progress", progressBar.getProgress());
+
+
+
+        mode = 1;
+        editor.putInt("mode", mode);
 
         editor.apply();
 
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        super.onStop();
+        super.onPause();
 
     }
 
     @Override
-    protected void onStart() {
+    protected void onResume() {
 
 
         SharedPreferences prefs = this.getSharedPreferences("prefs", MODE_PRIVATE);
 
-        timeLeftMillis = prefs.getLong("millisLeft", timeLeftMillis);
+        timeLeftMillis = prefs.getLong("millisLeft", 600000);
+        timeMillisUnmultiplied = prefs.getLong("millisUn", 600000);
         boolTimerRunning = prefs.getBoolean("timerRunning", false);
-        if(boolTimerRunning)
-        multiplier = prefs.getFloat("speed",0);
+        if(prefs.getInt("mode",0) != 0)
+        multiplier = Double.longBitsToDouble(prefs.getLong("speed",Double.doubleToLongBits(1.0)));
         else multiplier = 1;
         int progress = prefs.getInt("progress",0);
         progressBar.setProgress(progress);
 
-        updateCountDownText();
-        updateButtons();
+
+
+        TXTspeed.setText("Speed@" + (int)(100/multiplier) +"%");
 
         if (boolTimerRunning) {
             endTime = prefs.getLong("endTime", 0);
             timeLeftMillis = endTime - System.currentTimeMillis();
-
+            timeMillisUnmultiplied = (long) (timeLeftMillis/multiplier);
             if (timeLeftMillis < 0) {
                 timeLeftMillis = 0;
                 boolTimerRunning = false;
@@ -486,7 +499,11 @@ public class TimerScreen extends AppCompatActivity {
                 startTimer();
             }
         }
-        super.onStart();
+
+        updateCountDownText();
+        updateButtons();
+
+        super.onResume();
 
     }
 
