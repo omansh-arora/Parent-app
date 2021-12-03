@@ -6,11 +6,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.parentapp.R;
+import com.example.parentapp.model.Child;
+import com.example.parentapp.model.ChildManager;
 import com.example.parentapp.model.CoinFlip;
 import com.example.parentapp.model.CoinFlipHistory;
 import com.example.parentapp.model.TaskManager;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +31,8 @@ public class TossHistoryActivity extends AppCompatActivity {
     private CoinFlipHistory coinFlipHistory;
     private List<CoinFlip> gamesList;
     String taskName = TaskManager.DEFAULT_TASK.getName();
+    private String baseIMAGE;
+    private ChildManager childManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,8 @@ public class TossHistoryActivity extends AppCompatActivity {
         actionBar.hide();
         actionBar.setTitle("View All Flips");
 
+        childManager = new ChildManager();
+
         // get current task
         Intent intent = getIntent();
         taskName = intent.getStringExtra("task_name");
@@ -47,6 +56,14 @@ public class TossHistoryActivity extends AppCompatActivity {
         coinFlipHistory = new CoinFlipHistory(taskName);
         gamesList = coinFlipHistory.getFlips();
         populateListView();
+
+        Resources resources = this.getResources();
+        baseIMAGE = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.ic_default))
+                .appendPath(resources.getResourceTypeName(R.drawable.ic_default))
+                .appendPath(resources.getResourceEntryName(R.drawable.ic_default))
+                .build().toString();
     }
 
     private void populateListView() {
@@ -81,8 +98,22 @@ public class TossHistoryActivity extends AppCompatActivity {
 
             //fill the WIN/LOSE view
             ImageView imageView = (ImageView)itemView.findViewById(R.id.item_icon);
-            Integer imgResource = currentFlip.getGameResult().equals("Win") ? R.drawable.ic_baseline_happy_35 : R.drawable.ic_baseline_mood_bad_35_pink;
-            imageView.setImageResource(imgResource);
+            //Integer imgResource = currentFlip.getGameResult().equals("Win") ? R.drawable.ic_baseline_happy_35 : R.drawable.ic_baseline_mood_bad_35_pink;
+            //imageView.setImageResource(imgResource);
+
+            Child currentChild = null;
+            for (Child child : childManager.getChildren()) {
+                if (child.getName().equals(currentFlip.getChildName())) {
+                    currentChild = child;
+                    break;
+                }
+            };
+            Uri imgPFP = (currentChild == null || currentChild.getPicture() == null)
+                    ?  Uri.parse(baseIMAGE)
+                    : Uri.parse(currentChild.getPicture());
+            imageView = itemView.findViewById(R.id.item_icon);
+            imageView.setImageURI(imgPFP);
+            imageView.setPadding(5,2,5,2);
 
             // build output String
             TextView outputTV = (TextView) itemView.findViewById(R.id.item_txt);

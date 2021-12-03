@@ -27,6 +27,7 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
 
     private String taskName;
     private TextView taskNameTv;
+    private Button historyBtn;
     private Button editBtn;
     private Button deleteBtn;
     private ImageButton coinFlipBtn;
@@ -68,6 +69,7 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
         taskNameTv = (TextView) findViewById(R.id.taskNameTV);
         taskNameTv.setText("Task Name: " + taskName);
 
+        historyBtn = (Button) findViewById(R.id.historyBtn);
         editBtn = (Button) findViewById(R.id.editBtn);
         deleteBtn = (Button) findViewById(R.id.deleteBtn);
         coinFlipBtn = (ImageButton) findViewById(R.id.coinFlipBtn);
@@ -80,6 +82,14 @@ public class ViewTaskWindowActivity extends AppCompatActivity {
         selectedChildPicIV.setImageURI(imgPFP);
         selectedChildPicIV.setPadding(5,2,5,2);
 
+        historyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TossHistoryActivity.class);
+                intent.putExtra("task_name", taskName);
+                startActivity(intent);
+            }
+        });
 
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
