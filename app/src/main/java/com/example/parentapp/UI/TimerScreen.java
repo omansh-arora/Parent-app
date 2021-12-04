@@ -261,6 +261,9 @@ public class TimerScreen extends AppCompatActivity {
         updateCountDownText();
         updateButtons();
         OGminutes = i;
+        progressBar.setMax((int)(timeLeftMillis/1000));
+        progressBar.setProgress(progressBar.getMax());
+
     }
 
     private void pauseTimer() {
@@ -277,7 +280,7 @@ public class TimerScreen extends AppCompatActivity {
         timeLeftMillis = (long) (timeMillisUnmultiplied*multiplier);
         endTime = System.currentTimeMillis() + timeLeftMillis;
         setAlarm(endTime);
-        double milliBar = timeLeftMillis / (double)(100-progressBar.getProgress());
+
 
         countDownTimer = new CountDownTimer(timeLeftMillis, (int)(1000*multiplier)) {
             @Override
@@ -287,17 +290,16 @@ public class TimerScreen extends AppCompatActivity {
                     cancelAlarm();
                     countDownTimer.cancel();
                     startTimer();
+                    progressBar.setMax((int)((START_TIME_MILLIS*multiplier)/1000));
+
+
                 }
 
                 timeLeftMillis = millisLeftUntilDone;
                 timeMillisUnmultiplied = (long) (timeLeftMillis/multiplier);
 
-                millisCounted+= 1000 *multiplier;
-
-                if(millisCounted>=milliBar) {
-                    progressBar.setProgress(progressBar.getProgress() + 1);
-                    millisCounted = 0;
-                }
+                int progress = (int) (timeLeftMillis/1000);
+                progressBar.setProgress(progress);
 
                 updateCountDownText();
                 updateButtons();
@@ -307,12 +309,14 @@ public class TimerScreen extends AppCompatActivity {
             @Override
             public void onFinish() {
                 boolTimerRunning = false;
-                progressBar.setProgress(0);
+                progressBar.setProgress(100);
                 updateButtons();
                 cancelAlarm();
                 timeLeftMillis = (long) (START_TIME_MILLIS * multiplier);
                 timeMillisUnmultiplied = ((long) OGminutes * 60 * 1000);
+                updateCountDownText();
                 timerReset = true;
+
 
             }
         }.start();
@@ -371,7 +375,7 @@ public class TimerScreen extends AppCompatActivity {
         updateCountDownText();
         updateButtons();
         cancelAlarm();
-        progressBar.setProgress(0);
+        progressBar.setProgress(progressBar.getMax());
 
     }
 
@@ -480,7 +484,8 @@ public class TimerScreen extends AppCompatActivity {
         multiplier = Double.longBitsToDouble(prefs.getLong("speed",Double.doubleToLongBits(1.0)));
         else multiplier = 1;
         int progress = prefs.getInt("progress",0);
-        progressBar.setProgress(progress);
+        progressBar.setProgress((int) (timeLeftMillis/1000));
+
 
 
 
