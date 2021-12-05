@@ -38,7 +38,7 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task);
         setTitle("All Tasks");
 
-        //init Task manager
+       //init Task manager
         taskManager = new TaskManager();
         tasksList = taskManager.getTasks();
 

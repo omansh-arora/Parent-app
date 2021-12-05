@@ -71,7 +71,6 @@ public class ChildrenActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        //Toast.makeText(ChildrenActivity.this, "onStart() ", Toast.LENGTH_SHORT).show();
         childManager = new ChildManager();
         // show all added children
         populateListView();
@@ -111,10 +110,6 @@ public class ChildrenActivity extends AppCompatActivity {
             ImageView imageView = itemView.findViewById(R.id.item_icon);
             imageView.setImageURI(imgPFP);
             imageView.setPadding(5,2,5,2);
-
-//            imgResource = currentChild.getGender().equals("Boy") ? R.drawable.ic_baseline_child_boy_35 : R.drawable.ic_baseline_child_girl_35;
-//            imageView.setImageResource(imgResource);
-//            imageView.setPadding(5,2,5,2);
 
             // build output String
             TextView outputTV = (TextView) itemView.findViewById(R.id.item_txt);

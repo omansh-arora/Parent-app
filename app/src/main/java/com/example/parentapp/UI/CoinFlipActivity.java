@@ -96,7 +96,7 @@ public class CoinFlipActivity extends AppCompatActivity {
             }
         });
 
-        //initialize singleton instance//get shared preferences
+        //get date from shared preferences
         coinFlipHistory = new CoinFlipHistory(taskName);
         childManager = new ChildManager();
 
@@ -116,9 +116,6 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         // pick up a child
         childrenQueue = new ChildrenQueue(taskName);
-
-        // Toast.makeText(CoinFlipActivity.this, "from onCreate() ", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(CoinFlipActivity.this, "Current Turn:" + childrenQueue.getSelectedChild().getName(), Toast.LENGTH_SHORT).show();
 
         if (childrenQueue.getSelectedChild() != childManager.DEFAULT_CHILD) {
             childTurnTv.setText(childrenQueue.getSelectedChild().getName() + "'s turn to pick");
@@ -255,7 +252,6 @@ public class CoinFlipActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 tossResultNum = ranNum.nextInt(2);
-                //Toast.makeText(CoinFlipActivity.this, String.valueOf(tossResultNum), Toast.LENGTH_SHORT).show();
                 if (tossResultNum == 0) {
                     tossResultText = "Head";
                 } else {

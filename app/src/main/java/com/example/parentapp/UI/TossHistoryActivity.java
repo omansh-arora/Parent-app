@@ -98,8 +98,6 @@ public class TossHistoryActivity extends AppCompatActivity {
 
             //fill the WIN/LOSE view
             ImageView imageView = (ImageView)itemView.findViewById(R.id.item_icon);
-            //Integer imgResource = currentFlip.getGameResult().equals("Win") ? R.drawable.ic_baseline_happy_35 : R.drawable.ic_baseline_mood_bad_35_pink;
-            //imageView.setImageResource(imgResource);
 
             Child currentChild = null;
             for (Child child : childManager.getChildren()) {

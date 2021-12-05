@@ -11,6 +11,7 @@ public class Task {
         this.name = name;
         ChildrenQueue queue = new ChildrenQueue(name);
         CoinFlipHistory history = new CoinFlipHistory(name);
+
     }
 
     public String getName() {

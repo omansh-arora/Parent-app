@@ -98,10 +98,6 @@ public class ChildQueueActivity extends AppCompatActivity {
             Child childRow = children.get(position);
 
             //fill the view
-//            Integer imgResource;
-//            ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon);
-//            imgResource = childRow.getGender().equals("Boy") ? R.drawable.ic_baseline_child_boy_35 : R.drawable.ic_baseline_child_girl_35;
-//            imageView.setImageResource(imgResource);
             Uri imgPFP = childRow.getPicture() == null ?  Uri.parse(baseIMAGE) : Uri.parse(childRow.getPicture());
             ImageView imageView = itemView.findViewById(R.id.item_icon);
             imageView.setImageURI(imgPFP);

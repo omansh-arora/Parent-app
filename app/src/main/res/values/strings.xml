@@ -13,8 +13,25 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="app_made_by_team_aluminum_n_n_nall_images_from_android_vector_library">App made by Team Aluminum\n\n\nAll images from Android Vector library</string>
-    <string name="https_bestanimations_com_music_dancers_dancers_html">https://bestanimations.com/Music/Dancers/Dancers.html</string>
+    <string name="app_made_by_team_aluminum">App made by Team Aluminum</string>
+    <string name="team_members">Developed by:\n Omansh Arora\n Zelin(Erwin) Zhu\n Xinyi(Iris) Zeng\n Danni Zhang </string>
+    <string name="citation_title">Credit To:</string>
+    <string name="citation_links">
+        Android Vector library\n
+        <a href="https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/home">https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/home</a>\n
+        <a href="https://bestanimations.com/Music/Dancers/Dancers.html">https://bestanimations.com/Music/Dancers/Dancers.html</a>\n
+        <a href="https_bestanimations_com_music_dancers_dancers_html">https_bestanimations_com_music_dancers_dancers_html</a>\n
+        <a href="https://www.soundjay.com/coin-sounds-1.html">https://www.soundjay.com/coin-sounds-1.html</a>\n
+        <a href="https://www.pexels.com">https://www.pexels.com</a>\n
+        <a href="https://www.youtube.com/watch?v=ApfqiinI3c4">https://www.youtube.com/watch?v=ApfqiinI3c4</a>\n
+        <a href="https://www.tutlane.com/tutorial/android/android-zoom-in-out-animations-with-examples">https://www.tutlane.com/tutorial/android/android-zoom-in-out-animations-with-examples</a>\n
+        <a href="https://abhiandroid.com/ui/alertdialog">https://abhiandroid.com/ui/alertdialog</a>\n
+        <a href="https://developer.android.com/reference/java/time/format/DateTimeFormatter">https://developer.android.com/reference/java/time/format/DateTimeFormatter</a>\n
+        <a href="https://www.soundjay.com/coin-sounds-1.html">https://www.soundjay.com/coin-sounds-1.html</a>\n
+        <a href="https://stackoverflow.com/questions/4410362/how-to-detect-the-period-for-which-a-button-is-press-in-android">https://stackoverflow.com/questions/4410362/how-to-detect-the-period-for-which-a-button-is-press-in-android</a>\n
+        <a href="https://www.geeksforgeeks.org/add-ontouchlistener-to-imageview-to-perform-speech-to-text-in-android/">https://www.geeksforgeeks.org/add-ontouchlistener-to-imageview-to-perform-speech-to-text-in-android/</a>\n
+        <a href="https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/project">https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/project</a>
+    </string>
 
     <string name="_25">25%</string>
     <string name="_50">50%</string>

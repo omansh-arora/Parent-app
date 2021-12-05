@@ -55,7 +55,6 @@ public class BreathsConfigActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                //Toast.makeText(BreathsConfigActivity.this, "Breath N selected: " + breathsNums[position], Toast.LENGTH_SHORT).show();
                 LocalStorage.getInstance().saveBreaths(breathsNums[position]);
                 finish();
             }

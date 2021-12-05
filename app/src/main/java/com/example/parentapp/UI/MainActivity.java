@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.parentapp.R;
 import com.example.parentapp.model.LocalStorage;
@@ -49,9 +50,13 @@ public class MainActivity extends AppCompatActivity {
         flipCoinActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //launch history page
-                Intent intentFlipCoinActivity = new Intent(MainActivity.this, CoinFlipActivity.class);
-                startActivity(intentFlipCoinActivity);
+                if(LocalStorage.getInstance().getChildren().size() == 0){
+                    Toast.makeText(MainActivity.this, "Please add a child before playing the game! ", Toast.LENGTH_SHORT).show();
+                }else {
+                    //launch coinflip page
+                    Intent intentFlipCoinActivity = new Intent(MainActivity.this, CoinFlipActivity.class);
+                    startActivity(intentFlipCoinActivity);
+                }
             }
         });
 
@@ -71,7 +76,11 @@ public class MainActivity extends AppCompatActivity {
         taskActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, TaskActivity.class));
+                if(LocalStorage.getInstance().getChildren().size() == 0){
+                    Toast.makeText(MainActivity.this, "Please add a child before adding a task! ", Toast.LENGTH_SHORT).show();
+                }else {
+                    startActivity(new Intent(MainActivity.this, TaskActivity.class));
+                }
             }
         });
 

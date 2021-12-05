@@ -27,8 +27,6 @@ public class ChildManager implements Iterable<Child> {
         LocalStorage.getInstance().removeChild(children.get(childIndex));
         children.remove(childIndex);
 
-        //LocalStorage.getInstance().saveChildren(children);
-        // TODO: remove child from all existing queues, and selectedChildren
     }
 
     public void setChildPic(int index, String uri){

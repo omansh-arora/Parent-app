@@ -167,7 +167,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         }
 
         breathCircleIV.clearAnimation();
-        //breathCircleIV.setImageResource(R.drawable.circle);
     }
 
 
